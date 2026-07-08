@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 3
+  tags: []
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - PlayerTriggers
+  - Water
+  - UI
+  - Trail
+  - Spells/Spell colliders
+  - Spells/Character colliders - Body
+  - Spells/Character colliders - Ground (Low)
+  - Spells/Character colliders - Ground (High)
+  - Spells/Enemy colliders - Body
+  - Spells/Enemy colliders - Ground (Low)
+  - Spells/Enemy colliders - Ground (High)
+  - Spells/Collide with characters - Body
+  - Spells/Collide with characters - Ground (Low)
+  - Spells/Collide with characters - Ground (High)
+  - Spells/Collide with enemies - Body
+  - Spells/Collide with enemies - Ground (Low)
+  - Spells/Collide with enemies - Ground (High)
+  - Spells/Collide with everything - Body
+  - Spells/Collide with everything - Ground (Low)
+  - Spells/Collide with everything - Ground (High)
+  - Spells/Collide with environment - Ground (Low)
+  - Spells/Collide with environment - Ground (High)
+  - Environment/Characters
+  - Environment/Characters (Flying)
+  - Environment/Enemies
+  - Environment/Enemies (Flying)
+  - Environment/Holes
+  - Environment/Walls
+  - Environment/Map bounds
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Ground
+    uniqueID: 855368823
+    locked: 0
+  - name: Trail
+    uniqueID: 3082248597
+    locked: 0
+  - name: Characters
+    uniqueID: 462436743
+    locked: 0
+  - name: Ceiling
+    uniqueID: 271696659
+    locked: 0
+  - name: CameraSortingLayer
+    uniqueID: 3482223833
+    locked: 0
+  - name: UI
+    uniqueID: 1940325023
+    locked: 0
+  m_RenderingLayers:
+  - Default

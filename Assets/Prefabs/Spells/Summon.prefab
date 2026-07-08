@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5227201038738161021
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5548114638936707227}
+  - component: {fileID: -7645066051222745462}
+  - component: {fileID: 595074031421179912}
+  m_Layer: 0
+  m_Name: Summon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5548114638936707227
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5227201038738161021}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-7645066051222745462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5227201038738161021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea700cbe52a843889021f32e31e7be8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Code.Utils.MB_DestroyOnAnimationEvent
+--- !u!114 &595074031421179912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5227201038738161021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f38975a1d694ce1b6073455b8740c0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Code.Spells.Enemies.MB_Summon
+  m_SpellPosition: 0
+  m_CollisionTarget: 2
+  m_HitMetadata:
+    m_Damage: 0
+    m_KnockbackForce: 0
+  m_Cooldown: 5
+  m_CanHitMultipleTimes: 0
+  m_TriggersInvulnerable: 0
+  m_HasCharacterCollider: 0
+  m_CharacterCollider: {fileID: 0}
+  m_HasEnvironmentColliders: 0
+  m_EnvironmentColliders:
+    Value: []
+  m_Level: 0
+  m_ObjectsManager: {fileID: 0}
+  m_Character: {fileID: 0}
+  m_Destroyer: {fileID: 0}
+  m_BackupCharacterStats: {fileID: 0}
+  m_AffectedCharacters:
+    Value: []
+  m_MaxDistance: 5
+  m_LineOfSight: 0
+  m_From: {x: 0, y: 0}
+  m_To: {x: 0, y: 0}
+  m_Enemies:
+  - m_Weight: 1
+    m_Obj: {fileID: 3161175480873015536, guid: 46b6af9ec654550488f17b33a6e5816c, type: 3}
+  - m_Weight: 1
+    m_Obj: {fileID: 766339509069898402, guid: e22b1327289f4d94b862da7857c54144, type: 3}
+  m_Spawner: {fileID: 2896221485522832817, guid: 5851bcf5bae84d7499f844460e09e337, type: 3}

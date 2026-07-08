@@ -1,0 +1,191 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8367378440427049474
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Editor::UnityEditor.Rendering.Universal.AssetVersion
+  version: 10
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Shock waves
+  m_Shader: {fileID: -6465566751694194690, guid: 1a8c8f2fdbb69d644aa4945817426a4b, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _MaxSize: 4.75
+    - _MaxSize_0: 0
+    - _MaxSize_0_1: 4
+    - _MaxSize_0_10: 4
+    - _MaxSize_0_11: 4
+    - _MaxSize_0_12: 4
+    - _MaxSize_0_13: 4
+    - _MaxSize_0_14: 4
+    - _MaxSize_0_15: 4
+    - _MaxSize_0_2: 4
+    - _MaxSize_0_3: 4
+    - _MaxSize_0_4: 4
+    - _MaxSize_0_5: 4
+    - _MaxSize_0_6: 4
+    - _MaxSize_0_7: 4
+    - _MaxSize_0_8: 4
+    - _MaxSize_0_9: 4
+    - _MaxSize_1: 0
+    - _MaxSize_10: 0
+    - _MaxSize_11: 0
+    - _MaxSize_12: 0
+    - _MaxSize_13: 0
+    - _MaxSize_14: 0
+    - _MaxSize_15: 0
+    - _MaxSize_2: 0
+    - _MaxSize_3: 0
+    - _MaxSize_4: 0
+    - _MaxSize_5: 0
+    - _MaxSize_6: 0
+    - _MaxSize_7: 0
+    - _MaxSize_8: 0
+    - _MaxSize_9: 0
+    - _OrthographicSize: 8.4375
+    - _Size: 5
+    - _SizeRatio: 0.715
+    - _SizeRatio_0: 0
+    - _SizeRatio_0_1: 0.75
+    - _SizeRatio_0_10: 0.75
+    - _SizeRatio_0_11: 0.75
+    - _SizeRatio_0_12: 0.75
+    - _SizeRatio_0_13: 0.75
+    - _SizeRatio_0_14: 0.75
+    - _SizeRatio_0_15: 0.75
+    - _SizeRatio_0_2: 0.75
+    - _SizeRatio_0_3: 0.75
+    - _SizeRatio_0_4: 0.75
+    - _SizeRatio_0_5: 0.75
+    - _SizeRatio_0_6: 0.75
+    - _SizeRatio_0_7: 0.75
+    - _SizeRatio_0_8: 0.75
+    - _SizeRatio_0_9: 0.75
+    - _SizeRatio_1: 0
+    - _SizeRatio_10: 0
+    - _SizeRatio_11: 0
+    - _SizeRatio_12: 0
+    - _SizeRatio_13: 0
+    - _SizeRatio_14: 0
+    - _SizeRatio_15: 0
+    - _SizeRatio_2: 0
+    - _SizeRatio_3: 0
+    - _SizeRatio_4: 0
+    - _SizeRatio_5: 0
+    - _SizeRatio_6: 0
+    - _SizeRatio_7: 0
+    - _SizeRatio_8: 0
+    - _SizeRatio_9: 0
+    - _Strength: 2
+    - _Strength_0: 0
+    - _Strength_0_1: 1
+    - _Strength_0_10: 1
+    - _Strength_0_11: 1
+    - _Strength_0_12: 1
+    - _Strength_0_13: 1
+    - _Strength_0_14: 1
+    - _Strength_0_15: 1
+    - _Strength_0_2: 1
+    - _Strength_0_3: 1
+    - _Strength_0_4: 1
+    - _Strength_0_5: 1
+    - _Strength_0_6: 1
+    - _Strength_0_7: 1
+    - _Strength_0_8: 1
+    - _Strength_0_9: 1
+    - _Strength_1: 0
+    - _Strength_10: 0
+    - _Strength_11: 0
+    - _Strength_12: 0
+    - _Strength_13: 0
+    - _Strength_14: 0
+    - _Strength_15: 0
+    - _Strength_2: 0
+    - _Strength_3: 0
+    - _Strength_4: 0
+    - _Strength_5: 0
+    - _Strength_6: 0
+    - _Strength_7: 0
+    - _Strength_8: 0
+    - _Strength_9: 0
+    - _Width: 0.76
+    m_Colors:
+    - White: {r: 1, g: 1, b: 1, a: 1}
+    - _Position: {r: 0.5, g: 0.5, b: 0, a: 0}
+    - _Position_0: {r: 0, g: 0, b: 0, a: 0}
+    - _Position_0_1: {r: 1, g: 0.5, b: 0, a: 0}
+    - _Position_0_10: {r: 1, g: 0.5, b: 0, a: 0}
+    - _Position_0_11: {r: 1, g: 0.5, b: 0, a: 0}
+    - _Position_0_12: {r: 1, g: 0.5, b: 0, a: 0}
+    - _Position_0_13: {r: 1, g: 0.5, b: 0, a: 0}
+    - _Position_0_14: {r: 1, g: 0.5, b: 0, a: 0}
+    - _Position_0_15: {r: 1, g: 0.5, b: 0, a: 0}
+    - _Position_0_2: {r: 1, g: 0.5, b: 0, a: 0}
+    - _Position_0_3: {r: 1, g: 0.5, b: 0, a: 0}
+    - _Position_0_4: {r: 1, g: 0.5, b: 0, a: 0}
+    - _Position_0_5: {r: 1, g: 0.5, b: 0, a: 0}
+    - _Position_0_6: {r: 1, g: 0.5, b: 0, a: 0}
+    - _Position_0_7: {r: 1, g: 0.5, b: 0, a: 0}
+    - _Position_0_8: {r: 1, g: 0.5, b: 0, a: 0}
+    - _Position_0_9: {r: 1, g: 0.5, b: 0, a: 0}
+    - _Position_1: {r: 0, g: 0, b: 0, a: 0}
+    - _Position_10: {r: 0, g: 0, b: 0, a: 0}
+    - _Position_11: {r: 0, g: 0, b: 0, a: 0}
+    - _Position_12: {r: 0, g: 0, b: 0, a: 0}
+    - _Position_13: {r: 0, g: 0, b: 0, a: 0}
+    - _Position_14: {r: 0, g: 0, b: 0, a: 0}
+    - _Position_15: {r: 0, g: 0, b: 0, a: 0}
+    - _Position_2: {r: 0, g: 0, b: 0, a: 0}
+    - _Position_3: {r: 0, g: 0, b: 0, a: 0}
+    - _Position_4: {r: 0, g: 0, b: 0, a: 0}
+    - _Position_5: {r: 0, g: 0, b: 0, a: 0}
+    - _Position_6: {r: 0, g: 0, b: 0, a: 0}
+    - _Position_7: {r: 0, g: 0, b: 0, a: 0}
+    - _Position_8: {r: 0, g: 0, b: 0, a: 0}
+    - _Position_9: {r: 0, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
