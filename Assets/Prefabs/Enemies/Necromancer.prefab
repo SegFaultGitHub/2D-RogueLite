@@ -221,7 +221,6 @@ Transform:
   - {fileID: 297800878180866587}
   - {fileID: 3934330873322382042}
   - {fileID: 4947914314283401495}
-  - {fileID: 6566026910070591422}
   - {fileID: 3900669515669828532}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -245,6 +244,9 @@ MonoBehaviour:
   m_CharactersLayers:
     serializedVersion: 2
     m_Bits: 503316480
+  m_SpellsLayers:
+    serializedVersion: 2
+    m_Bits: 33538048
   m_ObjectsManager: {fileID: 0}
   m_Animator: {fileID: 0}
   m_Rigidbody: {fileID: 0}
@@ -256,6 +258,8 @@ MonoBehaviour:
   m_Knockbacked: 0
   m_Dashing: 0
   m_DashDirection: 0
+  m_DisabledCharacterCollisionStack: 0
+  m_DisabledSpellCollisionStack: 0
   m_Lerp: 0
   m_AI: {fileID: 0}
   m_LastTurn: 0
@@ -271,9 +275,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7a6b94233b74dad8b4c0f619905e8bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Code.Characters.Stats.MB_CharacterStats
-  m_CurrentHealth: 0
+  m_CurrentHealth: 200
   m_MaxHealth: 200
-  m_DamageReduction: 0
   m_Character: {fileID: 0}
 --- !u!114 &8572068650993593074
 MonoBehaviour:
@@ -297,10 +300,14 @@ MonoBehaviour:
   m_Animator: {fileID: 0}
   m_BaseController: {fileID: 0}
   m_CharacterStats: {fileID: 0}
-  m_Effects: []
+  m_Effects:
+    Value: []
   m_Invulnerable: 0
-  m_SpeedRatio: []
-  m_LifeBar: {fileID: 2646068287276734416}
+  m_SpeedRatio:
+    Value: []
+  m_IsABoss: 1
+  m_LifeBar: {fileID: 0}
+  m_BossName: Necromancer
   m_DisappearAnimation: {fileID: 2443055523485361720, guid: 2607b7d6104a8fa4ba180adb2577999a, type: 3}
   m_FOVSize: 3
   m_EnemyController: {fileID: 0}
@@ -309,7 +316,7 @@ MonoBehaviour:
   m_Summoner: {fileID: 0}
   m_Room: {fileID: 0}
   m_Wave: 0
-  m_Summon: {fileID: 595074031421179912, guid: eb99a000d35f917459694665d324b2a4, type: 3}
+  m_NecromancerSummon: {fileID: 8927041673765735632, guid: eb99a000d35f917459694665d324b2a4, type: 3}
   m_NecromancerScream: {fileID: 3461567026795914930, guid: f65f475aead559544a906921b757979a, type: 3}
   m_NecromancerScreamThreshold: 0.8
   m_SummonSpellCastAt: 0
@@ -1046,153 +1053,4 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 2028871196451804182, guid: 53504a34bbbc4b044b8f59c51a0fb3b5, type: 3}
   m_PrefabInstance: {fileID: 3407328729706520176}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &3894174669904201247
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 7184350842968740063}
-    m_Modifications:
-    - target: {fileID: 1339868149683625718, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1347238386220962255, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_Lerp
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1347238386220962255, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_PixelPerfect
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2165630440042944000, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_Name
-      value: Enemy life bar
-      objectReference: {fileID: 0}
-    - target: {fileID: 2165630440042944000, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4063648061748544814, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_PresetInfoIsWorld
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7157025890145819768, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7363708718974036849, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7708358143063900850, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7860423562125838753, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7860423562125838753, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7860423562125838753, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7860423562125838753, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7860423562125838753, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7860423562125838753, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7860423562125838753, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0.875
-      objectReference: {fileID: 0}
-    - target: {fileID: 7860423562125838753, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0.3125
-      objectReference: {fileID: 0}
-    - target: {fileID: 7860423562125838753, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7860423562125838753, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7860423562125838753, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7860423562125838753, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7860423562125838753, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7860423562125838753, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7860423562125838753, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7860423562125838753, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7860423562125838753, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.59375
-      objectReference: {fileID: 0}
-    - target: {fileID: 7860423562125838753, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7860423562125838753, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7860423562125838753, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9137650355564040216, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
---- !u!114 &2646068287276734416 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1347238386220962255, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-  m_PrefabInstance: {fileID: 3894174669904201247}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a90f9ce25edc4210be72f0148f1d528d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Code.UI.Misc.MB_ProgressBar
---- !u!224 &6566026910070591422 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 7860423562125838753, guid: 24c229ee9a9de1d4da827e6ec907a0d6, type: 3}
-  m_PrefabInstance: {fileID: 3894174669904201247}
   m_PrefabAsset: {fileID: 0}

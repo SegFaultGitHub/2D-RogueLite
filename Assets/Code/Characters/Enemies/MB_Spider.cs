@@ -22,5 +22,7 @@ namespace Code.Characters.Enemies {
         #endregion
 
         public void UseSpell() => this.UseSpell(this.SpiderWeb, this.transform.position);
+
+        protected override void PlayHurtSoundEffect() => this.ObjectsManager.AudioManager.PlaySpiderHurt();
     }
 }

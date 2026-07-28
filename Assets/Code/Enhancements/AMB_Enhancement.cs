@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Code.Characters;
+using Code.UI.Text;
 using MyBox;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ namespace Code.Enhancements {
         [Foldout("AMB_Enhancement", true)]
         [SerializeField] private protected string m_EnhancementName;
         [SerializeField] private protected int m_MaxLevel;
-        [SerializeField][TextArea] private protected string m_Description;
+        [SerializeField][TextArea(10, 20)] private protected string m_Description;
         [SerializeField] private protected Sprite m_Sprite;
 
         [Separator("Read only")]
@@ -35,7 +36,12 @@ namespace Code.Enhancements {
         #region Unity methods
         #endregion
 
+        public abstract string GetFullDescription();
+        public abstract string GetDescriptionWithUpgrade(int currentLevel, int newLevel);
         public abstract string GetDescription();
+
+        public virtual void ApplyOnDashStart(AMB_Character character) { }
+        public virtual void ApplyOnDashEnd(AMB_Character character) { }
 
         public virtual float ApplyOnDamageComputed(
             AMB_Character dealer,
@@ -54,6 +60,7 @@ namespace Code.Enhancements {
             value;
 
         public virtual void ApplyOnDamageTaken(AMB_Character dealer, AMB_Character receiver, E_DamageSource damageSource, float value) { }
+        public virtual void ApplyOnDamageInflicted(AMB_Character dealer, AMB_Character receiver, E_DamageSource damageSource, float value) { }
         public virtual float ApplyToMovementSpeed(AMB_Character character, float speed) => speed;
 
         public virtual float GetComputedDamageModifier(

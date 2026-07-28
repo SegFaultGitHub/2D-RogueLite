@@ -34,8 +34,7 @@ namespace Code.Characters.Controllers.Players {
             this.Camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         }
 
-        protected override void FixedUpdate() {
-            base.FixedUpdate();
+        protected void Update() {
             this.Aim(this.Camera.ScreenToWorldPoint(this.PlayerInputs.Actions.AimMouse.ReadValue<Vector2>()));
         }
         #endregion

@@ -47,10 +47,6 @@ namespace Code.Characters.Players {
             // throw new System.NotImplementedException();
         }
 
-        protected override void Die(AMB_Character killedBy) {
-            // throw new System.NotImplementedException();
-        }
-
         protected override void PlayHurtSoundEffect() => this.ObjectsManager.AudioManager.PlayPlayerHurt();
     }
 }

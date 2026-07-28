@@ -352,6 +352,9 @@ MonoBehaviour:
   m_CharactersLayers:
     serializedVersion: 2
     m_Bits: 503316480
+  m_SpellsLayers:
+    serializedVersion: 2
+    m_Bits: 33538048
   m_ObjectsManager: {fileID: 0}
   m_Animator: {fileID: 0}
   m_Rigidbody: {fileID: 0}
@@ -363,6 +366,8 @@ MonoBehaviour:
   m_Knockbacked: 0
   m_Dashing: 0
   m_DashDirection: 0
+  m_DisabledCharacterCollisionStack: 0
+  m_DisabledSpellCollisionStack: 0
   m_Lerp: 0.2
   m_AI: {fileID: 0}
   m_LastTurn: 0
@@ -380,7 +385,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Code.Characters.Stats.MB_CharacterStats
   m_CurrentHealth: 50
   m_MaxHealth: 50
-  m_DamageReduction: 0
   m_Character: {fileID: 0}
 --- !u!114 &766339509069898402
 MonoBehaviour:
@@ -404,10 +408,14 @@ MonoBehaviour:
   m_Animator: {fileID: 0}
   m_BaseController: {fileID: 0}
   m_CharacterStats: {fileID: 0}
-  m_Effects: []
+  m_Effects:
+    Value: []
   m_Invulnerable: 0
-  m_SpeedRatio: []
+  m_SpeedRatio:
+    Value: []
+  m_IsABoss: 0
   m_LifeBar: {fileID: 2646068287276734416}
+  m_BossName: 
   m_DisappearAnimation: {fileID: 2443055523485361720, guid: 2607b7d6104a8fa4ba180adb2577999a, type: 3}
   m_FOVSize: 0
   m_EnemyController: {fileID: 0}
@@ -415,7 +423,8 @@ MonoBehaviour:
   m_IsSummon: 0
   m_Summoner: {fileID: 0}
   m_Room: {fileID: 0}
-  m_BoneThrow: {fileID: 7455308766590396383, guid: 107e2dff33e85ca49aa7d6dd8abe4bb6, type: 3}
+  m_Wave: 0
+  m_SkeletonAttack: {fileID: 7455308766590396383, guid: 107e2dff33e85ca49aa7d6dd8abe4bb6, type: 3}
   m_SpellCastAt: 0
   m_SpellAvailableAt: 0
 --- !u!114 &8715587059656381345
@@ -470,6 +479,13 @@ MonoBehaviour:
   m_Decision:
     m_MovementDirection: {x: 0, y: 0}
     m_AimDirection: {x: 0, y: 0}
+  m_Path:
+    m_Destination:
+      m_Node:
+        m_NodePosition: {x: 0, y: 0}
+        m_WorldPosition: {x: 0, y: 0, z: 0}
+        m_Cell: {fileID: 0}
+    m_Nodes: []
   m_Room: {fileID: 0}
   m_Enemy: {fileID: 0}
   m_HolesLayer:

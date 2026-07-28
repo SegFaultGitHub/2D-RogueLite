@@ -341,8 +341,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1915ff25e4ce4dfb85728b273e103023, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Code.Characters.Controllers.Enemies.MB_EnemyController
-  m_MovementSpeed: 3
-  m_DashTrail: {fileID: 0}
+  m_MovementSpeed: 4
+  m_DashTrail: {fileID: 8591276361878389270}
   m_SpellColliders:
   - {fileID: 9173725840749952447}
   - {fileID: 3312225856550697962}
@@ -352,6 +352,9 @@ MonoBehaviour:
   m_CharactersLayers:
     serializedVersion: 2
     m_Bits: 503316480
+  m_SpellsLayers:
+    serializedVersion: 2
+    m_Bits: 33538048
   m_ObjectsManager: {fileID: 0}
   m_Animator: {fileID: 0}
   m_Rigidbody: {fileID: 0}
@@ -363,6 +366,8 @@ MonoBehaviour:
   m_Knockbacked: 0
   m_Dashing: 0
   m_DashDirection: 0
+  m_DisabledCharacterCollisionStack: 0
+  m_DisabledSpellCollisionStack: 0
   m_Lerp: 0.5
   m_AI: {fileID: 0}
   m_LastTurn: 0
@@ -417,10 +422,12 @@ MonoBehaviour:
   m_Summoner: {fileID: 0}
   m_Room: {fileID: 0}
   m_Wave: 0
+  m_GhostMelee: {fileID: 653968963955113510, guid: b0bfe050f103b6a4ca66a15a494c61a9, type: 3}
   m_Sprite: {fileID: 5513489091959857350}
   m_SilhouetteSprite: {fileID: 4315022396829048753}
   m_SpellCastAt: 0
   m_SpellAvailableAt: 0
+  m_InitialKnockbackable: 0
 --- !u!114 &1864923965784877407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -433,10 +440,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e49952ecc6844699ba84444aeb2d0cf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Code.Characters.AI.MB_GhostAI
-  m_Avoidances: []
+  m_Avoidances:
+  - m_AvoidTargets: 0200000003000000
+    m_Distance: 2
+    m_Weight: 1
+    m_Behaviours: 0000000002000000
+    m_AvoidanceLayers:
+      serializedVersion: 2
+      m_Bits: 0
+    m_IsEnvironment: 0
+  - m_AvoidTargets: 00000000
+    m_Distance: 1
+    m_Weight: 2
+    m_Behaviours: 0000000002000000
+    m_AvoidanceLayers:
+      serializedVersion: 2
+      m_Bits: 0
+    m_IsEnvironment: 0
+  - m_AvoidTargets: 020000000300000000000000
+    m_Distance: 0.5
+    m_Weight: 5
+    m_Behaviours: 01000000
+    m_AvoidanceLayers:
+      serializedVersion: 2
+      m_Bits: 0
+    m_IsEnvironment: 0
+  - m_AvoidTargets: 01000000
+    m_Distance: 2.75
+    m_Weight: 15
+    m_Behaviours: 01000000
+    m_AvoidanceLayers:
+      serializedVersion: 2
+      m_Bits: 0
+    m_IsEnvironment: 0
   m_AggressivePropagationRadius: 0
-  m_DecisionLerp: 0
-  m_Flying: 0
+  m_DecisionLerp: 0.2
+  m_Flying: 1
   m_ObjectsManager: {fileID: 0}
   m_Decision:
     m_MovementDirection: {x: 0, y: 0}
@@ -471,17 +510,22 @@ MonoBehaviour:
   m_MovementSeed: 0
   m_XOff: 0
   m_YOff: 0
-  m_AggressiveRange: 0
+  m_AggressiveRange: 5
   m_IdleMovementBehaviour:
-    m_PlayerAttraction: 0
-    m_NoiseWeight: 0
-    m_ObstaclesRepulsion: 0
+    m_PlayerAttraction: 0.75
+    m_NoiseWeight: 1
+    m_ObstaclesRepulsion: 1
   m_AggressiveMovementBehaviour:
-    m_PlayerAttraction: 0
-    m_NoiseWeight: 0
-    m_ObstaclesRepulsion: 0
+    m_PlayerAttraction: 1
+    m_NoiseWeight: 1
+    m_ObstaclesRepulsion: 2
+  m_AttackRange: 3
+  m_FocusDuration: 1
+  m_RestDurationAfterSpell: 2.5
   m_Angry: {fileID: 2359709485123523615}
   m_Ghost: {fileID: 0}
+  m_Focusing: 0
+  m_RestingFromSpell: 0
 --- !u!95 &7494618745130970460
 Animator:
   serializedVersion: 7
@@ -609,6 +653,7 @@ Transform:
   - {fileID: 8016412074800327169}
   - {fileID: 7395764836945745432}
   - {fileID: 3706107315782142566}
+  - {fileID: 5193838564179110046}
   m_Father: {fileID: 7184350842968740063}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!210 &2360961002556035291
@@ -743,7 +788,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3934330873322382042}
   - component: {fileID: 6384227726930554269}
-  m_Layer: 27
+  m_Layer: 28
   m_Name: Environment collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -867,6 +912,157 @@ Transform:
   - {fileID: 3459692712865373927}
   m_Father: {fileID: 8807593517082639863}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6321312837544971681
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5193838564179110046}
+  - component: {fileID: 8591276361878389270}
+  m_Layer: 6
+  m_Name: Trail
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5193838564179110046
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6321312837544971681}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 297800878180866587}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!96 &8591276361878389270
+TrailRenderer:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6321312837544971681}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 462436743
+  m_SortingLayer: 3
+  m_SortingOrder: -1
+  m_MaskInteraction: 0
+  m_Time: 0.2
+  m_PreviewTimeScale: 1
+  m_Parameters:
+    serializedVersion: 3
+    widthMultiplier: 1
+    widthCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0.625
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    colorGradient:
+      serializedVersion: 2
+      key0: {r: 1, g: 0.94509804, b: 0.6627451, a: 0}
+      key1: {r: 1, g: 0.94509804, b: 0.6627451, a: 0.7529412}
+      key2: {r: 0, g: 0, b: 0, a: 0}
+      key3: {r: 0, g: 0, b: 0, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 65535
+      ctime2: 0
+      ctime3: 0
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 8192
+      atime2: 65535
+      atime3: 65535
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_ColorSpace: 0
+      m_NumColorKeys: 2
+      m_NumAlphaKeys: 3
+    numCornerVertices: 0
+    numCapVertices: 0
+    alignment: 0
+    textureMode: 0
+    textureScale: {x: 1, y: 1}
+    shadowBias: 0.5
+    generateLightingData: 0
+  m_MinVertexDistance: 0.05
+  m_Autodestruct: 0
+  m_Emitting: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!1 &7232652980493645255
 GameObject:
   m_ObjectHideFlags: 0

@@ -55,10 +55,8 @@ namespace Code.Characters.Controllers.Enemies {
         }
 
         private void Jump(float jumpHeight) {
-            foreach (Collider2D spellCollider in this.SpellColliders)
-                spellCollider.enabled = false;
-            foreach (Collider2D environmentCollider in this.EnvironmentColliders)
-                environmentCollider.excludeLayers = this.CharactersLayers;
+            this.DisableSpellCollisions();
+            this.DisableCharacterCollisions();
 
             this.ObjectsManager.AudioManager.PlaySlimeJump();
             this.InTheAir = true;
@@ -100,10 +98,9 @@ namespace Code.Characters.Controllers.Enemies {
             this.Slime.UseSpell();
             this.Animator.SetTrigger(LAND);
             this.UntilAnimation(IDLE, () => this.Jumping = false);
-            foreach (Collider2D spellCollider in this.SpellColliders)
-                spellCollider.enabled = true;
-            foreach (Collider2D environmentCollider in this.EnvironmentColliders)
-                environmentCollider.excludeLayers = 0;
+
+            this.EnableSpellCollisions();
+            this.EnableCharacterCollisions();
         }
 
         private static float GetJumpDuration(float jumpHeight) => Mathf.Min(Mathf.Sqrt(jumpHeight / 15), .4f);

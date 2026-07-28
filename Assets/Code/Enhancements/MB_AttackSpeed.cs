@@ -1,5 +1,7 @@
 ﻿using System;
 using Code.Characters;
+using Code.UI.HUD;
+using Code.UI.Text;
 using Code.Utils;
 using MyBox;
 using UnityEngine;
@@ -7,18 +9,18 @@ using UnityEngine;
 namespace Code.Enhancements {
     public class MB_AttackSpeed : AMB_Enhancement {
         [Serializable]
-        private protected class SC_EnhancementData {
+        private protected class C_EnhancementData {
             [SerializeField] private protected float m_Ratio;
             public float Ratio { get => this.m_Ratio; }
         }
 
         #region Members
         [Foldout("MB_AttackSpeed", true)]
-        [SerializeField] private protected SC_EnhancementData[] m_Data;
+        [SerializeField] private protected C_EnhancementData[] m_Data;
         #endregion
 
         #region Getters / Setters
-        private SC_EnhancementData[] Data { get => this.m_Data; }
+        private C_EnhancementData[] Data { get => this.m_Data; }
         #endregion
 
         #region Static / Readonly / Const
@@ -27,9 +29,27 @@ namespace Code.Enhancements {
         #region Unity methods
         #endregion
 
+        public override string GetFullDescription() {
+            string[] ratios = new string[this.MaxLevel];
+            for (int i = 0; i < this.MaxLevel; i++) {
+                ratios[i] = SC_Utils.FormatNumber(this.Data[i].Ratio * 100f, decimals: 0);
+            }
+
+            string ratioString = ratios.AsList(this.EffectiveLevel, s => s.Green());
+            return this.Description.Replace("<ratio>", ratioString);
+        }
+
+        public override string GetDescriptionWithUpgrade(int currentLevel, int newLevel) {
+            float currentRatio = this.Data[currentLevel - 1].Ratio;
+            float newRatio = this.Data[newLevel - 1].Ratio;
+            string ratioString =
+                $"{SC_Utils.FormatNumber(currentRatio * 100f, decimals: 0)}% > {SC_Utils.FormatNumber(newRatio * 100f, decimals: 0)}%";
+            return this.Description.Replace("<ratio>", ratioString);
+        }
+
         public override string GetDescription() {
             float ratio = this.GetData().Ratio;
-            string ratioString = $"{SC_Utils.FormatNumber(ratio * 100f, decimals: 0)}%";
+            string ratioString = $"{SC_Utils.FormatNumber(ratio * 100f, decimals: 0)}%".PositiveEffect();
             return this.Description.Replace("<ratio>", ratioString);
         }
 
@@ -37,6 +57,6 @@ namespace Code.Enhancements {
             return this.GetData().Ratio;
         }
 
-        private SC_EnhancementData GetData() => this.Data[this.EffectiveLevel - 1];
+        private C_EnhancementData GetData() => this.Data[this.EffectiveLevel - 1];
     }
 }

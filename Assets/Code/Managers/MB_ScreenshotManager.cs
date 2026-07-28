@@ -11,9 +11,12 @@ namespace Code.Managers {
         #region Members
         [Foldout("MB_ScreenshotManager", true)]
         [SerializeField] private protected Camera m_ScreenshotCamera;
+        [SerializeField] private protected Camera m_UIScreenshotCamera;
         [SerializeField] private protected List<Canvas> m_Canvases;
+        [SerializeField] private protected Canvas m_UIScreenshotCanvas;
 
         [SerializeField] private protected RenderTexture m_ScreenshotRenderTexture;
+        [SerializeField] private protected RenderTexture m_UIScreenshotRenderTexture;
 
         [Separator("Read only")]
         [ReadOnly][SerializeField] private protected MB_ObjectsManager m_ObjectsManager;
@@ -21,9 +24,12 @@ namespace Code.Managers {
 
         #region Getters / Setters
         private Camera ScreenshotCamera { get => this.m_ScreenshotCamera; }
+        private Camera UIScreenshotCamera { get => this.m_UIScreenshotCamera; }
         private List<Canvas> Canvases { get => this.m_Canvases; }
+        private Canvas UIScreenshotCanvas { get => this.m_UIScreenshotCanvas; }
 
         private RenderTexture ScreenshotRenderTexture { get => this.m_ScreenshotRenderTexture; }
+        private RenderTexture UIScreenshotRenderTexture { get => this.m_UIScreenshotRenderTexture; }
 
         public MB_ObjectsManager ObjectsManager { get => this.m_ObjectsManager; set => this.m_ObjectsManager = value; }
         #endregion
@@ -41,7 +47,7 @@ namespace Code.Managers {
         [ButtonMethod]
         public Texture2D Screenshot() {
             this.ScreenshotCamera.enabled = true;
-            this.Resize();
+            this.Resize(this.ScreenshotCamera, this.ScreenshotRenderTexture);
 
             string epoch = DateTimeOffset.Now.ToUnixTimeSeconds().ToString();
             // Directory.CreateDirectory(SC_Serializer.GetPersistentPath("screenshots"));
@@ -57,15 +63,51 @@ namespace Code.Managers {
             this.ScreenshotCamera.Render();
             RenderTexture.active = this.ScreenshotCamera.targetTexture;
 
-            Texture2D screenshot = new(Screen.width, Screen.height, TextureFormat.RGB24, false);
+            Texture2D screenshot = new(Screen.width, Screen.height, TextureFormat.RGB24, true);
             screenshot.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
             screenshot.Apply();
+            //ScreenCapture.CaptureScreenshotAsTexture(ScreenCapture.StereoScreenCaptureMode.BothEyes);
 
             foreach (Canvas canvas in this.Canvases) {
                 canvas.worldCamera = canvasCameras[canvas];
             }
 
             this.ScreenshotCamera.enabled = false;
+            return screenshot;
+        }
+
+        public List<Transform> TEMP_gos;
+
+        [ButtonMethod]
+        public Texture2D ScreenshotUIComponents() => this.ScreenshotUIComponents(this.TEMP_gos);
+
+        public Texture2D ScreenshotUIComponents(ICollection<Transform> uiComponents) {
+            this.UIScreenshotCamera.enabled = true;
+            this.Resize(this.UIScreenshotCamera, this.UIScreenshotRenderTexture);
+
+            Dictionary<Transform, Transform> componentParents = new();
+            Dictionary<Transform, bool> componentStates = new();
+
+            foreach (Transform uiComponent in uiComponents) {
+                componentParents.TryAdd(uiComponent, uiComponent.parent);
+                componentStates.TryAdd(uiComponent, uiComponent.gameObject.activeSelf);
+                uiComponent.SetParent(this.UIScreenshotCanvas.transform);
+                uiComponent.gameObject.SetActive(true);
+            }
+
+            this.UIScreenshotCamera.Render();
+            RenderTexture.active = this.UIScreenshotCamera.targetTexture;
+
+            Texture2D screenshot = new(Screen.width, Screen.height, TextureFormat.RGB24, false);
+            screenshot.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
+            screenshot.Apply();
+
+            foreach (Transform uiComponent in uiComponents) {
+                uiComponent.SetParent(componentParents[uiComponent]);
+                uiComponent.gameObject.SetActive(componentStates[uiComponent]);
+            }
+
+            this.UIScreenshotCamera.enabled = false;
             return screenshot;
         }
 
@@ -88,13 +130,13 @@ namespace Code.Managers {
         private void ScreenshotInput(InputAction.CallbackContext _) => this.Screenshot();
         #endregion
 
-        private void Resize() {
-            this.ScreenshotCamera.orthographicSize = this.ObjectsManager.MainCamera.Camera.orthographicSize;
-            this.ScreenshotRenderTexture.Release();
-            this.ScreenshotRenderTexture.width = Screen.width;
-            this.ScreenshotRenderTexture.height = Screen.height;
-            this.ScreenshotRenderTexture.Create();
-            this.ScreenshotCamera.ResetAspect();
+        private void Resize(Camera renderCamera, RenderTexture renderTexture) {
+            renderCamera.orthographicSize = this.ObjectsManager.MainCamera.Camera.orthographicSize;
+            renderTexture.Release();
+            renderTexture.width = Screen.width;
+            renderTexture.height = Screen.height;
+            renderTexture.Create();
+            renderCamera.ResetAspect();
         }
     }
 }

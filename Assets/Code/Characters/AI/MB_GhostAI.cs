@@ -15,11 +15,18 @@ namespace Code.Characters.AI {
 
         [SerializeField] private protected C_MovementBehaviour m_IdleMovementBehaviour;
         [SerializeField] private protected C_MovementBehaviour m_AggressiveMovementBehaviour;
+        [SerializeField] private protected float m_AttackRange;
+
+        [SerializeField] private protected float m_FocusDuration;
+        [SerializeField] private protected float m_RestDurationAfterSpell;
 
         [SerializeField] private protected GameObject m_Angry;
 
         [Separator("Read only")]
         [ReadOnly][SerializeField] private protected MB_Ghost m_Ghost;
+
+        [ReadOnly][SerializeField] private protected bool m_Focusing;
+        [ReadOnly][SerializeField] private protected bool m_RestingFromSpell;
         #endregion
 
         #region Getters / Setters
@@ -27,10 +34,17 @@ namespace Code.Characters.AI {
 
         private C_MovementBehaviour IdleMovementBehaviour { get => this.m_IdleMovementBehaviour; }
         private C_MovementBehaviour AggressiveMovementBehaviour { get => this.m_AggressiveMovementBehaviour; }
+        private float AttackRange { get => this.m_AttackRange; }
+
+        private float FocusDuration { get => this.m_FocusDuration; }
+        private float RestDurationAfterSpell { get => this.m_RestDurationAfterSpell; }
 
         private GameObject Angry { get => this.m_Angry; }
 
         private MB_Ghost Ghost { get => this.m_Ghost; set => this.m_Ghost = value; }
+
+        private bool Focusing { get => this.m_Focusing; set => this.m_Focusing = value; }
+        private bool RestingFromSpell { get => this.m_RestingFromSpell; set => this.m_RestingFromSpell = value; }
         #endregion
 
         #region Static / Readonly / Const
@@ -40,21 +54,36 @@ namespace Code.Characters.AI {
         protected override void Awake() {
             base.Awake();
             this.Ghost = this.GetComponent<MB_Ghost>();
-            this.SetVisible();
+            this.Ghost.SetTransparent();
         }
         #endregion
 
         protected override void UpdateBehaviour() {
-            switch (this.Behaviour) {
-                case E_Behaviour.Fleeing:
-                    return;
-                case E_Behaviour.Aggressive:
-                    return;
-                case E_Behaviour.Idle:
-                default:
-                    if (this.DistanceToPlayer <= this.AggressiveRange && Time.time - this.EnabledAt >= AGGRESSIVE_DELAY)
-                        this.SetBehaviour(E_Behaviour.Aggressive, false);
-                    return;
+            if (this.Behaviour == E_Behaviour.Aggressive) {
+                if (!this.RestingFromSpell && !this.Focusing && this.DistanceToPlayer <= this.AttackRange && this.Ghost.CanUseSpell()) {
+                    this.Decision.MovementDirection *= 0;
+                    this.Focusing = true;
+                    this.Ghost.Focus(true);
+                    this.InSeconds(
+                        this.FocusDuration,
+                        () => {
+                            this.Ghost.SetVisible();
+                            this.Focusing = false;
+                            this.RestingFromSpell = true;
+                            this.Ghost.Focus(false);
+                            this.Ghost.UseSpell();
+                            this.InSeconds(
+                                this.RestDurationAfterSpell,
+                                () => {
+                                    this.RestingFromSpell = false;
+                                    this.Ghost.SetTransparent();
+                                }
+                            );
+                        }
+                    );
+                }
+            } else if (this.DistanceToPlayer <= this.AggressiveRange && Time.time - this.EnabledAt >= AGGRESSIVE_DELAY) {
+                this.SetBehaviour(E_Behaviour.Aggressive, false);
             }
         }
 
@@ -70,29 +99,34 @@ namespace Code.Characters.AI {
         protected override Vector2 GetMovementDirection() {
             return this.Behaviour switch {
                 E_Behaviour.Idle => this.GetDirectionToPlayer(
-                    this.IdleMovementBehaviour.PlayerAttraction,
-                    this.IdleMovementBehaviour.NoiseWeight,
-                    this.IdleMovementBehaviour.ObstaclesRepulsion
-                ),
-                E_Behaviour.Aggressive => this.GetDirectionToPlayer(
-                    this.AggressiveMovementBehaviour.PlayerAttraction,
-                    this.AggressiveMovementBehaviour.NoiseWeight,
-                    this.AggressiveMovementBehaviour.ObstaclesRepulsion
-                ),
+                                        this.IdleMovementBehaviour.PlayerAttraction,
+                                        this.IdleMovementBehaviour.NoiseWeight,
+                                        this.IdleMovementBehaviour.ObstaclesRepulsion
+                                    )
+                                    * this.GetSpeedMultiplier(),
+                E_Behaviour.Aggressive => this.Focusing
+                    ? Vector2.zero
+                    : this.GetDirectionToPlayer(
+                          this.AggressiveMovementBehaviour.PlayerAttraction,
+                          this.AggressiveMovementBehaviour.NoiseWeight,
+                          this.AggressiveMovementBehaviour.ObstaclesRepulsion
+                      )
+                      * this.GetSpeedMultiplier(),
+                E_Behaviour.Fleeing => throw new ArgumentOutOfRangeException(),
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
 
-        protected override Vector2 GetAimDirection() => this.Decision.MovementDirection;
-
-        private void SetTransparent() {
-            this.Ghost.SetTransparent();
-            this.InSeconds(3, this.SetVisible);
+        private float GetSpeedMultiplier() {
+            return this.Ghost.BaseController.Dashing
+                ? 1
+                : .5f;
         }
 
-        private void SetVisible() {
-            this.Ghost.SetVisible();
-            this.InSeconds(3, this.SetTransparent);
+        protected override Vector2 GetAimDirection() {
+            return this.Focusing || this.RestingFromSpell
+                ? this.TrueVectorToPlayer
+                : this.Decision.MovementDirection;
         }
     }
 }

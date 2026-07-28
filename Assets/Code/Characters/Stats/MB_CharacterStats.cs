@@ -18,10 +18,9 @@ namespace Code.Characters.Stats {
         #region Getters / Setters
         public float CurrentHealth {
             get => this.m_CurrentHealth;
-            private set => this.m_CurrentHealth = value <= 0
-                ? 0
-                : value;
+            private set => this.m_CurrentHealth = Mathf.Clamp(value, 0, this.m_MaxHealth);
         }
+        public float MissingHealth { get => this.m_MaxHealth - this.m_CurrentHealth; }
         public float MaxHealth { get => this.m_MaxHealth; }
         public float HealthRatio { get => this.CurrentHealth / this.MaxHealth; }
 
@@ -41,7 +40,10 @@ namespace Code.Characters.Stats {
 
         public float TakeDamage(AMB_Character from, float value, bool critical, E_DamageSource source) {
             HashSet<Type> appliedTypes = new();
-            float damageModifier = this.Character.AllEffects.Aggregate(0f, (acc, effect) => acc + effect.GetReceivedDamageModifier(from, this.Character, source, appliedTypes));
+            float damageModifier = this.Character.AllEffects.Aggregate(
+                0f,
+                (acc, effect) => acc + effect.GetReceivedDamageModifier(from, this.Character, source, appliedTypes)
+            );
 
             value *= 1 + damageModifier;
             value = this.Character.AllEffects.Aggregate(
@@ -50,13 +52,24 @@ namespace Code.Characters.Stats {
             );
 
             float realDamageDealt = Mathf.Clamp(value, 0, this.CurrentHealth);
+            realDamageDealt = Mathf.Round(realDamageDealt);
             this.CurrentHealth -= realDamageDealt;
             return realDamageDealt;
         }
 
+        public float Heal(AMB_Character from, float value) {
+            float realHeal = Mathf.Clamp(value, 0, this.MissingHealth);
+            realHeal = Mathf.Round(realHeal);
+            this.CurrentHealth += realHeal;
+            return realHeal;
+        }
+
         public (float damage, bool critical) ComputeDamage(AMB_Character target, float baseDamage, E_DamageSource source) {
             HashSet<Type> appliedTypes = new();
-            float damageModifier = this.Character.AllEffects.Aggregate(0f, (acc, effect) => acc + effect.GetComputedDamageModifier(this.Character, target, source, appliedTypes));
+            float damageModifier = this.Character.AllEffects.Aggregate(
+                0f,
+                (acc, effect) => acc + effect.GetComputedDamageModifier(this.Character, target, source, appliedTypes)
+            );
 
             baseDamage *= 1 + damageModifier;
             baseDamage = this.Character.AllEffects.Aggregate(

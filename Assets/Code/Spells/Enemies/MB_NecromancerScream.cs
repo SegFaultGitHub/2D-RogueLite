@@ -81,6 +81,7 @@ namespace Code.Spells.Enemies {
         #region Unity methods
         protected override void Start() {
             base.Start();
+            this.ObjectsManager.AudioManager.PlayNecromancerScream();
 
             // Wait for next update because initialization is done after instantiating
             this.InUpdates(
@@ -137,7 +138,8 @@ namespace Code.Spells.Enemies {
             foreach (E_Effect selectedEffect in selectedEffects) {
                 switch (selectedEffect) {
                     case E_Effect.Confused:
-                        character.AddEffect(this.ConfusedPrefab, this.Character, this.EffectsDuration);
+                        MB_Confused confused = Instantiate(this.ConfusedPrefab);
+                        character.AddEffect(confused, this.Character, this.EffectsDuration);
                         break;
                     case E_Effect.Poison:
                         MB_Poison poison = Instantiate(this.PoisonPrefab);

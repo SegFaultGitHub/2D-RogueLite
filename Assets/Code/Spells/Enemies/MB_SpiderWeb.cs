@@ -36,6 +36,11 @@ namespace Code.Spells.Enemies {
                 .OnComplete(() => this.Destroyer.Destroy());
         }
 
+        protected override void Start() {
+            base.Start();
+            this.ObjectsManager.AudioManager.PlaySpiderWeb();
+        }
+
         private void OnDestroy() {
             foreach (AMB_Character character in this.AffectedCharacters.Value) {
                 character.SpeedRatio.Remove(this.SpeedRatioRef);

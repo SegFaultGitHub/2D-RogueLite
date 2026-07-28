@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 788759644655552947}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.9375, y: 1.0625, z: 0}
+  m_LocalPosition: {x: 6.0625, y: 6.0625, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -52,11 +52,7 @@ MonoBehaviour:
     Min: 0
     Max: 0
   m_Delay: 0
-  m_Enemies:
-  - m_Weight: 1
-    m_Obj: {fileID: 3161175480873015536, guid: 46b6af9ec654550488f17b33a6e5816c, type: 3}
-  - m_Weight: 1
-    m_Obj: {fileID: 766339509069898402, guid: e22b1327289f4d94b862da7857c54144, type: 3}
+  m_Enemies: []
   m_Wave: 0
   m_Animator: {fileID: 0}
   m_ObjectsManager: {fileID: 0}

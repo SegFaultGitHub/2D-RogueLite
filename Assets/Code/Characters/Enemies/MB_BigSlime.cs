@@ -21,14 +21,18 @@ namespace Code.Characters.Enemies {
         #region Unity methods
         #endregion
 
-        protected override void Die(AMB_Character killedBy) {
+        protected override bool Die(AMB_Character killedBy) {
+            bool died = base.Die(killedBy);
+
+            if (!died) return false;
+
             for (int i = 0; i < 2; i++) {
                 MB_SmallSlime slime = Instantiate(this.SmallSlimePrefab, this.transform.parent);
                 slime.transform.position = this.Center.position;
                 slime.Wave = this.Wave;
             }
 
-            base.Die(killedBy);
+            return true;
         }
     }
 }

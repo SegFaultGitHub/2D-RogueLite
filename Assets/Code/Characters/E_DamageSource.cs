@@ -5,6 +5,7 @@ namespace Code.Characters {
         Burning,
         Poison,
         Passive,
-        Traps
+        Traps,
+        SummonDeath
     }
 }

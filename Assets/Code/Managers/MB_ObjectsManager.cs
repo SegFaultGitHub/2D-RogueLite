@@ -2,6 +2,7 @@ using Code.Cameras;
 using Code.Characters.Controllers;
 using Code.Characters.Players;
 using Code.Map;
+using Code.UI;
 using Code.UI.Damage;
 using Code.UI.HUD;
 using MyBox;
@@ -36,6 +37,8 @@ namespace Code.Managers {
         [SerializeField] private protected MB_DamageCanvas m_DamageCanvas;
         [SerializeField] private protected MB_PlayerHUD m_PlayerHUD;
         [SerializeField] private protected MB_EnemyIndicatorsManager m_EnemyIndicatorsManager;
+        [SerializeField] private protected MB_BossLifeBar m_BossLifeBar;
+        [SerializeField] private protected MB_DissolveUI m_DissolveUI;
         #endregion
         #endregion
 
@@ -60,6 +63,8 @@ namespace Code.Managers {
         public MB_DamageCanvas DamageCanvas { get => this.m_DamageCanvas; }
         public MB_PlayerHUD PlayerHUD { get => this.m_PlayerHUD; }
         public MB_EnemyIndicatorsManager EnemyIndicatorsManager { get => this.m_EnemyIndicatorsManager; }
+        public MB_BossLifeBar BossLifeBar { get => this.m_BossLifeBar; }
+        public MB_DissolveUI DissolveUI { get => this.m_DissolveUI; }
         #endregion
         #endregion
 
@@ -83,6 +88,7 @@ namespace Code.Managers {
             this.TransitionManager.ObjectsManager = this;
             this.PlayerHUD.ObjectsManager = this;
             this.EnemyIndicatorsManager.ObjectsManager = this;
+            this.DissolveUI.ObjectsManager = this;
 
             /*----------------------------------------------------*/
 

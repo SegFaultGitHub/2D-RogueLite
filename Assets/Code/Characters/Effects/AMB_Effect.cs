@@ -55,6 +55,9 @@ namespace Code.Characters.Effects {
             }
         }
 
+        public virtual void ApplyOnDashStart(AMB_Character character) { }
+        public virtual void ApplyOnDashEnd(AMB_Character character) { }
+
         public virtual float ApplyOnDamageComputed(
             AMB_Character dealer,
             AMB_Character receiver,
@@ -72,6 +75,7 @@ namespace Code.Characters.Effects {
             value;
 
         public virtual void ApplyOnDamageTaken(AMB_Character dealer, AMB_Character receiver, E_DamageSource damageSource, float value) { }
+        public virtual void ApplyOnDamageInflicted(AMB_Character dealer, AMB_Character receiver, E_DamageSource damageSource, float value) { }
         public virtual float ApplyToMovementSpeed(AMB_Character character, float speed) => speed;
 
         public virtual float GetComputedDamageModifier(
@@ -81,6 +85,7 @@ namespace Code.Characters.Effects {
             HashSet<Type> appliedTypes
         ) =>
             0;
+
         public virtual float GetReceivedDamageModifier(
             AMB_Character dealer,
             AMB_Character receiver,

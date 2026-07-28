@@ -24,6 +24,7 @@ namespace Code.Characters {
             AMB_Enemy enemy = base.SpawnEnemy();
             enemy.IsSummon = true;
             enemy.Summoner = this.Summoner;
+            this.Summoner.Summons.Add(enemy);
             enemy.Wave = -1;
             return enemy;
         }

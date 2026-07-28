@@ -3,8 +3,12 @@ using System.Collections.Generic;
 
 namespace Code.Characters {
     public interface I_Effect {
+        public void ApplyOnDashStart(AMB_Character character);
+        public void ApplyOnDashEnd(AMB_Character character);
+
         public float ApplyOnDamageComputed(AMB_Character dealer, AMB_Character receiver, E_DamageSource damageSource, float value);
         public float ApplyOnDamageReceived(AMB_Character dealer, AMB_Character receiver, E_DamageSource damageSource, float value);
+        public void ApplyOnDamageInflicted(AMB_Character dealer, AMB_Character receiver, E_DamageSource damageSource, float value);
         public void ApplyOnDamageTaken(AMB_Character dealer, AMB_Character receiver, E_DamageSource damageSource, float value);
         public float ApplyToMovementSpeed(AMB_Character character, float speed);
 

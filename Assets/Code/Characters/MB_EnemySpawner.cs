@@ -57,7 +57,11 @@ namespace Code.Characters {
                             float delay = this.RandomDelay
                                 ? Random.Range(this.DelayRange.Min, this.DelayRange.Max)
                                 : this.Delay;
-                            this.InSeconds(delay, () => this.Animator.SetTrigger(RUN));
+                            this.InSeconds(delay, () => {
+                                    this.ObjectsManager.AudioManager.PlaySpawnerStart();
+                                    this.Animator.SetTrigger(RUN);
+                                }
+                            );
                         }
                     );
                 }
@@ -70,6 +74,7 @@ namespace Code.Characters {
         #endregion
 
         public virtual AMB_Enemy SpawnEnemy() {
+            this.ObjectsManager.AudioManager.PlaySpawnerSpawn();
             AMB_Enemy enemy = Instantiate(SC_Utils.Sample(this.Enemies).Obj, this.transform.parent, true);
             enemy.Wave = this.Wave;
             enemy.transform.position = this.transform.position;

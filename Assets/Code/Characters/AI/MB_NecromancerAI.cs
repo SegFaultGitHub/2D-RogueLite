@@ -54,6 +54,7 @@ namespace Code.Characters.AI {
 
         protected override void UpdateBehaviour() {
             if (!this.Resting && !this.Focusing) {
+                if (this.Necromancer.Summons.Count == 0) this.Necromancer.ResetSummonCooldown();
                 if (this.Necromancer.CanUseSummonSpell()) this.UseSummonSpell();
                 else if (this.Necromancer.CanUseScreamSpell()) this.UseScreamSpell();
             }

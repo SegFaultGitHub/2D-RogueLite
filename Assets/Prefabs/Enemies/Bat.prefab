@@ -350,6 +350,9 @@ MonoBehaviour:
   m_CharactersLayers:
     serializedVersion: 2
     m_Bits: 503316480
+  m_SpellsLayers:
+    serializedVersion: 2
+    m_Bits: 33538048
   m_ObjectsManager: {fileID: 0}
   m_Animator: {fileID: 0}
   m_Rigidbody: {fileID: 0}
@@ -361,6 +364,8 @@ MonoBehaviour:
   m_Knockbacked: 0
   m_Dashing: 0
   m_DashDirection: 0
+  m_DisabledCharacterCollisionStack: 0
+  m_DisabledSpellCollisionStack: 0
   m_Lerp: 0.5
   m_AI: {fileID: 0}
   m_LastTurn: 0
@@ -406,7 +411,9 @@ MonoBehaviour:
   m_Invulnerable: 0
   m_SpeedRatio:
     Value: []
+  m_IsABoss: 0
   m_LifeBar: {fileID: 2646068287276734416}
+  m_BossName: 
   m_DisappearAnimation: {fileID: 2443055523485361720, guid: 2607b7d6104a8fa4ba180adb2577999a, type: 3}
   m_FOVSize: 0
   m_EnemyController: {fileID: 0}
@@ -415,7 +422,7 @@ MonoBehaviour:
   m_Summoner: {fileID: 0}
   m_Room: {fileID: 0}
   m_Wave: 0
-  m_UltrasonicBoom: {fileID: -2183349746479316257, guid: ac8f5f15891b93d49b696e425e9f1980, type: 3}
+  m_BatScream: {fileID: -2183349746479316257, guid: ac8f5f15891b93d49b696e425e9f1980, type: 3}
   m_SpellCastAt: 0
   m_SpellAvailableAt: 0
 --- !u!114 &3320420535095128106
@@ -1113,6 +1120,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5835216838939947536, guid: 97d8c2ed1b6ce6a498af7603391144e8, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6296917496887152244, guid: 97d8c2ed1b6ce6a498af7603391144e8, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1133,9 +1144,49 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7029788755999948810, guid: 97d8c2ed1b6ce6a498af7603391144e8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7029788755999948810, guid: 97d8c2ed1b6ce6a498af7603391144e8, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7029788755999948810, guid: 97d8c2ed1b6ce6a498af7603391144e8, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7029788755999948810, guid: 97d8c2ed1b6ce6a498af7603391144e8, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7029788755999948810, guid: 97d8c2ed1b6ce6a498af7603391144e8, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8219023818093225520, guid: 97d8c2ed1b6ce6a498af7603391144e8, type: 3}
       propertyPath: m_Name
       value: Visual effects
+      objectReference: {fileID: 0}
+    - target: {fileID: 8320930146778966194, guid: 97d8c2ed1b6ce6a498af7603391144e8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8320930146778966194, guid: 97d8c2ed1b6ce6a498af7603391144e8, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8320930146778966194, guid: 97d8c2ed1b6ce6a498af7603391144e8, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8320930146778966194, guid: 97d8c2ed1b6ce6a498af7603391144e8, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8320930146778966194, guid: 97d8c2ed1b6ce6a498af7603391144e8, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

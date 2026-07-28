@@ -45,11 +45,16 @@ Material:
     - _DissolveAmount: 1
     - _DissolveScale: 175
     - _DissolveSpeedRatio: -0.1
-    - _OutlineThickness: 0.15
+    - _Height: 270
+    - _OutlineThickness: 0.1
     - _PixelateScale: 4
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _Width: 480
     m_Colors:
+    - _Color1: {r: 0.6784314, g: 0.25098038, b: 0.18823525, a: 1}
+    - _Color2: {r: 0.9372549, g: 0.6196079, b: 0.30588236, a: 1}
+    - _Color3: {r: 0.9647059, g: 0.9490196, b: 0.7647059, a: 1}
     - _DissolveColor: {r: 0.6784314, g: 0.25098038, b: 0.18823525, a: 1}
     - _DissolveColor1: {r: 0.6784314, g: 0.25098038, b: 0.18823525, a: 1}
     - _DissolveColor2: {r: 0.93725497, g: 0.61960787, b: 0.30588236, a: 1}

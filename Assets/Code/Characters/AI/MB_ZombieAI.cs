@@ -27,6 +27,7 @@ namespace Code.Characters.AI {
         [ReadOnly][SerializeField] private protected MB_Zombie m_Zombie;
 
         [ReadOnly][SerializeField] private protected bool m_Focusing;
+        [ReadOnly][SerializeField] private protected bool m_RestingFromSpell;
         [ReadOnly][SerializeField] private protected bool m_Resting;
         [ReadOnly][SerializeField] private protected float m_StartStride;
         [ReadOnly][SerializeField] private protected float m_EndStride;
@@ -50,6 +51,7 @@ namespace Code.Characters.AI {
         private MB_Zombie Zombie { get => this.m_Zombie; set => this.m_Zombie = value; }
 
         private bool Focusing { get => this.m_Focusing; set => this.m_Focusing = value; }
+        private bool RestingFromSpell { get => this.m_RestingFromSpell; set => this.m_RestingFromSpell = value; }
         private bool Resting { get => this.m_Resting; set => this.m_Resting = value; }
         private float StartStride { get => this.m_StartStride; set => this.m_StartStride = value; }
         private float EndStride { get => this.m_EndStride; set => this.m_EndStride = value; }
@@ -80,16 +82,18 @@ namespace Code.Characters.AI {
 
         protected override void UpdateBehaviour() {
             if (this.Behaviour == E_Behaviour.Aggressive) {
-                if (!this.Focusing && this.DistanceToPlayer <= this.AttackRange && this.Zombie.CanUseSpell()) {
+                if (!this.RestingFromSpell && !this.Focusing && this.DistanceToPlayer <= this.AttackRange && this.Zombie.CanUseSpell()) {
                     this.Decision.MovementDirection *= 0;
                     this.Focusing = true;
                     this.Zombie.Focus(true);
                     this.InSeconds(
                         this.FocusDuration,
                         () => {
+                            this.RestingFromSpell = true;
+                            this.Focusing = false;
                             this.Zombie.Focus(false);
                             this.Zombie.UseSpell();
-                            this.InSeconds(this.RestDurationAfterSpell, () => this.Focusing = false);
+                            this.InSeconds(this.RestDurationAfterSpell, () => this.RestingFromSpell = false);
                         }
                     );
                 }

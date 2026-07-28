@@ -34,7 +34,7 @@ namespace Code.Characters.Enemies {
         #endregion
 
         #region Unity methods
-        override protected void Awake() {
+        protected override void Awake() {
             base.Awake();
 
             this.InitialKnockbackable = this.Knockbackable;

@@ -46,9 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Code.Enhancements.MB_Enhancement4
   m_EnhancementName: Attack Speed
   m_MaxLevel: 5
-  m_Description: '{lineHeight height=8}Increases your attack speed by {voffset height=2
-    delay=0 offset=0.125 duration=0.5 loop=true loopDelay=5 progressive=false}{color
-    value=#7e9432ff}<ratio>{/color}{/voffset}{/lineHeight}'
+  m_Description: Increases your attack speed by <ratio>
   m_Sprite: {fileID: 21300000, guid: 425fbc967969b104b86e686f4c5f343e, type: 3}
   m_Level: 0
   m_Data:

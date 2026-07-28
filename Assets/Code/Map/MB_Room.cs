@@ -33,6 +33,8 @@ namespace Code.Map {
     public class MB_Room : MonoBehaviour {
         #region Members
         [Foldout("MB_Room", true)]
+        [SerializeField] private protected MB_AudioManager.BackgroundMusic m_BackgroundMusic;
+
         [SerializeField] private protected float m_ShowDuration;
         [SerializeField] private protected float m_ShowSpeed;
         [SerializeField] private protected MB_Cell m_SpawnCell;
@@ -51,6 +53,8 @@ namespace Code.Map {
         #endregion
 
         #region Getters / Setters
+        public MB_AudioManager.BackgroundMusic BackgroundMusic { get => this.m_BackgroundMusic; }
+
         private float ShowDuration { get => this.m_ShowDuration; }
         private float ShowSpeed { get => this.m_ShowSpeed; }
         public MB_Cell SpawnCell { get => this.m_SpawnCell; }

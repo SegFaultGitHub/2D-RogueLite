@@ -9,7 +9,7 @@ namespace Code.Characters.Enemies {
     public class MB_Skeleton : AMB_Enemy {
         #region Members
         [Foldout("MB_Skeleton", true)]
-        [SerializeField] private protected MB_BoneThrow m_BoneThrow;
+        [SerializeField] private protected MB_SkeletonAttack m_SkeletonAttack;
 
         [Separator("Read only")]
         [ReadOnly][SerializeField] private protected float m_SpellCastAt;
@@ -17,7 +17,7 @@ namespace Code.Characters.Enemies {
         #endregion
 
         #region Getters / Setters
-        private MB_BoneThrow BoneThrow { get => this.m_BoneThrow; }
+        private MB_SkeletonAttack SkeletonAttack { get => this.m_SkeletonAttack; }
 
         private float SpellCastAt { get => this.m_SpellCastAt; set => this.m_SpellCastAt = value; }
         private float SpellAvailableAt { get => this.m_SpellAvailableAt; set => this.m_SpellAvailableAt = value; }
@@ -56,7 +56,7 @@ namespace Code.Characters.Enemies {
         public void UseSpell() {
             if (!this.CanUseSpell()) return;
 
-            AMB_Spell spell = this.UseSpell(this.BoneThrow);
+            AMB_Spell spell = this.UseSpell(this.SkeletonAttack);
 
             if (spell == null) return;
 
@@ -68,7 +68,7 @@ namespace Code.Characters.Enemies {
         }
 
         public void Focus(bool focusing) {
-            // if (focusing) this.ObjectsManager.AudioManager.PlaySkeletonFocusing();
+            if (focusing) this.ObjectsManager.AudioManager.PlaySkeletonFocusing();
             this.PlayFocusingAnimation(focusing);
         }
 

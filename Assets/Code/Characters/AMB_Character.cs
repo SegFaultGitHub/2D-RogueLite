@@ -44,6 +44,7 @@ namespace Code.Characters {
 
         [ReadOnly][SerializeField] private protected CollectionWrapperList<AMB_Effect> m_Effects;
 
+        [ReadOnly][SerializeField] private protected bool m_Dead;
         [ReadOnly][SerializeField] private protected bool m_Invulnerable;
         [ReadOnly][SerializeField] private protected CollectionWrapperList<C_SpeedRatioRef> m_SpeedRatio = new();
         #endregion
@@ -67,7 +68,8 @@ namespace Code.Characters {
 
         public CollectionWrapperList<AMB_Effect> Effects { get => this.m_Effects; }
 
-        public bool Invulnerable { get => this.m_Invulnerable; set => this.m_Invulnerable = value; }
+        protected bool Dead { get => this.m_Dead; set => this.m_Dead = value; }
+        public bool Invulnerable { get => this.m_Invulnerable; private set => this.m_Invulnerable = value; }
         public CollectionWrapperList<C_SpeedRatioRef> SpeedRatio { get => this.m_SpeedRatio; }
 
         public abstract IEnumerable<I_Effect> AllEffects { get; }
@@ -117,6 +119,7 @@ namespace Code.Characters {
             this.BaseController.Knockback(direction.normalized, force);
         }
 
+        // `effect` must be an instance!
         public void AddEffect(AMB_Effect effect, AMB_Character from, float? duration = null) {
             if (effect.Unique) {
                 AMB_Effect currentEffect = this.Effects.Value.Find(currentEffect => currentEffect.GetType() == effect.GetType());
@@ -129,15 +132,11 @@ namespace Code.Characters {
                 }
             }
 
-            AMB_Effect instance = effect.IsPrefab()
-                ? Instantiate(effect)
-                : effect;
+            effect.Initialize(this, from, duration);
+            effect.OnApply(this);
 
-            instance.Initialize(this, from, duration);
-            instance.OnApply(this);
-
-            this.Effects.Add(instance);
-            instance.transform.SetParent(this.EffectsParent);
+            this.Effects.Add(effect);
+            effect.transform.SetParent(this.EffectsParent);
             this.VisualEffects.UpdateVisuals(this);
         }
 
@@ -166,11 +165,14 @@ namespace Code.Characters {
             this.PlayHitAnimation();
             switch (source) {
                 case E_DamageSource.Spell:
+                case E_DamageSource.SummonDeath:
                     this.PlayHurtSoundEffect();
                     break;
-                case E_DamageSource.Melee:
                 case E_DamageSource.Burning:
                 case E_DamageSource.Poison:
+                    this.PlayHurtFromDamageOverTimeSoundEffect();
+                    break;
+                case E_DamageSource.Melee:
                 case E_DamageSource.Passive:
                 case E_DamageSource.Traps:
                 default:
@@ -193,13 +195,36 @@ namespace Code.Characters {
             return realDamageDealt;
         }
 
-        protected virtual void DealtDamage(float value, AMB_Character character, E_DamageSource source) { }
+        public virtual float Heal(AMB_Character from, float value) {
+            float healReceived = this.CharacterStats.Heal(from, value);
+
+            this.ObjectsManager.DamageCanvas.Heal(this, healReceived);
+
+            return healReceived;
+        }
+
+        protected virtual void DealtDamage(float damageDealt, AMB_Character character, E_DamageSource source) {
+            this.AllEffects.ForEach(effect => effect.ApplyOnDamageInflicted(this, character, source, damageDealt));
+        }
 
         protected abstract void Kill(AMB_Character character);
-        protected abstract void Die(AMB_Character killedBy);
 
-        public virtual void OnDashStart() { }
-        public virtual void OnDashEnd() { }
+        protected virtual bool Die(AMB_Character killedBy) {
+            Debug.Log("Die");
+
+            if (this.Dead) return false;
+            this.Dead = true;
+            return true;
+        }
+
+        public virtual void OnDashStart() {
+            this.PlayDashSoundEffect();
+            this.AllEffects.ForEach(effect => effect.ApplyOnDashStart(this));
+        }
+
+        public virtual void OnDashEnd() {
+            this.AllEffects.ForEach(effect => effect.ApplyOnDashEnd(this));
+        }
 
         // Returns (damage, criticalHit)
         public virtual (float, bool) ComputeDamage(AMB_Character target, float baseDamage, E_DamageSource source) {
@@ -223,6 +248,11 @@ namespace Code.Characters {
         [CanBeNull]
         protected AMB_PositionalSpell UseSpell([CanBeNull] AMB_PositionalSpell spell, Vector2 position) {
             return this.CastSpell(spell, this.SpellSource.position, position);
+        }
+
+        [CanBeNull]
+        protected AMB_FollowingSpell UseSpell([CanBeNull] AMB_FollowingSpell spell, Transform follow) {
+            return this.CastSpell(spell, follow);
         }
 
         public virtual AMB_DirectionalSpell CastSpell(AMB_DirectionalSpell spell, Transform origin, Vector3 direction, float distance = 0) {
@@ -261,6 +291,8 @@ namespace Code.Characters {
 
         #region Sound effects
         protected virtual void PlayHurtSoundEffect() { }
+        protected virtual void PlayHurtFromDamageOverTimeSoundEffect() { }
+        protected virtual void PlayDashSoundEffect() { }
         #endregion
 
         #region Animation

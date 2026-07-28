@@ -2,7 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Code.Characters.Effects;
+using Code.Characters.Enemies;
+using Code.Characters.Players;
 using Code.Managers;
 using Code.Utils;
 using MyBox;
@@ -22,6 +23,7 @@ namespace Code.Characters.Controllers {
         [SerializeField] private protected List<Collider2D> m_SpellColliders;
         [SerializeField] private protected List<Collider2D> m_EnvironmentColliders;
         [SerializeField] private protected LayerMask m_CharactersLayers;
+        [SerializeField] private protected LayerMask m_SpellsLayers;
 
         [Separator("Read only")]
         [ReadOnly][SerializeField] private protected MB_ObjectsManager m_ObjectsManager;
@@ -38,8 +40,10 @@ namespace Code.Characters.Controllers {
         [ReadOnly][SerializeField] private protected bool m_Dashing;
         [ReadOnly][SerializeField] private protected E_DashDirection m_DashDirection;
 
+        [ReadOnly][SerializeField] private protected int m_DisabledCharacterCollisionStack;
+        [ReadOnly][SerializeField] private protected int m_DisabledSpellCollisionStack;
+
         private Coroutine KnockbackCoroutine { get; set; }
-        private Coroutine DashCoroutine { get; set; }
         #endregion
 
         #region Getters / Setters
@@ -48,6 +52,7 @@ namespace Code.Characters.Controllers {
         protected List<Collider2D> SpellColliders { get => this.m_SpellColliders; }
         protected List<Collider2D> EnvironmentColliders { get => this.m_EnvironmentColliders; }
         protected LayerMask CharactersLayers { get => this.m_CharactersLayers; }
+        protected LayerMask SpellsLayers { get => this.m_SpellsLayers; }
 
         public MB_ObjectsManager ObjectsManager { get => this.m_ObjectsManager; set => this.m_ObjectsManager = value; }
 
@@ -60,19 +65,23 @@ namespace Code.Characters.Controllers {
         public Vector2 ForceAimDirection { get => this.m_ForceAimDirection; set => this.m_ForceAimDirection = value; }
         protected Vector2 MovementDirection { get => this.m_MovementDirection; set => this.m_MovementDirection = value; }
         private bool Knockbacked { get => this.m_Knockbacked; set => this.m_Knockbacked = value; }
-        private bool Dashing { get => this.m_Dashing; set => this.m_Dashing = value; }
+        public bool Dashing { get => this.m_Dashing; private set => this.m_Dashing = value; }
         protected E_DashDirection DashDirection { get => this.m_DashDirection; set => this.m_DashDirection = value; }
 
         public float AimAngle { get => Vector2.SignedAngle(Vector2.right, this.AimDirection); }
-        
-        private int DisabledCollisionStack { get; set; }
+
+        private int DisabledCharacterCollisionStack { get => this.m_DisabledCharacterCollisionStack;
+            set => this.m_DisabledCharacterCollisionStack = value;
+        }
+        private int DisabledSpellCollisionStack { get => this.m_DisabledSpellCollisionStack;
+            set => this.m_DisabledSpellCollisionStack = value;
+        }
         #endregion
 
         #region Static / Readonly / Const
         protected static readonly int DIRECTION = Animator.StringToHash("Direction");
         private static readonly int MOVING = Animator.StringToHash("Moving");
         private const float KNOCKBACK_DURATION = AMB_Character.INVULNERABILITY_DURATION;
-        private const float DASH_DURATION = .2f;
         #endregion
 
         #region Unity methods
@@ -135,67 +144,87 @@ namespace Code.Characters.Controllers {
             this.Knockbacked = false;
         }
 
-        public void Dash() {
-            if (this.DashCoroutine != null) this.StopCoroutine(this.DashCoroutine);
+        public void Dash(float duration, bool disableCharacterColliders, bool disableSpellColliders) {
+            if (this.Dashing) return;
 
-            IEnumerator _Dash() {
-                yield return new WaitForSeconds(DASH_DURATION);
-                this.OnDashEnd();
-            }
             this.Dashing = true;
             this.Character.OnDashStart();
-            this.Character.Invulnerable = true;
+            // this.Character.Invulnerable = true;
             this.DashTrail.emitting = true;
-            this.DashCoroutine = this.StartCoroutine(_Dash());
-            this.Rigidbody.linearVelocity = //
-                this.DashDirection switch {
-                    E_DashDirection.Movement when this.MovementDirection != Vector2.zero => this.MovementDirection.normalized,
-                    E_DashDirection.Movement when this.MovementDirection == Vector2.zero => this.AimDirection.normalized,
-                    E_DashDirection.Aim => this.AimDirection.normalized,
-                    _ => throw new ArgumentOutOfRangeException()
-                }
-                * this.GetMovementSpeed()
-                * 6;
-            this.DisableCollisions();
+            this.Rigidbody.linearVelocity = this.Character switch {
+                AMB_Player => this.DashDirection switch {
+                                  E_DashDirection.Movement when this.MovementDirection != Vector2.zero => this.MovementDirection.normalized,
+                                  E_DashDirection.Movement when this.MovementDirection == Vector2.zero => this.AimDirection.normalized,
+                                  E_DashDirection.Aim => this.AimDirection.normalized,
+                                  _ => throw new ArgumentOutOfRangeException()
+                              }
+                              * (this.GetMovementSpeed() * 6),
+                AMB_Enemy => this.AimDirection.normalized * (this.GetMovementSpeed() * 6),
+                _ => this.Rigidbody.linearVelocity
+            };
+
+            if (disableCharacterColliders) this.DisableCharacterCollisions();
+            if (disableSpellColliders) this.DisableSpellCollisions();
+
+            this.InSeconds(duration, () => this.OnDashEnd(disableCharacterColliders, disableSpellColliders));
         }
 
-        private void OnDashEnd() {
+        private void OnDashEnd(bool enableCharacterColliders, bool enableSpellColliders) {
             this.Dashing = false;
             this.Character.OnDashEnd();
-            this.InSeconds(AMB_Character.INVULNERABILITY_DURATION, () => this.Character.Invulnerable = false);
             if (this.DashTrail != null) {
                 // Delay trail ends for smoother result
-                this.InSeconds(.1f, () => {
-                    if (this.Dashing) return;
-                    this.DashTrail.emitting = false;
-                });
+                this.InSeconds(
+                    .1f,
+                    () => {
+                        if (this.Dashing) return;
+                        this.DashTrail.emitting = false;
+                    }
+                );
             }
-            this.EnableCollisions();
+
+            if (enableCharacterColliders) this.EnableCharacterCollisions();
+            if (enableSpellColliders) this.EnableSpellCollisions();
         }
 
-        public void EnableCollisions() {
-            this.DisabledCollisionStack--;
+        public void EnableCharacterCollisions() {
+            this.DisabledCharacterCollisionStack--;
 
-            if (this.DisabledCollisionStack > 0) return;
-            
-            foreach (Collider2D spellCollider in this.SpellColliders)
-                spellCollider.enabled = true;
+            if (this.DisabledCharacterCollisionStack > 0) return;
+
             foreach (Collider2D environmentCollider in this.EnvironmentColliders)
                 environmentCollider.excludeLayers = 0;
         }
-        
-        public void DisableCollisions() {
-            this.DisabledCollisionStack++;
-            
+
+        public void EnableSpellCollisions() {
+            this.DisabledSpellCollisionStack--;
+
+            if (this.DisabledSpellCollisionStack > 0) return;
+
             foreach (Collider2D spellCollider in this.SpellColliders)
-                spellCollider.enabled = false;
+                spellCollider.excludeLayers = 0;
+        }
+
+        public void DisableCharacterCollisions() {
+            this.DisabledCharacterCollisionStack++;
+
             foreach (Collider2D environmentCollider in this.EnvironmentColliders)
                 environmentCollider.excludeLayers = this.CharactersLayers;
         }
 
+        public void DisableSpellCollisions() {
+            this.DisabledSpellCollisionStack++;
+
+            foreach (Collider2D spellCollider in this.SpellColliders)
+                spellCollider.excludeLayers = this.SpellsLayers;
+        }
+
         private float GetMovementSpeed() {
             float speedModifier = this.Character.SpeedRatio.Value.Aggregate(1f, (acc, curr) => acc * curr.Ratio);
-            speedModifier = this.Character.AllEffects.Aggregate(speedModifier, (current, effect) => effect.ApplyToMovementSpeed(this.Character, current));
+            speedModifier = this.Character.AllEffects.Aggregate(
+                speedModifier,
+                (current, effect) => effect.ApplyToMovementSpeed(this.Character, current)
+            );
 
             return speedModifier * this.MovementSpeed;
         }

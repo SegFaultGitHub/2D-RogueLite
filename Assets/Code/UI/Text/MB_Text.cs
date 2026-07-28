@@ -15,13 +15,15 @@ namespace Code.UI.Text {
     public class MB_Text : MonoBehaviour {
         private class C_Character {
             public char Character { get; set; }
-            public Dictionary<AC_Group, int> IndexInGroup { get; set; } = new();
+            public Dictionary<AC_Group, int> IndexInGroup { get; } = new();
             public bool IsTag { get; set; }
             public List<AC_Group> Groups { get; } = new();
 
             #region Data
             public float CurrentHeight { get; set; }
+            public Color? OverriddenColor { get; set; }
             public Color Color { get; set; }
+            public Color CurrentColor { get => this.OverriddenColor ?? this.Color; }
             public string NoBreakGuid { get; set; }
             public string LineHeightGuid { get; set; }
             public float LineHeight { get; set; }
@@ -33,6 +35,10 @@ namespace Code.UI.Text {
                 }
 
                 this.Groups.Add(group);
+            }
+
+            public override string ToString() {
+                return $"{this.Character} / {this.Color}";
             }
         }
 
@@ -99,7 +105,7 @@ namespace Code.UI.Text {
                 Sequence sequence = DOTween.Sequence();
                 sequence.SetUpdate(parent.RealTime)
                     .SetDelay(this.Offset * character.IndexInGroup[this])
-                    .AppendCallback(() => character.Color = this.OriginalColor)
+                    .AppendCallback(() => character.OverriddenColor = null)
                     .Append(
                         DOTween.To( //
                                 () => character.CurrentHeight,
@@ -135,8 +141,7 @@ namespace Code.UI.Text {
             }
 
             public override void TweenCharacter(MB_Text parent, C_Character character) {
-                this.OriginalColor = character.Color;
-                if (this.Progressive) character.Color = new Color(0, 0, 0, 0);
+                if (this.Progressive) character.OverriddenColor = new Color(0, 0, 0, 0);
                 if (parent.RealTime) parent.InRealSeconds(this.Delay, () => this._CreateCoroutine(parent, character));
                 else parent.InSeconds(this.Delay, () => this._CreateCoroutine(parent, character));
             }
@@ -422,9 +427,9 @@ namespace Code.UI.Text {
 
                 // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
                 foreach (C_Character character in this.Characters) {
-                    if (character.Color != previousColor) {
+                    if (character.CurrentColor != previousColor) {
                         stringBuilder.Append(CloseColorTag());
-                        stringBuilder.Append(OpenColorTag(character.Color));
+                        stringBuilder.Append(OpenColorTag(character.CurrentColor));
                     }
 
                     if (noBreakTagOpened && previousNoBreakGuid != character.NoBreakGuid) {
@@ -450,7 +455,7 @@ namespace Code.UI.Text {
                     string text = WithVOffset(character.Character, character.CurrentHeight);
                     stringBuilder.Append(text);
 
-                    previousColor = character.Color;
+                    previousColor = character.CurrentColor;
                     previousNoBreakGuid = character.NoBreakGuid;
                     previousLineHeightGuid = character.LineHeightGuid;
                 }
@@ -474,11 +479,11 @@ namespace Code.UI.Text {
                 : $"<voffset={offset}>{c}</voffset>";
 
         private static string OpenColorTag(Color color) => $"<color={color.ToHex()}>";
-        private static string CloseColorTag() => $"</color>";
-        private static string OpenNoBrTag() => $"<nobr>";
-        private static string CloseNoBrTag() => $"</nobr>";
+        private static string CloseColorTag() => "</color>";
+        private static string OpenNoBrTag() => "<nobr>";
+        private static string CloseNoBrTag() => "</nobr>";
         private static string OpenLineHeightTag(float height) => $"<line-height={height}>";
-        private static string CloseLineHeightTag() => $"</line-height>";
+        private static string CloseLineHeightTag() => "</line-height>";
     }
 
     public static class SC_MB_TextExtensions {
@@ -503,11 +508,14 @@ namespace Code.UI.Text {
             return $"{{voffset {heightStr} {delayStr} {offsetStr} {durationStr} {loopStr} {loopDelayStr} {progressiveStr}}}{s}{{/voffset}}";
         }
 
+        public static string LineHeight(this string s, int height) => $"{{lineHeight height={height}}}{s}{{/lineHeight}}";
+
         public static string Color(this string s, string color) => $"{{color value={color}}}{s}{{/color}}";
         public static string Color(this string s, Color color) => $"{{color value={color.ToHex()}}}{s}{{/color}}";
 
-        public static string Green(this string s) => s.Color(new Color(126, 148, 50));
-        public static string Red(this string s) => s.Color(new Color(194, 55, 83));
+        public static string Green(this string s) => s.Color("#7e9432ff");
+        public static string Red(this string s) => s.Color("#c23753ff");
+        public static string Yellow(this string s) => s.Color("#c78539ff");
 
         public static string NoBreak(this string s) => $"{{nobreak}}{s}{{/nobreak}}";
     }

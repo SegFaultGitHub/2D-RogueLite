@@ -41,8 +41,9 @@ namespace Code.Characters.Players {
         [SerializeField] private protected AMB_Spell m_TEMP_MainSpell;
         [SerializeField] private protected AMB_Spell m_TEMP_SecondarySpell;
 
-        [SerializeField] private protected MB_AttackSpeed m_TEMP_AttackSpeed;
-        [SerializeField] private protected MB_AttackPower m_TEMP_AttackPower;
+        [SerializeField] private protected AMB_Enhancement[] m_TEMP_Enhancements;
+        [SerializeField] private protected MB_EnhancementChoice m_TEMP_EnhancementChoicePrefab;
+        [SerializeField] private protected Transform m_TEMP_HUDCanvas;
         #endregion
 
         #region Getters / Setters
@@ -78,7 +79,8 @@ namespace Code.Characters.Players {
         #endregion
 
         #region Static / Readonly / Const
-        public const int DEFAULT_MAX_ENHANCEMENTS = 4;
+        public const int DEFAULT_MAX_ENHANCEMENTS = 8;
+        private const float DASH_DURATION = .15f;
         #endregion
 
         #region Unity methods
@@ -114,19 +116,22 @@ namespace Code.Characters.Players {
         public override void PostInitialize() {
             this.ObjectsManager.PlayerHUD.SetHealth(this.CharacterStats.CurrentHealth, this.CharacterStats.MaxHealth);
 
-            MB_AttackSpeed as1 = Instantiate(this.m_TEMP_AttackSpeed);
-            as1.Level = 3;
-            MB_AttackSpeed as2 = Instantiate(this.m_TEMP_AttackSpeed);
-            as2.Level = 3;
-            MB_AttackPower ap1 = Instantiate(this.m_TEMP_AttackPower);
-            ap1.Level = 3;
-            MB_AttackPower ap2 = Instantiate(this.m_TEMP_AttackPower);
-            ap2.Level = 3;
+            foreach (AMB_Enhancement enhancement in this.m_TEMP_Enhancements) {
+                AMB_Enhancement e = Instantiate(enhancement);
+                e.Level = e.MaxLevel;
+                this.AddEnhancement(e);
 
-            this.AddEnhancement(as1);
-            this.AddEnhancement(as2);
-            this.AddEnhancement(ap1);
-            this.AddEnhancement(ap2);
+                AMB_Enhancement ne = Instantiate(enhancement);
+                ne.Level = ne.MaxLevel;
+
+                if (this.CanAddEnhancement(ne)) {
+                    AMB_Enhancement ee = this.GetUpgradableEnhancement(ne);
+                    MB_EnhancementChoice ec = Instantiate(this.m_TEMP_EnhancementChoicePrefab, this.m_TEMP_HUDCanvas);
+                    ec.SetEnhancement(ne, ee);
+                } else {
+                    Destroy(ne.gameObject);
+                }
+            }
         }
 
         public void Hide() {
@@ -151,7 +156,7 @@ namespace Code.Characters.Players {
 
             this.DashCastAt = Time.time;
             this.DashAvailableAt = this.DashCastAt + this.DashCooldown;
-            this.PlayerController.Dash();
+            this.PlayerController.Dash(DASH_DURATION, disableCharacterColliders: true, disableSpellColliders: true);
         }
 
         public override float TakeDamage(
@@ -181,13 +186,24 @@ namespace Code.Characters.Players {
                 this.ObjectsManager.PlayerHUD.SetHealth(this.CharacterStats.CurrentHealth, this.CharacterStats.MaxHealth);
                 this.ObjectsManager.MainCamera.Shake(0.065f);
                 this.ObjectsManager.MainCamera.Damage();
-                if (freeze) this.ObjectsManager.PauseManager.QuickPause(0.065f);
-
-                // foreach (AMB_PassiveSkill passiveSkill in this.PassiveSkills) {
-                //     passiveSkill.ApplyOnDamageReceived(dealer: from, receiver: this, damageSource: damageSource);
-                // }
+                if (freeze) this.ObjectsManager.PauseManager.QuickPause(0.195f);
 
                 return damageTaken;
+            }
+        }
+
+        public override float Heal(AMB_Character from, float value) {
+            if (value == 0) {
+                return 0;
+            } else {
+                float healReceived = base.Heal(from, value);
+
+                if (healReceived == 0) return 0;
+
+                this.ObjectsManager.PlayerHUD.SetHealth(this.CharacterStats.CurrentHealth, this.CharacterStats.MaxHealth);
+                this.ObjectsManager.MainCamera.Heal();
+
+                return healReceived;
             }
         }
 
@@ -202,13 +218,17 @@ namespace Code.Characters.Players {
             }
         }
 
+        public AMB_Enhancement GetUpgradableEnhancement(AMB_Enhancement enhancement) {
+            return this.Enhancements.Value.Find(e => e.GetType() == enhancement.GetType() && !e.IsMaxLevel);
+        }
+
         public MB_Enhancement AddEnhancement(AMB_Enhancement enhancement) {
             if (!this.CanAddEnhancement(enhancement)) {
                 Debug.Log($"Cannot add enhancement {enhancement}");
                 return null;
             }
 
-            AMB_Enhancement existingEnhancement = this.Enhancements.Value.Find(e => e.GetType() == enhancement.GetType() && !e.IsMaxLevel);
+            AMB_Enhancement existingEnhancement = this.GetUpgradableEnhancement(enhancement);
             if (existingEnhancement == null) {
                 MB_Enhancement uiEnhancement = this.ObjectsManager.PlayerHUD.AddEnhancement(enhancement);
                 if (uiEnhancement != null) {
@@ -219,12 +239,16 @@ namespace Code.Characters.Players {
                 return uiEnhancement;
             } else {
                 existingEnhancement.Level += enhancement.Level;
+                Destroy(enhancement.gameObject);
                 this.ObjectsManager.PlayerHUD.UpdateEnhancement(existingEnhancement);
 
                 return null;
             }
         }
         #endregion
+
+        protected override void PlayHurtFromDamageOverTimeSoundEffect() => this.ObjectsManager.AudioManager.PlayPlayerHurtFromDamageOverTime();
+        protected override void PlayDashSoundEffect() => this.ObjectsManager.AudioManager.PlayPlayerDash();
 
         #region Spells
         protected bool CanUseMainSpell() => Time.time >= this.MainSpellAvailableAt;

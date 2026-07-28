@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Code.UI;
 using Code.Utils;
+using DG.Tweening;
 using MyBox;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -29,11 +30,15 @@ namespace Code.Managers {
         #region Getters / Setters
         private MB_Cursor Cursor { get => this.m_Cursor; }
         private RawImage PausedImage { get => this.m_PausedImage; }
-        public GameObject PausedOverlay { get => this.m_PausedOverlay; }
+        private GameObject PausedOverlay { get => this.m_PausedOverlay; }
 
         public MB_ObjectsManager ObjectsManager { get => this.m_ObjectsManager; set => this.m_ObjectsManager = value; }
         public E_PauseState PauseState { get => this.m_PauseState; private set => this.m_PauseState = value; }
         private Texture2D PausedFrame { get => this.m_PausedFrame; set => this.m_PausedFrame = value; }
+
+        private Tweener QuickPauseTweener { get; set; }
+        private Coroutine QuickPauseCoroutine { get; set; }
+        private string QuickPauseGuid { get; set; }
         #endregion
 
         #region Static / Readonly / Const
@@ -57,7 +62,8 @@ namespace Code.Managers {
                     this.Cursor.gameObject.SetActive(false);
                     this.OnEndOfFrame(() => {
                             this.PausedFrame = this.ObjectsManager.ScreenshotManager.Screenshot();
-                            this.PausedFrame = ScreenCapture.CaptureScreenshotAsTexture(ScreenCapture.StereoScreenCaptureMode.BothEyes);
+                            this.ObjectsManager.ScreenshotManager.ScreenshotUIComponents();
+                            //this.PausedFrame = ScreenCapture.CaptureScreenshotAsTexture(ScreenCapture.StereoScreenCaptureMode.BothEyes);
                             this.Cursor.gameObject.SetActive(true);
                             this.ToggleComponents(pausedOverlay: true);
                         }
@@ -90,7 +96,15 @@ namespace Code.Managers {
             IEnumerator _Coroutine() {
                 switch (this.PauseState) {
                     case E_PauseState.NotPaused:
-                        Time.timeScale = 0;
+                        this.QuickPauseTweener = DOTween.To( //
+                                () => Time.timeScale,
+                                timeScale => Time.timeScale = timeScale,
+                                .25f,
+                                duration
+                            )
+                            .SetEase(Ease.OutExpo)
+                            .SetUpdate(true)
+                            .OnComplete(() => this.QuickPauseTweener = null);
                         break;
                     case E_PauseState.Paused:
                     default:
@@ -109,12 +123,16 @@ namespace Code.Managers {
                 }
             }
 
-            this.StartCoroutine(_Coroutine());
+            if (this.QuickPauseCoroutine != null) this.StopCoroutine(this.QuickPauseCoroutine);
+            if (this.QuickPauseTweener is { active: true }) DOTween.Kill(this.QuickPauseTweener);
+
+            this.QuickPauseTweener = null;
+            this.QuickPauseCoroutine = this.StartCoroutine(_Coroutine());
         }
 
         private void ToggleComponents(bool pausedOverlay) {
             if (this.PausedOverlay.activeInHierarchy != pausedOverlay) {
-                this.PausedImage.texture = this.PausedFrame;
+                //this.PausedImage.texture = this.PausedFrame;
                 this.PausedOverlay.SetActive(pausedOverlay);
             }
         }

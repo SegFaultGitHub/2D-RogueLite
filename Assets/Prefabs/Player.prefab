@@ -857,7 +857,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb6096fd60b14e6fbd6446820b5df020, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Code.Characters.Controllers.Players.MB_PlayerController
-  m_MovementSpeed: 5
+  m_MovementSpeed: 7.5
   m_DashTrail: {fileID: 3999072773890955489}
   m_SpellColliders:
   - {fileID: 9042751528603722069}
@@ -868,6 +868,9 @@ MonoBehaviour:
   m_CharactersLayers:
     serializedVersion: 2
     m_Bits: 503316480
+  m_SpellsLayers:
+    serializedVersion: 2
+    m_Bits: 33538048
   m_ObjectsManager: {fileID: 0}
   m_Animator: {fileID: 0}
   m_Rigidbody: {fileID: 0}
@@ -879,6 +882,8 @@ MonoBehaviour:
   m_Knockbacked: 0
   m_Dashing: 0
   m_DashDirection: 0
+  m_DisabledCharacterCollisionStack: 0
+  m_DisabledSpellCollisionStack: 0
   m_AimPosition: {x: 0, y: 0}
   m_Player: {fileID: 0}
   m_Camera: {fileID: 0}

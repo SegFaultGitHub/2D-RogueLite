@@ -352,6 +352,9 @@ MonoBehaviour:
   m_CharactersLayers:
     serializedVersion: 2
     m_Bits: 503316480
+  m_SpellsLayers:
+    serializedVersion: 2
+    m_Bits: 33538048
   m_ObjectsManager: {fileID: 0}
   m_Animator: {fileID: 0}
   m_Rigidbody: {fileID: 0}
@@ -363,6 +366,8 @@ MonoBehaviour:
   m_Knockbacked: 0
   m_Dashing: 0
   m_DashDirection: 0
+  m_DisabledCharacterCollisionStack: 0
+  m_DisabledSpellCollisionStack: 0
   m_Lerp: 1
   m_AI: {fileID: 0}
   m_LastTurn: 0
@@ -384,7 +389,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Code.Characters.Stats.MB_CharacterStats
   m_CurrentHealth: 20
   m_MaxHealth: 20
-  m_DamageReduction: 0
   m_Character: {fileID: 0}
 --- !u!114 &7662651683201401545
 MonoBehaviour:
@@ -408,9 +412,11 @@ MonoBehaviour:
   m_Animator: {fileID: 0}
   m_BaseController: {fileID: 0}
   m_CharacterStats: {fileID: 0}
-  m_Effects: []
+  m_Effects:
+    Value: []
   m_Invulnerable: 0
-  m_SpeedRatio: []
+  m_SpeedRatio:
+    Value: []
   m_LifeBar: {fileID: 2646068287276734416}
   m_DisappearAnimation: {fileID: 2443055523485361720, guid: 2607b7d6104a8fa4ba180adb2577999a, type: 3}
   m_FOVSize: 0

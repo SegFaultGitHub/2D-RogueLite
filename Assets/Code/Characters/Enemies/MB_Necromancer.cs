@@ -8,8 +8,8 @@ using UnityEngine;
 namespace Code.Characters.Enemies {
     public class MB_Necromancer : AMB_Enemy {
         #region Members
-        [Foldout("MB_Skeleton", true)]
-        [SerializeField] private protected MB_Summon m_Summon;
+        [Foldout("MB_Necromancer", true)]
+        [SerializeField] private protected MB_NecromancerSummon m_NecromancerSummon;
         [SerializeField] private protected MB_NecromancerScream m_NecromancerScream;
         [SerializeField] private protected float m_NecromancerScreamThreshold;
 
@@ -21,7 +21,7 @@ namespace Code.Characters.Enemies {
         #endregion
 
         #region Getters / Setters
-        private MB_Summon Summon { get => this.m_Summon; }
+        private MB_NecromancerSummon NecromancerSummon { get => this.m_NecromancerSummon; }
         private MB_NecromancerScream NecromancerScream { get => this.m_NecromancerScream; }
         private float NecromancerScreamThreshold { get => this.m_NecromancerScreamThreshold; }
 
@@ -60,13 +60,19 @@ namespace Code.Characters.Enemies {
         }
 
         public bool CanUseSummonSpell() => this.SummonSpellAvailableAt <= Time.time;
-        public bool CanUseScreamSpell() => this.ScreamSpellAvailableAt <= Time.time && this.CharacterStats.HealthRatio <= this.NecromancerScreamThreshold;
+
+        public bool CanUseScreamSpell() =>
+            this.ScreamSpellAvailableAt <= Time.time && this.CharacterStats.HealthRatio <= this.NecromancerScreamThreshold;
+
+        public void ResetSummonCooldown() {
+            this.SummonSpellAvailableAt = Time.time;
+        }
 
         public void UseSummonSpell(Vector2 position1, Vector2 position2) {
             if (!this.CanUseSummonSpell()) return;
 
-            AMB_Spell spell1 = this.UseSpell(this.Summon, position1);
-            AMB_Spell spell2 = this.UseSpell(this.Summon, position2);
+            AMB_Spell spell1 = this.UseSpell(this.NecromancerSummon, position1);
+            AMB_Spell spell2 = this.UseSpell(this.NecromancerSummon, position2);
 
             if (spell1 == null && spell2 == null) return;
 
@@ -95,5 +101,7 @@ namespace Code.Characters.Enemies {
             // if (focusing) this.ObjectsManager.AudioManager.PlaySkeletonFocusing();
             this.PlayFocusingAnimation(focusing);
         }
+
+        protected override void PlayHurtSoundEffect() => this.ObjectsManager.AudioManager.PlayNecromancerHurt();
     }
 }

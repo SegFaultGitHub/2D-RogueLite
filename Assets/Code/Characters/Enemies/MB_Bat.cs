@@ -9,7 +9,7 @@ namespace Code.Characters.Enemies {
     public class MB_Bat : AMB_Enemy {
         #region Members
         [Foldout("MB_Bat", true)]
-        [SerializeField] private protected MB_UltrasonicBoom m_UltrasonicBoom;
+        [SerializeField] private protected MB_BatScream m_BatScream;
 
         [Separator("Read only")]
         [ReadOnly][SerializeField] private protected float m_SpellCastAt;
@@ -17,7 +17,7 @@ namespace Code.Characters.Enemies {
         #endregion
 
         #region Getters / Setters
-        private MB_UltrasonicBoom UltrasonicBoom { get => this.m_UltrasonicBoom; }
+        private MB_BatScream BatScream { get => this.m_BatScream; }
 
         private float SpellCastAt { get => this.m_SpellCastAt; set => this.m_SpellCastAt = value; }
         private float SpellAvailableAt { get => this.m_SpellAvailableAt; set => this.m_SpellAvailableAt = value; }
@@ -46,8 +46,8 @@ namespace Code.Characters.Enemies {
             return damageTaken;
         }
 
-        protected override void DealtDamage(float value, AMB_Character character, E_DamageSource source) {
-            base.DealtDamage(value, character, source);
+        protected override void DealtDamage(float damageDealt, AMB_Character character, E_DamageSource source) {
+            base.DealtDamage(damageDealt, character, source);
 
             this.AI.SetBehaviour(E_Behaviour.Fleeing, false);
         }
@@ -57,7 +57,7 @@ namespace Code.Characters.Enemies {
         public void UseSpell() {
             if (!this.CanUseSpell()) return;
 
-            AMB_Spell spell = this.UseSpell(this.UltrasonicBoom, this.Center.position);
+            AMB_Spell spell = this.UseSpell(this.BatScream, this.Center.position);
 
             if (spell == null) return;
 
@@ -72,5 +72,7 @@ namespace Code.Characters.Enemies {
             // if (focusing) this.ObjectsManager.AudioManager.PlaySkeletonFocusing();
             this.PlayFocusingAnimation(focusing);
         }
+
+        protected override void PlayHurtSoundEffect() => this.ObjectsManager.AudioManager.PlayBatHurt();
     }
 }
