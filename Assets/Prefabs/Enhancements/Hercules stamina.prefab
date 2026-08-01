@@ -49,6 +49,99 @@ MonoBehaviour:
   m_Description: Increases all the direct damage you deal by up to <ratio> when health
     is high
   m_Sprite: {fileID: 21300000, guid: e363906e8eef66d499f3fe61c1c549bd, type: 3}
+  m_UnlockCondition:
+    m_Condition: 1
+    m_And:
+      m_Left:
+        m_Condition: 1
+        m_And:
+          m_Left:
+            m_Condition: 0
+            m_And:
+              m_Left:
+                m_Condition: 0
+                m_And:
+                  m_Left:
+                    m_Condition: 0
+                    m_And: {}
+                  m_Right:
+                    m_Condition: 0
+                    m_And: {}
+              m_Right:
+                m_Condition: 0
+                m_And:
+                  m_Left:
+                    m_Condition: 0
+                    m_And: {}
+                  m_Right:
+                    m_Condition: 0
+                    m_And: {}
+          m_Right:
+            m_Condition: 0
+            m_And:
+              m_Left:
+                m_Condition: 0
+                m_And:
+                  m_Left:
+                    m_Condition: 0
+                    m_And: {}
+                  m_Right:
+                    m_Condition: 0
+                    m_And: {}
+              m_Right:
+                m_Condition: 0
+                m_And:
+                  m_Left:
+                    m_Condition: 0
+                    m_And: {}
+                  m_Right:
+                    m_Condition: 0
+                    m_And: {}
+      m_Right:
+        m_Condition: 2
+        m_And:
+          m_Left:
+            m_Condition: 0
+            m_And:
+              m_Left:
+                m_Condition: 0
+                m_And:
+                  m_Left:
+                    m_Condition: 0
+                    m_And: {}
+                  m_Right:
+                    m_Condition: 0
+                    m_And: {}
+              m_Right:
+                m_Condition: 0
+                m_And:
+                  m_Left:
+                    m_Condition: 0
+                    m_And: {}
+                  m_Right:
+                    m_Condition: 0
+                    m_And: {}
+          m_Right:
+            m_Condition: 0
+            m_And:
+              m_Left:
+                m_Condition: 0
+                m_And:
+                  m_Left:
+                    m_Condition: 0
+                    m_And: {}
+                  m_Right:
+                    m_Condition: 0
+                    m_And: {}
+              m_Right:
+                m_Condition: 0
+                m_And:
+                  m_Left:
+                    m_Condition: 0
+                    m_And: {}
+                  m_Right:
+                    m_Condition: 0
+                    m_And: {}
   m_Level: 0
   m_Data:
   - m_Ratio: 0.2

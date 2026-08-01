@@ -21,6 +21,8 @@ namespace Code.Enhancements {
 
         #region Getters / Setters
         private C_EnhancementData[] Data { get => this.m_Data; }
+
+        public override E_Enhancement Enhancement { get => E_Enhancement.PoisonMaster; }
         #endregion
 
         #region Static / Readonly / Const

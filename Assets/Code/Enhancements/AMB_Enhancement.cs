@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Code.Characters;
-using Code.UI.Text;
+using Code.Enhancements.UnlockConditions;
 using MyBox;
 using UnityEngine;
 
@@ -14,6 +14,8 @@ namespace Code.Enhancements {
         [SerializeField][TextArea(10, 20)] private protected string m_Description;
         [SerializeField] private protected Sprite m_Sprite;
 
+        [SerializeField] private protected C_Condition m_UnlockCondition;
+
         [Separator("Read only")]
         [ReadOnly][SerializeField] private protected int m_Level;
         #endregion
@@ -24,10 +26,13 @@ namespace Code.Enhancements {
         protected string Description { get => this.m_Description; }
         public Sprite Sprite { get => this.m_Sprite; }
 
+        private C_Condition UnlockCondition { get => this.m_UnlockCondition; }
+
         public int Level { get => this.m_Level; set => this.m_Level = value; }
 
         public int EffectiveLevel { get => Mathf.Min(this.Level, this.MaxLevel); }
         public bool IsMaxLevel { get => this.EffectiveLevel == this.MaxLevel; }
+        public abstract E_Enhancement Enhancement { get; }
         #endregion
 
         #region Static / Readonly / Const

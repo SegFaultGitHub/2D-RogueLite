@@ -27,6 +27,8 @@ namespace Code.Enhancements {
         private Spells.Player.MB_ViolentDash ViolentDash { get => this.m_ViolentDash; }
 
         private Spells.Player.MB_ViolentDash CastedViolentDash { get; set; }
+
+        public override E_Enhancement Enhancement { get => E_Enhancement.ViolentDash; }
         #endregion
 
         #region Static / Readonly / Const

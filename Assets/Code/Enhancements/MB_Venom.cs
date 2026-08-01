@@ -28,6 +28,8 @@ namespace Code.Enhancements {
         #region Getters / Setters
         private C_EnhancementData[] Data { get => this.m_Data; }
         private MB_Poison PoisonPrefab { get => this.m_PoisonPrefab; }
+
+        public override E_Enhancement Enhancement { get => E_Enhancement.Venom; }
         #endregion
 
         #region Static / Readonly / Const

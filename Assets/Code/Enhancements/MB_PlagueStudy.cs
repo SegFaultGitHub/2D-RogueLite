@@ -24,6 +24,8 @@ namespace Code.Enhancements {
 
         #region Getters / Setters
         private C_EnhancementData[] Data { get => this.m_Data; }
+
+        public override E_Enhancement Enhancement { get => E_Enhancement.PlagueStudy; }
         #endregion
 
         #region Static / Readonly / Const
