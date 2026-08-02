@@ -77,7 +77,7 @@ namespace Code.Characters.Enemies {
                 //this.LifeBar.gameObject.SetActive(true);
                 this.ObjectsManager.BossLifeBar.ForceSetRatio(1);
                 this.ObjectsManager.BossLifeBar.SetBossName(this.BossName);
-                this.ObjectsManager.DissolveUI.Show(
+                this.ObjectsManager.DissolveManager.Show(
                     new List<Transform> { this.ObjectsManager.BossLifeBar.transform },
                     () => this.ObjectsManager.BossLifeBar.gameObject.SetActive(true)
                 );
@@ -118,7 +118,7 @@ namespace Code.Characters.Enemies {
 
             if (this.IsABoss) {
                 this.LifeBar.ForceSetRatio(0);
-                this.ObjectsManager.DissolveUI.Hide(new List<Transform> { this.ObjectsManager.BossLifeBar.transform }, () => { });
+                this.ObjectsManager.DissolveManager.Hide(new List<Transform> { this.ObjectsManager.BossLifeBar.transform }, () => { });
                 this.LifeBar.gameObject.SetActive(false);
             }
 
@@ -128,8 +128,8 @@ namespace Code.Characters.Enemies {
                     freeze: false,
                     value: 10,
                     critical: false,
-                    from: this,
-                    source: E_DamageSource.Passive
+                    from: killedBy,
+                    source: E_DamageSource.SummonDeath
                 );
                 this.Summoner.Summons.Remove(this);
             }
@@ -139,7 +139,7 @@ namespace Code.Characters.Enemies {
             return true;
         }
 
-        public override float TakeDamage(
+        public override int TakeDamage(
             bool becomeInvulnerable,
             bool freeze,
             float value,
@@ -147,7 +147,7 @@ namespace Code.Characters.Enemies {
             AMB_Character from,
             E_DamageSource source
         ) {
-            float damageTaken = base.TakeDamage(becomeInvulnerable, false, value, critical, from, source);
+            int damageTaken = base.TakeDamage(becomeInvulnerable, false, value, critical, from, source);
             if (damageTaken == 0) return 0;
 
             if (!this.IsABoss) {
@@ -156,7 +156,7 @@ namespace Code.Characters.Enemies {
                 this.LifeBar.Shake();
             }
 
-            this.LifeBar.SetRatio(this.CharacterStats.CurrentHealth / this.CharacterStats.MaxHealth);
+            this.LifeBar.SetRatio(this.CharacterStats.HealthRatio);
 
             return damageTaken;
         }

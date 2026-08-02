@@ -65,7 +65,7 @@ namespace Code.UI.HUD {
         public void OnPointerClick(PointerEventData eventData) {
             List<MB_EnhancementChoice> choices = FindObjectsByType<MB_EnhancementChoice>(FindObjectsSortMode.None).ToList();
             this.ObjectsManager.Player.AddEnhancement(this.Choice);
-            this.ObjectsManager.DissolveUI.Hide(choices.Select(choice => choice.transform).ToList(), () => { });
+            this.ObjectsManager.DissolveManager.Hide(choices.Select(choice => choice.transform).ToList(), () => { });
             foreach (MB_EnhancementChoice choice in choices) {
                 Destroy(choice.gameObject);
             }

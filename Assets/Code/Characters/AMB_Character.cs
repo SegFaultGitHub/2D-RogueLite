@@ -153,7 +153,7 @@ namespace Code.Characters {
             this.InSeconds(INVULNERABILITY_DURATION, () => this.Invulnerable = false);
         }
 
-        public virtual float TakeDamage(
+        public virtual int TakeDamage(
             bool becomeInvulnerable,
             bool freeze,
             float value,
@@ -181,7 +181,7 @@ namespace Code.Characters {
 
             if (becomeInvulnerable) this.SetInvulnerable();
 
-            float realDamageDealt = this.CharacterStats.TakeDamage(from, value, critical, source);
+            int realDamageDealt = this.CharacterStats.TakeDamage(from, value, critical, source);
             this.AllEffects.ForEach(effect => effect.ApplyOnDamageTaken(from, this, source, realDamageDealt));
 
             from?.DealtDamage(realDamageDealt, this, source);
@@ -203,15 +203,13 @@ namespace Code.Characters {
             return healReceived;
         }
 
-        protected virtual void DealtDamage(float damageDealt, AMB_Character character, E_DamageSource source) {
+        protected virtual void DealtDamage(int damageDealt, AMB_Character character, E_DamageSource source) {
             this.AllEffects.ForEach(effect => effect.ApplyOnDamageInflicted(this, character, source, damageDealt));
         }
 
-        protected abstract void Kill(AMB_Character character);
+        protected virtual void Kill(AMB_Character character) { }
 
         protected virtual bool Die(AMB_Character killedBy) {
-            Debug.Log("Die");
-
             if (this.Dead) return false;
             this.Dead = true;
             return true;

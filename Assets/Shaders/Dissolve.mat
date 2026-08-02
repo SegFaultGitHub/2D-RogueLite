@@ -50,7 +50,7 @@ Material:
     - _PixelateScale: 4
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Width: 486.60825
+    - _Width: 480
     m_Colors:
     - _Color1: {r: 0.6784314, g: 0.25098038, b: 0.18823525, a: 1}
     - _Color2: {r: 0.9372549, g: 0.6196079, b: 0.30588236, a: 1}

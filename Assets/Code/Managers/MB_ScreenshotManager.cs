@@ -45,7 +45,7 @@ namespace Code.Managers {
         public void PostInitialize() { }
 
         [ButtonMethod]
-        public Texture2D Screenshot() {
+        public void Screenshot() {
             this.ScreenshotCamera.enabled = true;
             this.Resize(this.ScreenshotCamera, this.ScreenshotRenderTexture);
 
@@ -61,10 +61,11 @@ namespace Code.Managers {
             }
 
             this.ScreenshotCamera.Render();
+            RenderTexture previous = RenderTexture.active;
             RenderTexture.active = this.ScreenshotCamera.targetTexture;
 
-            Texture2D screenshot = new(Screen.width, Screen.height, TextureFormat.RGB24, true);
-            screenshot.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
+            Texture2D screenshot = new(Screen.width, Screen.height, TextureFormat.RGBA32, false, false);
+            screenshot.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0, false);
             screenshot.Apply();
             //ScreenCapture.CaptureScreenshotAsTexture(ScreenCapture.StereoScreenCaptureMode.BothEyes);
 
@@ -73,42 +74,48 @@ namespace Code.Managers {
             }
 
             this.ScreenshotCamera.enabled = false;
-            return screenshot;
+            RenderTexture.active = previous;
         }
 
         public List<Transform> TEMP_gos;
 
         [ButtonMethod]
-        public Texture2D ScreenshotUIComponents() => this.ScreenshotUIComponents(this.TEMP_gos);
+        public RenderTexture ScreenshotUIComponents() => this.ScreenshotUIComponents(this.TEMP_gos);
 
-        public Texture2D ScreenshotUIComponents(ICollection<Transform> uiComponents) {
+        public RenderTexture ScreenshotUIComponents(ICollection<Transform> uiComponents) {
+            RenderTexture renderTexture = new(Screen.width, Screen.height, 16, RenderTextureFormat.ARGB32);
+            this.UIScreenshotCamera.targetTexture = renderTexture;
             this.UIScreenshotCamera.enabled = true;
-            this.Resize(this.UIScreenshotCamera, this.UIScreenshotRenderTexture);
+            this.Resize(this.UIScreenshotCamera, renderTexture);
 
-            Dictionary<Transform, Transform> componentParents = new();
+            Dictionary<Transform, (Transform, int)> componentParents = new();
             Dictionary<Transform, bool> componentStates = new();
 
             foreach (Transform uiComponent in uiComponents) {
-                componentParents.TryAdd(uiComponent, uiComponent.parent);
+                componentParents.TryAdd(uiComponent, (uiComponent.parent, uiComponent.GetSiblingIndex()));
                 componentStates.TryAdd(uiComponent, uiComponent.gameObject.activeSelf);
                 uiComponent.SetParent(this.UIScreenshotCanvas.transform);
                 uiComponent.gameObject.SetActive(true);
             }
 
             this.UIScreenshotCamera.Render();
-            RenderTexture.active = this.UIScreenshotCamera.targetTexture;
+            RenderTexture previous = RenderTexture.active;
+            RenderTexture.active = renderTexture;
 
-            Texture2D screenshot = new(Screen.width, Screen.height, TextureFormat.RGB24, false);
-            screenshot.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
-            screenshot.Apply();
+            // Texture2D screenshot = new(Screen.width, Screen.height, TextureFormat.RGBA32, false, false);
+            // screenshot.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0, false);
+            // screenshot.Apply(false, false);
 
             foreach (Transform uiComponent in uiComponents) {
-                uiComponent.SetParent(componentParents[uiComponent]);
+                uiComponent.SetParent(componentParents[uiComponent].Item1);
+                uiComponent.SetSiblingIndex(componentParents[uiComponent].Item2);
+                uiComponent.gameObject.SetActive(false);
                 uiComponent.gameObject.SetActive(componentStates[uiComponent]);
             }
 
             this.UIScreenshotCamera.enabled = false;
-            return screenshot;
+            RenderTexture.active = previous;
+            return renderTexture;
         }
 
         #region Input

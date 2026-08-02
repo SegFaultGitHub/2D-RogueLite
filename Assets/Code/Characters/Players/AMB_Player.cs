@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Code.Characters.Controllers.Players;
+using Code.Characters.Enemies;
 using Code.Enhancements;
 using Code.Managers;
 using Code.Spells;
@@ -159,7 +160,22 @@ namespace Code.Characters.Players {
             this.PlayerController.Dash(DASH_DURATION, disableCharacterColliders: true, disableSpellColliders: true);
         }
 
-        public override float TakeDamage(
+        protected override void Kill(AMB_Character character) {
+            base.Kill(character);
+            if (character is AMB_Enemy enemy) this.ObjectsManager.StatsManager.AddKilled(enemy);
+        }
+
+        protected override bool Die(AMB_Character killedBy) {
+            bool alreadyDead = base.Die(killedBy);
+
+            if (!alreadyDead && killedBy is AMB_Enemy enemy) {
+                this.ObjectsManager.StatsManager.AddKilledBy(enemy);
+            }
+
+            return alreadyDead;
+        }
+
+        public override int TakeDamage(
             bool becomeInvulnerable,
             bool freeze,
             float value,
@@ -171,17 +187,11 @@ namespace Code.Characters.Players {
                 this.ObjectsManager.DamageCanvas.Dodge(this);
                 return 0;
             } else {
-                float damageTaken = base.TakeDamage(becomeInvulnerable, freeze, value, critical, from, damageSource);
+                int damageTaken = base.TakeDamage(becomeInvulnerable, freeze, value, critical, from, damageSource);
 
                 if (damageTaken == 0) return 0;
 
-                // this.ObjectsManager.Stats.AddDamageReceived(
-                //     from is AMB_Enemy enemy
-                //         ? enemy.Enemy
-                //         : null,
-                //     damageTaken,
-                //     damageSource
-                // );
+                this.ObjectsManager.StatsManager.AddDamageReceived(from as AMB_Enemy, damageTaken, damageSource);
 
                 this.ObjectsManager.PlayerHUD.SetHealth(this.CharacterStats.CurrentHealth, this.CharacterStats.MaxHealth);
                 this.ObjectsManager.MainCamera.Shake(0.065f);
@@ -189,6 +199,14 @@ namespace Code.Characters.Players {
                 if (freeze) this.ObjectsManager.PauseManager.QuickPause(0.195f);
 
                 return damageTaken;
+            }
+        }
+
+        protected override void DealtDamage(int damageDealt, AMB_Character character, E_DamageSource source) {
+            base.DealtDamage(damageDealt, character, source);
+
+            if (character is AMB_Enemy enemy) {
+                this.ObjectsManager.StatsManager.AddDamageDealt(enemy, damageDealt, source);
             }
         }
 
@@ -213,19 +231,23 @@ namespace Code.Characters.Players {
                 return true;
             } else {
                 AMB_Enhancement existingEnhancement =
-                    this.Enhancements.Value.Find(e => e.GetType() == enhancement.GetType() && !e.IsMaxLevel);
+                    this.Enhancements.Value.Find(e => e.Enhancement == enhancement.Enhancement && !e.IsMaxLevel);
                 return existingEnhancement != null;
             }
         }
 
         public AMB_Enhancement GetUpgradableEnhancement(AMB_Enhancement enhancement) {
-            return this.Enhancements.Value.Find(e => e.GetType() == enhancement.GetType() && !e.IsMaxLevel);
+            return this.Enhancements.Value.Find(e => e.Enhancement == enhancement.Enhancement && !e.IsMaxLevel);
         }
 
-        public MB_Enhancement AddEnhancement(AMB_Enhancement enhancement) {
+        public void AddEnhancement(AMB_Enhancement enhancement) {
             if (!this.CanAddEnhancement(enhancement)) {
                 Debug.Log($"Cannot add enhancement {enhancement}");
-                return null;
+                return;
+            }
+
+            int _GetEnhancementCount() {
+                return this.Enhancements.Value.Count(e => e.Enhancement == enhancement.Enhancement);
             }
 
             AMB_Enhancement existingEnhancement = this.GetUpgradableEnhancement(enhancement);
@@ -236,18 +258,28 @@ namespace Code.Characters.Players {
                     this.Enhancements.Add(enhancement);
                 }
 
-                return uiEnhancement;
+                this.ObjectsManager.StatsManager.AddEnhancementTaken( //
+                    enhancement,
+                    enhancement.EffectiveLevel,
+                    _GetEnhancementCount()
+                );
             } else {
                 existingEnhancement.Level += enhancement.Level;
                 Destroy(enhancement.gameObject);
                 this.ObjectsManager.PlayerHUD.UpdateEnhancement(existingEnhancement);
 
-                return null;
+                this.ObjectsManager.StatsManager.AddEnhancementTaken(
+                    existingEnhancement,
+                    existingEnhancement.EffectiveLevel,
+                    _GetEnhancementCount()
+                );
             }
         }
         #endregion
 
-        protected override void PlayHurtFromDamageOverTimeSoundEffect() => this.ObjectsManager.AudioManager.PlayPlayerHurtFromDamageOverTime();
+        protected override void PlayHurtFromDamageOverTimeSoundEffect() =>
+            this.ObjectsManager.AudioManager.PlayPlayerHurtFromDamageOverTime();
+
         protected override void PlayDashSoundEffect() => this.ObjectsManager.AudioManager.PlayPlayerDash();
 
         #region Spells

@@ -51,7 +51,6 @@ namespace Code.Characters.AI {
         #endif
         #endregion
 
-
         protected override void UpdateBehaviour() {
             if (!this.Resting && !this.Focusing) {
                 if (this.Necromancer.Summons.Count == 0) this.Necromancer.ResetSummonCooldown();

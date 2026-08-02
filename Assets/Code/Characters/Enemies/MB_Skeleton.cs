@@ -36,7 +36,7 @@ namespace Code.Characters.Enemies {
         }
         #endregion
 
-        public override float TakeDamage(
+        public override int TakeDamage(
             bool becomeInvulnerable,
             bool freeze,
             float value,
@@ -44,7 +44,7 @@ namespace Code.Characters.Enemies {
             AMB_Character from,
             E_DamageSource source
         ) {
-            float damageTaken = base.TakeDamage(becomeInvulnerable, false, value, critical, from, source);
+            int damageTaken = base.TakeDamage(becomeInvulnerable, false, value, critical, from, source);
             if (damageTaken == 0) return 0;
 
             if (from is AMB_Player && this.AI.Behaviour != E_Behaviour.Fleeing) this.AI.SetBehaviour(E_Behaviour.Aggressive, true);

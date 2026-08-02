@@ -8,21 +8,21 @@ namespace Code.Characters.Stats {
     public class MB_CharacterStats : MonoBehaviour {
         #region Members
         [Foldout("MB_CharacterStats", true)]
-        [SerializeField] private protected float m_CurrentHealth;
-        [SerializeField] private protected float m_MaxHealth;
+        [SerializeField] private protected int m_CurrentHealth;
+        [SerializeField] private protected int m_MaxHealth;
 
         [Separator("Read only")]
         [ReadOnly][SerializeField] private protected AMB_Character m_Character;
         #endregion
 
         #region Getters / Setters
-        public float CurrentHealth {
+        public int CurrentHealth {
             get => this.m_CurrentHealth;
             private set => this.m_CurrentHealth = Mathf.Clamp(value, 0, this.m_MaxHealth);
         }
-        public float MissingHealth { get => this.m_MaxHealth - this.m_CurrentHealth; }
-        public float MaxHealth { get => this.m_MaxHealth; }
-        public float HealthRatio { get => this.CurrentHealth / this.MaxHealth; }
+        public int MissingHealth { get => this.m_MaxHealth - this.m_CurrentHealth; }
+        public int MaxHealth { get => this.m_MaxHealth; }
+        public float HealthRatio { get => (float)this.CurrentHealth / this.MaxHealth; }
 
         private AMB_Character Character { get => this.m_Character; set => this.m_Character = value; }
         #endregion
@@ -38,7 +38,7 @@ namespace Code.Characters.Stats {
 
         public bool IsDead() => this.CurrentHealth <= 0;
 
-        public float TakeDamage(AMB_Character from, float value, bool critical, E_DamageSource source) {
+        public int TakeDamage(AMB_Character from, float value, bool critical, E_DamageSource source) {
             HashSet<Type> appliedTypes = new();
             float damageModifier = this.Character.AllEffects.Aggregate(
                 0f,
@@ -51,15 +51,13 @@ namespace Code.Characters.Stats {
                 (current, effect) => effect.ApplyOnDamageReceived(from, this.Character, source, current)
             );
 
-            float realDamageDealt = Mathf.Clamp(value, 0, this.CurrentHealth);
-            realDamageDealt = Mathf.Round(realDamageDealt);
+            int realDamageDealt = Mathf.RoundToInt(Mathf.Clamp(value, 0, this.CurrentHealth));
             this.CurrentHealth -= realDamageDealt;
             return realDamageDealt;
         }
 
-        public float Heal(AMB_Character from, float value) {
-            float realHeal = Mathf.Clamp(value, 0, this.MissingHealth);
-            realHeal = Mathf.Round(realHeal);
+        public int Heal(AMB_Character from, float value) {
+            int realHeal = Mathf.RoundToInt(Mathf.Clamp(value, 0, this.MissingHealth));
             this.CurrentHealth += realHeal;
             return realHeal;
         }

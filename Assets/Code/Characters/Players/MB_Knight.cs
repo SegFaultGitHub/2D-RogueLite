@@ -43,10 +43,6 @@ namespace Code.Characters.Players {
             this.Sword.up = direction;
         }
 
-        protected override void Kill(AMB_Character character) {
-            // throw new System.NotImplementedException();
-        }
-
         protected override void PlayHurtSoundEffect() => this.ObjectsManager.AudioManager.PlayPlayerHurt();
     }
 }

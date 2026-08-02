@@ -61,7 +61,7 @@ namespace Code.Managers {
                 case E_PauseState.Paused:
                     this.Cursor.gameObject.SetActive(false);
                     this.OnEndOfFrame(() => {
-                            this.PausedFrame = this.ObjectsManager.ScreenshotManager.Screenshot();
+                            this.ObjectsManager.ScreenshotManager.Screenshot();
                             this.ObjectsManager.ScreenshotManager.ScreenshotUIComponents();
                             //this.PausedFrame = ScreenCapture.CaptureScreenshotAsTexture(ScreenCapture.StereoScreenCaptureMode.BothEyes);
                             this.Cursor.gameObject.SetActive(true);

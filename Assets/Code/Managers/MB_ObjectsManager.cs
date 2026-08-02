@@ -2,6 +2,7 @@ using Code.Cameras;
 using Code.Characters.Controllers;
 using Code.Characters.Players;
 using Code.Map;
+using Code.Stats;
 using Code.UI;
 using Code.UI.Damage;
 using Code.UI.HUD;
@@ -28,6 +29,7 @@ namespace Code.Managers {
         [SerializeField] private protected MB_FOVManager m_FOVManager;
         [SerializeField] private protected MB_RoomManager m_RoomManager;
         [SerializeField] private protected MB_ScreenshotManager m_ScreenshotManager;
+        [SerializeField] private protected MB_StatsManager m_StatsManager;
         #endregion
 
         #region UI
@@ -38,7 +40,7 @@ namespace Code.Managers {
         [SerializeField] private protected MB_PlayerHUD m_PlayerHUD;
         [SerializeField] private protected MB_EnemyIndicatorsManager m_EnemyIndicatorsManager;
         [SerializeField] private protected MB_BossLifeBar m_BossLifeBar;
-        [SerializeField] private protected MB_DissolveUI m_DissolveUI;
+        [SerializeField] private protected MB_DissolveManager m_DissolveManager;
         #endregion
         #endregion
 
@@ -55,6 +57,7 @@ namespace Code.Managers {
         public MB_FOVManager FOVManager { get => this.m_FOVManager; }
         public MB_RoomManager RoomManager { get => this.m_RoomManager; }
         public MB_ScreenshotManager ScreenshotManager { get => this.m_ScreenshotManager; }
+        public MB_StatsManager StatsManager { get => this.m_StatsManager; }
         #endregion
 
         #region UI
@@ -64,7 +67,7 @@ namespace Code.Managers {
         public MB_PlayerHUD PlayerHUD { get => this.m_PlayerHUD; }
         public MB_EnemyIndicatorsManager EnemyIndicatorsManager { get => this.m_EnemyIndicatorsManager; }
         public MB_BossLifeBar BossLifeBar { get => this.m_BossLifeBar; }
-        public MB_DissolveUI DissolveUI { get => this.m_DissolveUI; }
+        public MB_DissolveManager DissolveManager { get => this.m_DissolveManager; }
         #endregion
         #endregion
 
@@ -83,12 +86,13 @@ namespace Code.Managers {
             this.FOVManager.ObjectsManager = this;
             this.RoomManager.ObjectsManager = this;
             this.ScreenshotManager.ObjectsManager = this;
+            this.StatsManager.ObjectsManager = this;
 
             this.MainCamera.ObjectsManager = this;
             this.TransitionManager.ObjectsManager = this;
             this.PlayerHUD.ObjectsManager = this;
             this.EnemyIndicatorsManager.ObjectsManager = this;
-            this.DissolveUI.ObjectsManager = this;
+            this.DissolveManager.ObjectsManager = this;
 
             /*----------------------------------------------------*/
 
@@ -100,6 +104,7 @@ namespace Code.Managers {
             this.FOVManager.Initialize();
             this.RoomManager.Initialize();
             this.ScreenshotManager.Initialize();
+            this.StatsManager.Initialize();
 
             this.MainCamera.Initialize();
             this.TransitionManager.Initialize();
@@ -116,6 +121,7 @@ namespace Code.Managers {
             this.FOVManager.PostInitialize();
             this.RoomManager.PostInitialize();
             this.ScreenshotManager.PostInitialize();
+            this.StatsManager.PostInitialize();
 
             this.MainCamera.PostInitialize();
             this.TransitionManager.PostInitialize();
