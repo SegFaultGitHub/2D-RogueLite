@@ -104,10 +104,6 @@ namespace Code.Characters.Enemies {
         }
         #endregion
 
-        protected override void Kill(AMB_Character character) {
-            // throw new System.NotImplementedException();
-        }
-
         protected override bool Die(AMB_Character killedBy) {
             bool died = base.Die(killedBy);
 

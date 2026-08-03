@@ -50,98 +50,18 @@ MonoBehaviour:
     is high
   m_Sprite: {fileID: 21300000, guid: e363906e8eef66d499f3fe61c1c549bd, type: 3}
   m_UnlockCondition:
-    m_Condition: 1
+    m_Condition: 0
+    m_Predicate:
+      m_Mode: 0
+      m_Predicate: 0
+      m_Value: 0
+      m_Enemy: 0
+      m_Source: 0
+      m_Enhancement: 0
+    m_Or:
+      m_Conditions: []
     m_And:
-      m_Left:
-        m_Condition: 1
-        m_And:
-          m_Left:
-            m_Condition: 0
-            m_And:
-              m_Left:
-                m_Condition: 0
-                m_And:
-                  m_Left:
-                    m_Condition: 0
-                    m_And: {}
-                  m_Right:
-                    m_Condition: 0
-                    m_And: {}
-              m_Right:
-                m_Condition: 0
-                m_And:
-                  m_Left:
-                    m_Condition: 0
-                    m_And: {}
-                  m_Right:
-                    m_Condition: 0
-                    m_And: {}
-          m_Right:
-            m_Condition: 0
-            m_And:
-              m_Left:
-                m_Condition: 0
-                m_And:
-                  m_Left:
-                    m_Condition: 0
-                    m_And: {}
-                  m_Right:
-                    m_Condition: 0
-                    m_And: {}
-              m_Right:
-                m_Condition: 0
-                m_And:
-                  m_Left:
-                    m_Condition: 0
-                    m_And: {}
-                  m_Right:
-                    m_Condition: 0
-                    m_And: {}
-      m_Right:
-        m_Condition: 2
-        m_And:
-          m_Left:
-            m_Condition: 0
-            m_And:
-              m_Left:
-                m_Condition: 0
-                m_And:
-                  m_Left:
-                    m_Condition: 0
-                    m_And: {}
-                  m_Right:
-                    m_Condition: 0
-                    m_And: {}
-              m_Right:
-                m_Condition: 0
-                m_And:
-                  m_Left:
-                    m_Condition: 0
-                    m_And: {}
-                  m_Right:
-                    m_Condition: 0
-                    m_And: {}
-          m_Right:
-            m_Condition: 0
-            m_And:
-              m_Left:
-                m_Condition: 0
-                m_And:
-                  m_Left:
-                    m_Condition: 0
-                    m_And: {}
-                  m_Right:
-                    m_Condition: 0
-                    m_And: {}
-              m_Right:
-                m_Condition: 0
-                m_And:
-                  m_Left:
-                    m_Condition: 0
-                    m_And: {}
-                  m_Right:
-                    m_Condition: 0
-                    m_And: {}
+      m_Conditions: []
   m_Level: 0
   m_Data:
   - m_Ratio: 0.2

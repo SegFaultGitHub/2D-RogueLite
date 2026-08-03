@@ -75,7 +75,8 @@ namespace Code.Characters {
 
         public virtual AMB_Enemy SpawnEnemy() {
             this.ObjectsManager.AudioManager.PlaySpawnerSpawn();
-            AMB_Enemy enemy = Instantiate(SC_Utils.Sample(this.Enemies).Obj, this.transform.parent, true);
+            C_WeightedObject<AMB_Enemy> choice = SC_Utils.Sample(this.Enemies);
+            AMB_Enemy enemy = Instantiate(choice.Obj, this.transform.parent, true);
             enemy.Wave = this.Wave;
             enemy.transform.position = this.transform.position;
             return enemy;

@@ -181,6 +181,8 @@ namespace Code.Stats {
             #endregion
 
             #region Read
+            public int GetKilled() => this.BestiaryData.Sum(bestiaryData => bestiaryData.Killed);
+
             public int GetKilled(E_Enemy enemy) {
                 C_BestiaryData bestiaryData = this.BestiaryData.FirstOrDefault(bestiaryData => bestiaryData.Enemy == enemy);
                 if (bestiaryData == null) {
@@ -191,6 +193,8 @@ namespace Code.Stats {
                 return bestiaryData.Killed;
             }
 
+            public int GetKilledBy() => this.BestiaryData.Sum(bestiaryData => bestiaryData.KilledBy);
+
             public int GetKilledBy(E_Enemy enemy) {
                 C_BestiaryData bestiaryData = this.BestiaryData.FirstOrDefault(bestiaryData => bestiaryData.Enemy == enemy);
                 if (bestiaryData == null) {
@@ -200,6 +204,10 @@ namespace Code.Stats {
 
                 return bestiaryData.KilledBy;
             }
+
+            public int GetDamageDealt() => this.DamageData.Sum(damageData => damageData.Dealt);
+
+            public int GetDamageReceived() => this.DamageData.Sum(damageData => damageData.Received);
 
             public int GetDamageDealt(E_Enemy enemy) {
                 C_BestiaryData bestiaryData = this.BestiaryData.FirstOrDefault(bestiaryData => bestiaryData.Enemy == enemy);
@@ -256,8 +264,8 @@ namespace Code.Stats {
         #region Getters / Setters
         public MB_ObjectsManager ObjectsManager { get => this.m_ObjectsManager; set => this.m_ObjectsManager = value; }
 
-        private C_Stats CurrentRunStats { get => this.m_CurrentRunStats; set => this.m_CurrentRunStats = value; }
-        private C_Stats GlobalStats { get => this.m_GlobalStats; set => this.m_GlobalStats = value; }
+        public C_Stats CurrentRunStats { get => this.m_CurrentRunStats; private set => this.m_CurrentRunStats = value; }
+        public C_Stats GlobalStats { get => this.m_GlobalStats; private set => this.m_GlobalStats = value; }
         public bool SkipGlobalSave { get => this.m_SkipGlobalSave; set => this.m_SkipGlobalSave = value; }
         #endregion
 

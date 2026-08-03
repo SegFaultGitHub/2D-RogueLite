@@ -49,7 +49,18 @@ MonoBehaviour:
   m_Description: Increases your attack speed by <ratio>
   m_Sprite: {fileID: 21300000, guid: 425fbc967969b104b86e686f4c5f343e, type: 3}
   m_UnlockCondition:
-    m_Condition: 1
+    m_Condition: 0
+    m_Predicate:
+      m_Mode: 0
+      m_Predicate: 0
+      m_Value: 0
+      m_Enemy: 0
+      m_Source: 0
+      m_Enhancement: 0
+    m_Or:
+      m_Conditions: []
+    m_And:
+      m_Conditions: []
   m_Level: 0
   m_Data:
   - m_Ratio: 0.15
