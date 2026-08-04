@@ -26,7 +26,7 @@ namespace Code.Enhancements {
         protected string Description { get => this.m_Description; }
         public Sprite Sprite { get => this.m_Sprite; }
 
-        private C_Condition UnlockCondition { get => this.m_UnlockCondition; }
+        public C_Condition UnlockCondition { get => this.m_UnlockCondition; }
 
         public int Level { get => this.m_Level; set => this.m_Level = value; }
 

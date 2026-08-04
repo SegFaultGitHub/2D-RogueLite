@@ -18,5 +18,6 @@ namespace Code.Enhancements.UnlockConditions {
         MaxEnhancementsOwned,
         MinSpecificEnhancementsOwned,
         MaxSpecificEnhancementsOwned,
+        DashesPerformed
     }
 }

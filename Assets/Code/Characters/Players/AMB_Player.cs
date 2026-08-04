@@ -158,6 +158,7 @@ namespace Code.Characters.Players {
             this.DashCastAt = Time.time;
             this.DashAvailableAt = this.DashCastAt + this.DashCooldown;
             this.PlayerController.Dash(DASH_DURATION, disableCharacterColliders: true, disableSpellColliders: true);
+            this.ObjectsManager.StatsManager.AddDash();
         }
 
         protected override void Kill(AMB_Character character) {
@@ -246,9 +247,7 @@ namespace Code.Characters.Players {
                 return;
             }
 
-            int _GetEnhancementCount() {
-                return this.Enhancements.Value.Count(e => e.Enhancement == enhancement.Enhancement);
-            }
+            int _GetEnhancementCount() => this.Enhancements.Value.Count(e => e.Enhancement == enhancement.Enhancement);
 
             AMB_Enhancement existingEnhancement = this.GetUpgradableEnhancement(enhancement);
             if (existingEnhancement == null) {
@@ -261,7 +260,8 @@ namespace Code.Characters.Players {
                 this.ObjectsManager.StatsManager.AddEnhancementTaken( //
                     enhancement,
                     enhancement.EffectiveLevel,
-                    _GetEnhancementCount()
+                    _GetEnhancementCount(),
+                    enhancement.IsMaxLevel
                 );
             } else {
                 existingEnhancement.Level += enhancement.Level;
@@ -271,7 +271,8 @@ namespace Code.Characters.Players {
                 this.ObjectsManager.StatsManager.AddEnhancementTaken(
                     existingEnhancement,
                     existingEnhancement.EffectiveLevel,
-                    _GetEnhancementCount()
+                    _GetEnhancementCount(),
+                    existingEnhancement.IsMaxLevel
                 );
             }
         }

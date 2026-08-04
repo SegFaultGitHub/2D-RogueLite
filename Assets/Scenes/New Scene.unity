@@ -1574,8 +1574,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Code.Managers.MB_RoomManager
   m_Rooms:
-  - {fileID: 5546654940940054593, guid: d4053207b9e8e1a409ed4853c49698e9, type: 3}
   - {fileID: 5546654940940054593, guid: 95ee12a35687a4543abe23dd6e947e5a, type: 3}
+  - {fileID: 5546654940940054593, guid: d4053207b9e8e1a409ed4853c49698e9, type: 3}
   - {fileID: 5546654940940054593, guid: 9fddf7932fd87b44fb10e731cb810c8c, type: 3}
   - {fileID: 5546654940940054593, guid: 894a177d03584ae4ebb9da1161849679, type: 3}
   - {fileID: 5546654940940054593, guid: 76dd4d0842409b1478772eef45435f8e, type: 3}
@@ -1933,6 +1933,7 @@ MonoBehaviour:
   m_RoomManager: {fileID: 670413223}
   m_ScreenshotManager: {fileID: 1837991426}
   m_StatsManager: {fileID: 998181503}
+  m_UnlockManager: {fileID: 1844752755}
   m_MainCamera: {fileID: 1455235644}
   m_TransitionManager: {fileID: 2993692}
   m_DamageCanvas: {fileID: 1148007895}
@@ -2417,10 +2418,14 @@ MonoBehaviour:
     m_BestiaryData: []
     m_EnhancementData: []
     m_DamageData: []
+    m_GeneralData:
+      m_Dashes: 0
   m_GlobalStats:
     m_BestiaryData: []
     m_EnhancementData: []
     m_DamageData: []
+    m_GeneralData:
+      m_Dashes: 0
   m_SkipGlobalSave: 0
 --- !u!1 &1093618848
 GameObject:
@@ -3742,6 +3747,7 @@ Transform:
   - {fileID: 1837991425}
   - {fileID: 998181502}
   - {fileID: 1247447084}
+  - {fileID: 1844752754}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1639254057
@@ -4153,6 +4159,70 @@ MonoBehaviour:
   m_ObjectsManager: {fileID: 0}
   TEMP_gos:
   - {fileID: 1348754961}
+--- !u!1 &1844752753
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1844752754}
+  - component: {fileID: 1844752755}
+  m_Layer: 0
+  m_Name: Unlock manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1844752754
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844752753}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1581069431}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1844752755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844752753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe75eb9ad71f48cfbecf623dbc6c6581, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Code.Managers.MB_UnlockManager
+  m_Enhancements:
+  - m_Enhancement: {fileID: 5039291069289336930, guid: e832667116f99544387b1c4fed780413, type: 3}
+    m_Unlocked: 0
+  - m_Enhancement: {fileID: -3725685517707880198, guid: e516f6d8a9715df4b907ef25ddda3a7a, type: 3}
+    m_Unlocked: 0
+  - m_Enhancement: {fileID: 3435852915111274541, guid: 49e5ed91954d02e4c8411e856eddc867, type: 3}
+    m_Unlocked: 0
+  - m_Enhancement: {fileID: 2693071212253396170, guid: 5698a07eb4ef5504abb56dcdb90c86fe, type: 3}
+    m_Unlocked: 0
+  - m_Enhancement: {fileID: -2563834214896561625, guid: 552e8348c26aad24188999cdeb65f041, type: 3}
+    m_Unlocked: 0
+  - m_Enhancement: {fileID: 4503769532108084053, guid: af7e5101a3030844f998bb5d4d4465c9, type: 3}
+    m_Unlocked: 0
+  - m_Enhancement: {fileID: 6743839853561498681, guid: af427cfb480bf3f4f8aac9cd2274377c, type: 3}
+    m_Unlocked: 0
+  - m_Enhancement: {fileID: -7641870606114672102, guid: bbb393535087a3c498fd0903f63c6975, type: 3}
+    m_Unlocked: 0
+  - m_Enhancement: {fileID: 704335372266928051, guid: bc21cc05182ca71478592ef5b3fa5e44, type: 3}
+    m_Unlocked: 0
+  m_ObjectsManager: {fileID: 0}
 --- !u!1 &1869067639
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using Code.Managers;
-using Code.Stats;
 using UnityEngine;
 
 namespace Code.Serializer {

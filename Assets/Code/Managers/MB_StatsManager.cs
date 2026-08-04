@@ -4,12 +4,11 @@ using System.Linq;
 using Code.Characters;
 using Code.Characters.Enemies;
 using Code.Enhancements;
-using Code.Managers;
 using Code.Serializer;
 using MyBox;
 using UnityEngine;
 
-namespace Code.Stats {
+namespace Code.Managers {
     public class MB_StatsManager : MonoBehaviour {
         [Serializable]
         public class C_Stats {
@@ -46,12 +45,14 @@ namespace Code.Stats {
                 [ReadOnly][SerializeField] private int m_Taken;
                 [ReadOnly][SerializeField] private int m_MaxLevelReached;
                 [ReadOnly][SerializeField] private int m_MaxOwned;
+                [ReadOnly][SerializeField] private int m_OwnedMaxLevel;
 
                 public E_Enhancement Enhancement { get => this.m_Enhancement; set => this.m_Enhancement = value; }
                 private string EnhancementVerbose { get => this.m_EnhancementVerbose; set => this.m_EnhancementVerbose = value; }
                 public int Taken { get => this.m_Taken; set => this.m_Taken = value; }
                 public int MaxLevelReached { get => this.m_MaxLevelReached; set => this.m_MaxLevelReached = value; }
                 public int MaxOwned { get => this.m_MaxOwned; set => this.m_MaxOwned = value; }
+                public int OwnedMaxLevel { get => this.m_OwnedMaxLevel; set => this.m_OwnedMaxLevel = value; }
 
                 public C_EnhancementData(E_Enhancement enhancement) {
                     this.Enhancement = enhancement;
@@ -59,8 +60,10 @@ namespace Code.Stats {
                     this.Taken = 0;
                     this.MaxLevelReached = 0;
                     this.MaxOwned = 0;
+                    this.OwnedMaxLevel = 0;
                 }
             }
+
             [Serializable]
             public class C_DamageData {
                 [ReadOnly][SerializeField] private E_DamageSource m_Source;
@@ -87,22 +90,36 @@ namespace Code.Stats {
                 }
             }
 
+            [Serializable]
+            public class C_GeneralData {
+                [ReadOnly][SerializeField] private int m_Dashes;
+
+                public int Dashes { get => this.m_Dashes; set => this.m_Dashes = value; }
+
+                public C_GeneralData() {
+                    this.Dashes = 0;
+                }
+            }
+
             #region Members
             [ReadOnly][SerializeField] public List<C_BestiaryData> m_BestiaryData;
             [ReadOnly][SerializeField] public List<C_EnhancementData> m_EnhancementData;
             [ReadOnly][SerializeField] public List<C_DamageData> m_DamageData;
+            [ReadOnly][SerializeField] public C_GeneralData m_GeneralData;
             #endregion
 
             #region Getters/Setters
             public List<C_BestiaryData> BestiaryData { get => this.m_BestiaryData; set => this.m_BestiaryData = value; }
             public List<C_EnhancementData> EnhancementData { get => this.m_EnhancementData; set => this.m_EnhancementData = value; }
             public List<C_DamageData> DamageData { get => this.m_DamageData; set => this.m_DamageData = value; }
+            public C_GeneralData GeneralData { get => this.m_GeneralData; set => this.m_GeneralData = value; }
             #endregion
 
             public C_Stats() {
                 this.BestiaryData = new List<C_BestiaryData>();
                 this.EnhancementData = new List<C_EnhancementData>();
                 this.DamageData = new List<C_DamageData>();
+                this.GeneralData = new C_GeneralData();
             }
 
             #region Write
@@ -166,7 +183,7 @@ namespace Code.Stats {
                 damageData.MaxReceived = Mathf.Max(damageData.MaxReceived, value);
             }
 
-            public void AddEnhancementTaken(AMB_Enhancement enhancement, int level, int owned) {
+            public void AddEnhancementTaken(AMB_Enhancement enhancement, int level, int owned, bool reachedMaxLevel) {
                 C_EnhancementData enhancementData =
                     this.EnhancementData.FirstOrDefault(enhancementData => enhancementData.Enhancement == enhancement.Enhancement);
                 if (enhancementData == null) {
@@ -177,6 +194,11 @@ namespace Code.Stats {
                 enhancementData.Taken++;
                 enhancementData.MaxLevelReached = Mathf.Max(enhancementData.MaxLevelReached, level);
                 enhancementData.MaxOwned = Mathf.Max(enhancementData.MaxOwned, owned);
+                if (reachedMaxLevel) enhancementData.OwnedMaxLevel++;
+            }
+
+            public void AddDash() {
+                this.GeneralData.Dashes++;
             }
             #endregion
 
@@ -248,6 +270,56 @@ namespace Code.Stats {
 
                 return damageData.Received;
             }
+
+            public int GetEnhancementsTaken() => this.EnhancementData.Sum(e => e.Taken);
+
+            public int GetEnhancementsTaken(E_Enhancement enhancement) {
+                C_EnhancementData enhancementData = this.EnhancementData.FirstOrDefault(enhancementData => enhancementData.Enhancement == enhancement);
+                if (enhancementData == null) {
+                    enhancementData = new C_EnhancementData(enhancement);
+                    this.EnhancementData.Add(enhancementData);
+                }
+
+                return enhancementData.Taken;
+            }
+
+            public int GetEnhancementsMaxLevelReached() => this.EnhancementData.Max(enhancementData => enhancementData.MaxLevelReached);
+
+            public int GetEnhancementsMaxLevelReached(E_Enhancement enhancement) {
+                C_EnhancementData enhancementData = this.EnhancementData.FirstOrDefault(enhancementData => enhancementData.Enhancement == enhancement);
+                if (enhancementData == null) {
+                    enhancementData = new C_EnhancementData(enhancement);
+                    this.EnhancementData.Add(enhancementData);
+                }
+
+                return enhancementData.MaxLevelReached;
+            }
+
+            public int GetEnhancementsMaxOwned() => this.EnhancementData.Max(enhancementData => enhancementData.MaxOwned);
+
+            public int GetEnhancementsMaxOwned(E_Enhancement enhancement) {
+                C_EnhancementData enhancementData = this.EnhancementData.FirstOrDefault(enhancementData => enhancementData.Enhancement == enhancement);
+                if (enhancementData == null) {
+                    enhancementData = new C_EnhancementData(enhancement);
+                    this.EnhancementData.Add(enhancementData);
+                }
+
+                return enhancementData.MaxOwned;
+            }
+
+            public int GetEnhancementsOwnedMaxLevel() => this.EnhancementData.Max(enhancementData => enhancementData.OwnedMaxLevel);
+
+            public int GetEnhancementsOwnedMaxLevel(E_Enhancement enhancement) {
+                C_EnhancementData enhancementData = this.EnhancementData.FirstOrDefault(enhancementData => enhancementData.Enhancement == enhancement);
+                if (enhancementData == null) {
+                    enhancementData = new C_EnhancementData(enhancement);
+                    this.EnhancementData.Add(enhancementData);
+                }
+
+                return enhancementData.OwnedMaxLevel;
+            }
+
+            public int GetDashes() => this.GeneralData.Dashes;
             #endregion
         }
 
@@ -288,6 +360,7 @@ namespace Code.Stats {
             if (!this.SkipGlobalSave) {
                 this.GlobalStats.AddKilled(enemy);
                 SC_Serializer.WriteGlobalStats(this.GlobalStats);
+                this.ObjectsManager.UnlockManager.CheckUnlocks();
             }
         }
 
@@ -296,6 +369,7 @@ namespace Code.Stats {
             if (!this.SkipGlobalSave) {
                 this.GlobalStats.AddKilledBy(enemy);
                 SC_Serializer.WriteGlobalStats(this.GlobalStats);
+                this.ObjectsManager.UnlockManager.CheckUnlocks();
             }
         }
 
@@ -304,6 +378,7 @@ namespace Code.Stats {
             if (!this.SkipGlobalSave) {
                 this.GlobalStats.AddDamageDealt(enemy, value, source);
                 SC_Serializer.WriteGlobalStats(this.GlobalStats);
+                this.ObjectsManager.UnlockManager.CheckUnlocks();
             }
         }
 
@@ -312,14 +387,25 @@ namespace Code.Stats {
             if (!this.SkipGlobalSave) {
                 this.GlobalStats.AddDamageReceived(enemy, value, source);
                 SC_Serializer.WriteGlobalStats(this.GlobalStats);
+                this.ObjectsManager.UnlockManager.CheckUnlocks();
             }
         }
 
-        public void AddEnhancementTaken(AMB_Enhancement enhancement, int level, int owned) {
-            this.CurrentRunStats.AddEnhancementTaken(enhancement, level, owned);
+        public void AddEnhancementTaken(AMB_Enhancement enhancement, int level, int owned, bool reachedMaxLevel) {
+            this.CurrentRunStats.AddEnhancementTaken(enhancement, level, owned, reachedMaxLevel);
             if (!this.SkipGlobalSave) {
-                this.GlobalStats.AddEnhancementTaken(enhancement, level, owned);
+                this.GlobalStats.AddEnhancementTaken(enhancement, level, owned, reachedMaxLevel);
                 SC_Serializer.WriteGlobalStats(this.GlobalStats);
+                this.ObjectsManager.UnlockManager.CheckUnlocks();
+            }
+        }
+
+        public void AddDash() {
+            this.CurrentRunStats.AddDash();
+            if (!this.SkipGlobalSave) {
+                this.GlobalStats.AddDash();
+                SC_Serializer.WriteGlobalStats(this.GlobalStats);
+                this.ObjectsManager.UnlockManager.CheckUnlocks();
             }
         }
         #endregion
