@@ -18,6 +18,7 @@ namespace Code.Serializer {
                 return new MB_StatsManager.C_Stats();
             }
         }
+
         public static void WriteGlobalStats(MB_StatsManager.C_Stats stats) {
             StreamWriter writer = new(GetGlobalStatsFilePath());
             string json = JsonUtility.ToJson(stats, true);

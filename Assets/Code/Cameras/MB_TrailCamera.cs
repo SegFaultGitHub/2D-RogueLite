@@ -10,7 +10,7 @@ namespace Code.Cameras {
         [SerializeField] private protected RawImage m_TrailImage;
 
         [SerializeField] private protected RenderTexture m_TrailRenderTexture;
-        
+
         [Separator("Read only")]
         [ReadOnly][SerializeField] private protected Camera m_Camera;
         [ReadOnly][SerializeField] private protected Material m_TrailMaterial;

@@ -54,6 +54,7 @@ namespace Code.Managers {
                     for (int i = this.ObjectsManager.SpellsTransform.transform.childCount - 1; i >= 0; i--) {
                         Destroy(this.ObjectsManager.SpellsTransform.transform.GetChild(i).gameObject);
                     }
+
                     this.Room = Instantiate(this.Rooms[0], this.RoomParent);
                     this.Rooms.RemoveAt(0);
                     // this.Room = Instantiate(SC_Utils.Sample(this.Rooms), this.RoomParent);

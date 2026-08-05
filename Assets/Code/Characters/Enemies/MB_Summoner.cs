@@ -15,7 +15,5 @@ namespace Code.Characters.Enemies {
 
         #region Unity methods
         #endregion
-
-        
     }
 }

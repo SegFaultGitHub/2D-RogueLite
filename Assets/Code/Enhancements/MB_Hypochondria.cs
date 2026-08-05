@@ -23,7 +23,7 @@ namespace Code.Enhancements {
         #region Getters / Setters
         private C_EnhancementData[] Data { get => this.m_Data; }
 
-        public override E_Enhancement Enhancement { get => E_Enhancement.Hypocondria; }
+        public override E_Enhancement Enhancement { get => E_Enhancement.Hypochondria; }
         #endregion
 
         #region Static / Readonly / Const
@@ -57,7 +57,12 @@ namespace Code.Enhancements {
             return this.Description.Replace("<ratio>", ratioString);
         }
 
-        public override float GetComputedDamageModifier(AMB_Character character, AMB_Character receiver, E_DamageSource damageSource, HashSet<Type> appliedTypes) {
+        public override float GetComputedDamageModifier(
+            AMB_Character character,
+            AMB_Character receiver,
+            E_DamageSource damageSource,
+            HashSet<Type> appliedTypes
+        ) {
             return damageSource == E_DamageSource.Spell
                 ? this.GetData().Ratio * (1 - character.CharacterStats.HealthRatio)
                 : 0;

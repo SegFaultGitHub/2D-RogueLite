@@ -59,7 +59,12 @@ namespace Code.Enhancements {
             return this.Description.Replace("<ratio>", ratioString);
         }
 
-        public override float GetComputedDamageModifier(AMB_Character character, AMB_Character receiver, E_DamageSource damageSource, HashSet<Type> appliedTypes) {
+        public override float GetComputedDamageModifier(
+            AMB_Character character,
+            AMB_Character receiver,
+            E_DamageSource damageSource,
+            HashSet<Type> appliedTypes
+        ) {
             return damageSource == E_DamageSource.Poison
                 ? this.GetData().Ratio
                 : 0;

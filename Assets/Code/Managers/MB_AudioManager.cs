@@ -234,8 +234,10 @@ namespace Code.Managers {
         #region Sound Effects
         private void PlayPlayerHurt(float volume, float pitch) => this.PlaySoundEffect(this.PlayerHurt, volume, pitch);
         public void PlayPlayerHurt() => this.PlayPlayerHurt(volume: 1, pitch: 1);
+
         private void PlayPlayerHurtFromDamageOverTime(float volume, float pitch) =>
             this.PlaySoundEffect(this.PlayerHurtFromDamageOverTime, volume, pitch, .15f);
+
         public void PlayPlayerHurtFromDamageOverTime() => this.PlayPlayerHurtFromDamageOverTime(volume: 1, pitch: 1);
         private void PlayPlayerDash(float volume, float pitch) => this.PlaySoundEffect(this.PlayerDash, volume, pitch);
         public void PlayPlayerDash() => this.PlayPlayerDash(volume: 1, pitch: 1);

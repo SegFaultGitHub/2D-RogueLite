@@ -382,8 +382,8 @@ MonoBehaviour:
   m_CollisionTarget: 0
   m_HitMetadata:
     m_Damage: 10
-    m_KnockbackForce: 10
-  m_Cooldown: 1
+    m_KnockbackForce: 8
+  m_Cooldown: 0.75
   m_CanHitMultipleTimes: 0
   m_TriggersInvulnerable: 0
   m_HasCharacterCollider: 1

@@ -100,6 +100,7 @@ namespace Code.Characters.Controllers.Players {
                 this.MovementDirection = Vector2.zero;
                 return;
             }
+
             this.MovementDirection = context.ReadValue<Vector2>().normalized;
         }
 

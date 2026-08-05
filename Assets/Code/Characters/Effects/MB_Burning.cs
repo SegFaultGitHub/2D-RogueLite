@@ -22,7 +22,12 @@ namespace Code.Characters.Effects {
         #region Unity methods
         #endregion
 
-        public override float GetComputedDamageModifier(AMB_Character dealer, AMB_Character receiver, E_DamageSource damageSource, HashSet<Type> appliedTypes) {
+        public override float GetComputedDamageModifier(
+            AMB_Character dealer,
+            AMB_Character receiver,
+            E_DamageSource damageSource,
+            HashSet<Type> appliedTypes
+        ) {
             if (!appliedTypes.Add(typeof(MB_Burning))) return 0;
 
             return this.DamageModifier;

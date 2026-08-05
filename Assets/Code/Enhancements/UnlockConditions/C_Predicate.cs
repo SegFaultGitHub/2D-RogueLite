@@ -58,7 +58,11 @@ namespace Code.Enhancements.UnlockConditions {
             nameof(m_Predicate),
             false,
             E_Predicate.MinSpecificEnhancementsTaken,
-            E_Predicate.MaxSpecificEnhancementsTaken
+            E_Predicate.MaxSpecificEnhancementsTaken,
+            E_Predicate.MinSpecificEnhancementsOwned,
+            E_Predicate.MaxSpecificEnhancementsOwned,
+            E_Predicate.MinSpecificEnhancementsOwnedMaxLevel,
+            E_Predicate.MaxSpecificEnhancementsOwnedMaxLevel
         )]
         [SerializeField] private E_Enhancement m_Enhancement;
 
@@ -100,130 +104,153 @@ namespace Code.Enhancements.UnlockConditions {
             };
         }
 
-        private bool CheckEnemiesKilled(MB_ObjectsManager objectsManager) => this.Mode switch {
-            E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetKilled() >= this.Value,
-            E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetKilled() >= this.Value,
-            _ => throw new ArgumentOutOfRangeException()
-        };
+        private bool CheckEnemiesKilled(MB_ObjectsManager objectsManager) =>
+            this.Mode switch {
+                E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetKilled() >= this.Value,
+                E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetKilled() >= this.Value,
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
-        private bool CheckSpecificEnemiesKilled(MB_ObjectsManager objectsManager) => this.Mode switch {
-            E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetKilled(this.Enemy) >= this.Value,
-            E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetKilled(this.Enemy) >= this.Value,
-            _ => throw new ArgumentOutOfRangeException()
-        };
+        private bool CheckSpecificEnemiesKilled(MB_ObjectsManager objectsManager) =>
+            this.Mode switch {
+                E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetKilled(this.Enemy) >= this.Value,
+                E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetKilled(this.Enemy) >= this.Value,
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
-        private bool CheckDamageDealt(MB_ObjectsManager objectsManager) => this.Mode switch {
-            E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetDamageDealt() >= this.Value,
-            E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetDamageDealt() >= this.Value,
-            _ => throw new ArgumentOutOfRangeException()
-        };
+        private bool CheckDamageDealt(MB_ObjectsManager objectsManager) =>
+            this.Mode switch {
+                E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetDamageDealt() >= this.Value,
+                E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetDamageDealt() >= this.Value,
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
-        private bool CheckDamageReceived(MB_ObjectsManager objectsManager) => this.Mode switch {
-            E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetDamageReceived() >= this.Value,
-            E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetDamageReceived() >= this.Value,
-            _ => throw new ArgumentOutOfRangeException()
-        };
+        private bool CheckDamageReceived(MB_ObjectsManager objectsManager) =>
+            this.Mode switch {
+                E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetDamageReceived() >= this.Value,
+                E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetDamageReceived() >= this.Value,
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
-        private bool CheckDamageDealtToSpecificEnemies(MB_ObjectsManager objectsManager) => this.Mode switch {
-            E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetDamageDealt() >= this.Value,
-            E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetDamageDealt() >= this.Value,
-            _ => throw new ArgumentOutOfRangeException()
-        };
+        private bool CheckDamageDealtToSpecificEnemies(MB_ObjectsManager objectsManager) =>
+            this.Mode switch {
+                E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetDamageDealt() >= this.Value,
+                E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetDamageDealt() >= this.Value,
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
-        private bool CheckDamageReceivedFromSpecificEnemies(MB_ObjectsManager objectsManager) => this.Mode switch {
-            E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetDamageReceived(this.Enemy) >= this.Value,
-            E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetDamageReceived(this.Enemy) >= this.Value,
-            _ => throw new ArgumentOutOfRangeException()
-        };
+        private bool CheckDamageReceivedFromSpecificEnemies(MB_ObjectsManager objectsManager) =>
+            this.Mode switch {
+                E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetDamageReceived(this.Enemy) >= this.Value,
+                E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetDamageReceived(this.Enemy) >= this.Value,
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
-        private bool CheckDamageDealtFromSpecificSource(MB_ObjectsManager objectsManager) => this.Mode switch {
-            E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetDamageDealt(this.Source) >= this.Value,
-            E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetDamageDealt(this.Source) >= this.Value,
-            _ => throw new ArgumentOutOfRangeException()
-        };
+        private bool CheckDamageDealtFromSpecificSource(MB_ObjectsManager objectsManager) =>
+            this.Mode switch {
+                E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetDamageDealt(this.Source) >= this.Value,
+                E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetDamageDealt(this.Source) >= this.Value,
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
-        private bool CheckDamageReceivedFromSpecificSource(MB_ObjectsManager objectsManager) => this.Mode switch {
-            E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetDamageReceived(this.Source) >= this.Value,
-            E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetDamageReceived(this.Source) >= this.Value,
-            _ => throw new ArgumentOutOfRangeException()
-        };
+        private bool CheckDamageReceivedFromSpecificSource(MB_ObjectsManager objectsManager) =>
+            this.Mode switch {
+                E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetDamageReceived(this.Source) >= this.Value,
+                E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetDamageReceived(this.Source) >= this.Value,
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
-        private bool CheckMinEnhancementsTaken(MB_ObjectsManager objectsManager) => this.Mode switch {
-            E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsTaken() >= this.Value,
-            E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsTaken() >= this.Value,
-            _ => throw new ArgumentOutOfRangeException()
-        };
+        private bool CheckMinEnhancementsTaken(MB_ObjectsManager objectsManager) =>
+            this.Mode switch {
+                E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsTaken() >= this.Value,
+                E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsTaken() >= this.Value,
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
-        private bool CheckMaxEnhancementsTaken(MB_ObjectsManager objectsManager) => this.Mode switch {
-            E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsTaken() < this.Value,
-            E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsTaken() < this.Value,
-            _ => throw new ArgumentOutOfRangeException()
-        };
+        private bool CheckMaxEnhancementsTaken(MB_ObjectsManager objectsManager) =>
+            this.Mode switch {
+                E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsTaken() < this.Value,
+                E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsTaken() < this.Value,
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
-        private bool CheckMinSpecificEnhancementsTaken(MB_ObjectsManager objectsManager) => this.Mode switch {
-            E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsTaken(this.Enhancement) >= this.Value,
-            E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsTaken(this.Enhancement) >= this.Value,
-            _ => throw new ArgumentOutOfRangeException()
-        };
+        private bool CheckMinSpecificEnhancementsTaken(MB_ObjectsManager objectsManager) =>
+            this.Mode switch {
+                E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsTaken(this.Enhancement) >= this.Value,
+                E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsTaken(this.Enhancement) >= this.Value,
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
-        private bool CheckMaxSpecificEnhancementsTaken(MB_ObjectsManager objectsManager) => this.Mode switch {
-            E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsTaken(this.Enhancement) < this.Value,
-            E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsTaken(this.Enhancement) < this.Value,
-            _ => throw new ArgumentOutOfRangeException()
-        };
+        private bool CheckMaxSpecificEnhancementsTaken(MB_ObjectsManager objectsManager) =>
+            this.Mode switch {
+                E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsTaken(this.Enhancement) < this.Value,
+                E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsTaken(this.Enhancement) < this.Value,
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
-        private bool CheckMinEnhancementsOwned(MB_ObjectsManager objectsManager) => this.Mode switch {
-            E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsMaxOwned() >= this.Value,
-            E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsMaxOwned() >= this.Value,
-            _ => throw new ArgumentOutOfRangeException()
-        };
+        private bool CheckMinEnhancementsOwned(MB_ObjectsManager objectsManager) =>
+            this.Mode switch {
+                E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsMaxOwned() >= this.Value,
+                E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsMaxOwned() >= this.Value,
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
-        private bool CheckMaxEnhancementsOwned(MB_ObjectsManager objectsManager) => this.Mode switch {
-            E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsMaxOwned() < this.Value,
-            E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsMaxOwned() < this.Value,
-            _ => throw new ArgumentOutOfRangeException()
-        };
+        private bool CheckMaxEnhancementsOwned(MB_ObjectsManager objectsManager) =>
+            this.Mode switch {
+                E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsMaxOwned() < this.Value,
+                E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsMaxOwned() < this.Value,
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
-        private bool CheckMinSpecificEnhancementsOwned(MB_ObjectsManager objectsManager) => this.Mode switch {
-            E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsMaxOwned(this.Enhancement) >= this.Value,
-            E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsMaxOwned(this.Enhancement) >= this.Value,
-            _ => throw new ArgumentOutOfRangeException()
-        };
+        private bool CheckMinSpecificEnhancementsOwned(MB_ObjectsManager objectsManager) =>
+            this.Mode switch {
+                E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsMaxOwned(this.Enhancement) >= this.Value,
+                E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsMaxOwned(this.Enhancement) >= this.Value,
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
-        private bool CheckMaxSpecificEnhancementsOwned(MB_ObjectsManager objectsManager) => this.Mode switch {
-            E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsMaxOwned(this.Enhancement) < this.Value,
-            E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsMaxOwned(this.Enhancement) < this.Value,
-            _ => throw new ArgumentOutOfRangeException()
-        };
+        private bool CheckMaxSpecificEnhancementsOwned(MB_ObjectsManager objectsManager) =>
+            this.Mode switch {
+                E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsMaxOwned(this.Enhancement) < this.Value,
+                E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsMaxOwned(this.Enhancement) < this.Value,
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
-        private bool CheckMinEnhancementsOwnedMaxLevel(MB_ObjectsManager objectsManager) => this.Mode switch {
-            E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsOwnedMaxLevel() >= this.Value,
-            E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsOwnedMaxLevel() >= this.Value,
-            _ => throw new ArgumentOutOfRangeException()
-        };
+        private bool CheckMinEnhancementsOwnedMaxLevel(MB_ObjectsManager objectsManager) =>
+            this.Mode switch {
+                E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsOwnedMaxLevel() >= this.Value,
+                E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsOwnedMaxLevel() >= this.Value,
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
-        private bool CheckMaxEnhancementsOwnedMaxLevel(MB_ObjectsManager objectsManager) => this.Mode switch {
-            E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsOwnedMaxLevel() < this.Value,
-            E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsOwnedMaxLevel() < this.Value,
-            _ => throw new ArgumentOutOfRangeException()
-        };
+        private bool CheckMaxEnhancementsOwnedMaxLevel(MB_ObjectsManager objectsManager) =>
+            this.Mode switch {
+                E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsOwnedMaxLevel() < this.Value,
+                E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsOwnedMaxLevel() < this.Value,
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
-        private bool CheckMinSpecificEnhancementsOwnedMaxLevel(MB_ObjectsManager objectsManager) => this.Mode switch {
-            E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsOwnedMaxLevel(this.Enhancement) >= this.Value,
-            E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsOwnedMaxLevel(this.Enhancement) >= this.Value,
-            _ => throw new ArgumentOutOfRangeException()
-        };
+        private bool CheckMinSpecificEnhancementsOwnedMaxLevel(MB_ObjectsManager objectsManager) =>
+            this.Mode switch {
+                E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsOwnedMaxLevel(this.Enhancement)
+                                     >= this.Value,
+                E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsOwnedMaxLevel(this.Enhancement) >= this.Value,
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
-        private bool CheckMaxSpecificEnhancementsOwnedMaxLevel(MB_ObjectsManager objectsManager) => this.Mode switch {
-            E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsOwnedMaxLevel(this.Enhancement) < this.Value,
-            E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsOwnedMaxLevel(this.Enhancement) < this.Value,
-            _ => throw new ArgumentOutOfRangeException()
-        };
+        private bool CheckMaxSpecificEnhancementsOwnedMaxLevel(MB_ObjectsManager objectsManager) =>
+            this.Mode switch {
+                E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsOwnedMaxLevel(this.Enhancement)
+                                     < this.Value,
+                E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsOwnedMaxLevel(this.Enhancement) < this.Value,
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
-        private bool CheckDashesPerformed(MB_ObjectsManager objectsManager) => this.Mode switch {
-            E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetDashes() >= this.Value,
-            E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetDashes() >= this.Value,
-            _ => throw new ArgumentOutOfRangeException()
-        };
+        private bool CheckDashesPerformed(MB_ObjectsManager objectsManager) =>
+            this.Mode switch {
+                E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetDashes() >= this.Value,
+                E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetDashes() >= this.Value,
+                _ => throw new ArgumentOutOfRangeException()
+            };
     }
 }

@@ -498,23 +498,24 @@ namespace Code.Characters.AI {
 
         private bool AreWallsBlockingSight(Vector2 direction) {
             return Physics2D.RaycastNonAlloc(
-                this.Enemy.transform.position,
-                direction,
-                this.RaycastHits,
-                direction.magnitude,
-                this.WallsLayer
-            )
-            != 0;
+                       this.Enemy.transform.position,
+                       direction,
+                       this.RaycastHits,
+                       direction.magnitude,
+                       this.WallsLayer
+                   )
+                   != 0;
         }
+
         private bool AreHolesBlockingSight(Vector2 direction) {
             return Physics2D.RaycastNonAlloc(
-                this.Enemy.transform.position,
-                direction,
-                this.RaycastHits,
-                direction.magnitude,
-                this.HolesLayer
-            )
-            != 0;
+                       this.Enemy.transform.position,
+                       direction,
+                       this.RaycastHits,
+                       direction.magnitude,
+                       this.HolesLayer
+                   )
+                   != 0;
         }
     }
 }

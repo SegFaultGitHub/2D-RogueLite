@@ -134,7 +134,7 @@ namespace Code.Spells {
 
         private void SetAngle(float angle) {
             this.Angle = angle;
-            this.Direction = SC_Utils.Rotate(new Vector2(this.Distance, 0), this.TrueAngle);
+            this.Direction = SC_Utils.Rotate(new Vector2(1, 0), this.TrueAngle);
             this.transform.position = this.Follow.position.ToVector2() + SC_Utils.Rotate(new Vector2(this.Distance, 0), this.TrueAngle);
 
             switch (this.DirectionType) {

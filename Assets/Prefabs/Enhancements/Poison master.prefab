@@ -48,6 +48,43 @@ MonoBehaviour:
   m_MaxLevel: 3
   m_Description: Heals you for <ratio> of all poison damage dealt
   m_Sprite: {fileID: 21300000, guid: fc04515bf688b1d409025d4c7a9a6dcb, type: 3}
+  m_UnlockCondition:
+    m_Condition: 1
+    m_Predicate:
+      m_Mode: 0
+      m_Predicate: 0
+      m_Value: 0
+      m_Enemy: 0
+      m_Source: 0
+      m_Enhancement: 0
+    m_Or:
+      m_Conditions: []
+    m_And:
+      m_Conditions:
+      - m_Condition: 0
+        m_Predicate:
+          m_Mode: 1
+          m_Predicate: 8
+          m_Value: 1000
+          m_Enemy: 0
+          m_Source: 3
+          m_Enhancement: 0
+        m_Or:
+          m_Conditions: []
+        m_And:
+          m_Conditions: []
+      - m_Condition: 0
+        m_Predicate:
+          m_Mode: 0
+          m_Predicate: 21
+          m_Value: 1
+          m_Enemy: 0
+          m_Source: 0
+          m_Enhancement: 5
+        m_Or:
+          m_Conditions: []
+        m_And:
+          m_Conditions: []
   m_Level: 0
   m_Data:
   - m_Ratio: 0.2

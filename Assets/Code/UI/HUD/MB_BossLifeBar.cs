@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace Code.UI.HUD {
     public class MB_BossLifeBar : MB_ProgressBar {
-
         #region Members
         [Foldout("MB_BossLifeBar", true)]
         [SerializeField] private protected TMP_Text m_BossNameText;

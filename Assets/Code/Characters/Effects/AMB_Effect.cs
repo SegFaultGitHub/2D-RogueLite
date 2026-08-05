@@ -75,7 +75,14 @@ namespace Code.Characters.Effects {
             value;
 
         public virtual void ApplyOnDamageTaken(AMB_Character dealer, AMB_Character receiver, E_DamageSource damageSource, float value) { }
-        public virtual void ApplyOnDamageInflicted(AMB_Character dealer, AMB_Character receiver, E_DamageSource damageSource, float value) { }
+
+        public virtual void ApplyOnDamageInflicted(
+            AMB_Character dealer,
+            AMB_Character receiver,
+            E_DamageSource damageSource,
+            float value
+        ) { }
+
         public virtual float ApplyToMovementSpeed(AMB_Character character, float speed) => speed;
 
         public virtual float GetComputedDamageModifier(

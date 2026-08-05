@@ -57,7 +57,9 @@ namespace Code.Characters {
                             float delay = this.RandomDelay
                                 ? Random.Range(this.DelayRange.Min, this.DelayRange.Max)
                                 : this.Delay;
-                            this.InSeconds(delay, () => {
+                            this.InSeconds(
+                                delay,
+                                () => {
                                     this.ObjectsManager.AudioManager.PlaySpawnerStart();
                                     this.Animator.SetTrigger(RUN);
                                 }

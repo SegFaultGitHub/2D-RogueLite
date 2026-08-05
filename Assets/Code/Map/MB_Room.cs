@@ -280,7 +280,8 @@ namespace Code.Map {
 
         private void TryMoveToNextRoom() {
             if (this.IsEmpty) {
-                this.InSeconds(0, this.ObjectsManager.RoomManager.NextRoom);
+                // this.InSeconds(1, this.ObjectsManager.RoomManager.NextRoom);
+                this.InSeconds(1, () => this.ObjectsManager.EnhancementsManager.GetChoices(3, 1, 3));
             }
         }
 

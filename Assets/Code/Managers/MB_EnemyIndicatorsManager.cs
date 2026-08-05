@@ -44,11 +44,7 @@ namespace Code.Managers {
                     (shaderPosition.x < 0 || shaderPosition.x > 1 || shaderPosition.y < 0 || shaderPosition.y > 1)
                     && !this.ObjectsManager.Player.VisualEffects.IsBlind
                 );
-                (Vector2 position, float angle) = GetCoordinates(
-                    rect.rect.width,
-                    rect.rect.height,
-                    enemyPosition - cameraPosition
-                );
+                (Vector2 position, float angle) = GetCoordinates(rect.rect.width, rect.rect.height, enemyPosition - cameraPosition);
                 enemyIndicator.transform.localPosition = position;
                 enemyIndicator.SetAngle(angle);
                 // enemyIndicator.SetDirection(enemyPosition - playerPosition);

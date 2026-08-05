@@ -274,7 +274,8 @@ namespace Code.Managers {
             public int GetEnhancementsTaken() => this.EnhancementData.Sum(e => e.Taken);
 
             public int GetEnhancementsTaken(E_Enhancement enhancement) {
-                C_EnhancementData enhancementData = this.EnhancementData.FirstOrDefault(enhancementData => enhancementData.Enhancement == enhancement);
+                C_EnhancementData enhancementData =
+                    this.EnhancementData.FirstOrDefault(enhancementData => enhancementData.Enhancement == enhancement);
                 if (enhancementData == null) {
                     enhancementData = new C_EnhancementData(enhancement);
                     this.EnhancementData.Add(enhancementData);
@@ -286,7 +287,8 @@ namespace Code.Managers {
             public int GetEnhancementsMaxLevelReached() => this.EnhancementData.Max(enhancementData => enhancementData.MaxLevelReached);
 
             public int GetEnhancementsMaxLevelReached(E_Enhancement enhancement) {
-                C_EnhancementData enhancementData = this.EnhancementData.FirstOrDefault(enhancementData => enhancementData.Enhancement == enhancement);
+                C_EnhancementData enhancementData =
+                    this.EnhancementData.FirstOrDefault(enhancementData => enhancementData.Enhancement == enhancement);
                 if (enhancementData == null) {
                     enhancementData = new C_EnhancementData(enhancement);
                     this.EnhancementData.Add(enhancementData);
@@ -298,7 +300,8 @@ namespace Code.Managers {
             public int GetEnhancementsMaxOwned() => this.EnhancementData.Max(enhancementData => enhancementData.MaxOwned);
 
             public int GetEnhancementsMaxOwned(E_Enhancement enhancement) {
-                C_EnhancementData enhancementData = this.EnhancementData.FirstOrDefault(enhancementData => enhancementData.Enhancement == enhancement);
+                C_EnhancementData enhancementData =
+                    this.EnhancementData.FirstOrDefault(enhancementData => enhancementData.Enhancement == enhancement);
                 if (enhancementData == null) {
                     enhancementData = new C_EnhancementData(enhancement);
                     this.EnhancementData.Add(enhancementData);
@@ -310,7 +313,8 @@ namespace Code.Managers {
             public int GetEnhancementsOwnedMaxLevel() => this.EnhancementData.Max(enhancementData => enhancementData.OwnedMaxLevel);
 
             public int GetEnhancementsOwnedMaxLevel(E_Enhancement enhancement) {
-                C_EnhancementData enhancementData = this.EnhancementData.FirstOrDefault(enhancementData => enhancementData.Enhancement == enhancement);
+                C_EnhancementData enhancementData =
+                    this.EnhancementData.FirstOrDefault(enhancementData => enhancementData.Enhancement == enhancement);
                 if (enhancementData == null) {
                     enhancementData = new C_EnhancementData(enhancement);
                     this.EnhancementData.Add(enhancementData);

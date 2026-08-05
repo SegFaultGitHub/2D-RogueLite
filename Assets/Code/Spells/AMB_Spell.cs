@@ -62,10 +62,7 @@ namespace Code.Spells {
         protected AMB_Character Character { get => this.m_Character; private set => this.m_Character = value; }
         protected MB_DestroyOnAnimationEvent Destroyer { get => this.m_Destroyer; private set => this.m_Destroyer = value; }
 
-        private MB_CharacterStats BackupCharacterStats {
-            get => this.m_BackupCharacterStats;
-            set => this.m_BackupCharacterStats = value;
-        }
+        private MB_CharacterStats BackupCharacterStats { get => this.m_BackupCharacterStats; set => this.m_BackupCharacterStats = value; }
 
         protected CollectionWrapperList<AMB_Character> AffectedCharacters { get => this.m_AffectedCharacters; }
         #endregion

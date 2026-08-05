@@ -67,7 +67,7 @@ namespace Code.UI.HUD {
         }
 
         public static string Name(this string s) =>
-            s.VOffset(height: 2, delay: 0, offset: 0.0625f, duration: 0.25f, loop: true, loopDelay: 5, progressive: true);
+            s.VOffset(height: 2, delay: 0, offset: 0.0625f, duration: 0.25f, loop: true, loopDelay: 5, progressive: false);
 
         public static string PositiveEffect(this string s) =>
             s //

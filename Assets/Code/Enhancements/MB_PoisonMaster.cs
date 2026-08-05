@@ -56,7 +56,12 @@ namespace Code.Enhancements {
             return this.Description.Replace("<ratio>", ratioString);
         }
 
-        public override void ApplyOnDamageInflicted(AMB_Character dealer, AMB_Character receiver, E_DamageSource damageSource, float value) {
+        public override void ApplyOnDamageInflicted(
+            AMB_Character dealer,
+            AMB_Character receiver,
+            E_DamageSource damageSource,
+            float value
+        ) {
             if (damageSource != E_DamageSource.Poison) return;
 
             float heal = Mathf.Floor(this.GetData().Ratio * value);

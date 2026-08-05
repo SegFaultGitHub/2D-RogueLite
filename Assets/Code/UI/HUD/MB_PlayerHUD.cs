@@ -55,6 +55,7 @@ namespace Code.UI.HUD {
             for (int i = 0; i < AMB_Player.DEFAULT_MAX_ENHANCEMENTS; i++) {
                 this.AddEnhancementSlot();
             }
+
             this.HideEnhancement();
         }
 

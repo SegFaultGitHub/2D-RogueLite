@@ -16,7 +16,5 @@
             this.ObjectsManager.AudioManager.PlayNecromancerSummon();
         }
         #endregion
-
-        
     }
 }

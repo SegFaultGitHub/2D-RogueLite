@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Code.Enhancements;
 using Code.Managers;
@@ -17,6 +16,7 @@ namespace Code.UI.HUD {
 
         [Separator("Read only")]
         [ReadOnly][SerializeField] private protected AMB_Enhancement m_Choice;
+        [ReadOnly][SerializeField] private protected bool m_Ready;
 
         [ReadOnly][SerializeField] private protected MB_ObjectsManager m_ObjectsManager;
         #endregion
@@ -26,6 +26,7 @@ namespace Code.UI.HUD {
         private GameObject Upgrade { get => this.m_Upgrade; }
 
         private AMB_Enhancement Choice { get => this.m_Choice; set => this.m_Choice = value; }
+        public bool Ready { get => this.m_Ready; set => this.m_Ready = value; }
 
         private MB_ObjectsManager ObjectsManager { get => this.m_ObjectsManager; set => this.m_ObjectsManager = value; }
         #endregion
@@ -36,6 +37,7 @@ namespace Code.UI.HUD {
         #region Unity methods
         private void Awake() {
             this.ObjectsManager = FindFirstObjectByType<MB_ObjectsManager>(FindObjectsInactive.Include);
+            this.Ready = false;
         }
         #endregion
 
@@ -63,13 +65,17 @@ namespace Code.UI.HUD {
         }
 
         public void OnPointerClick(PointerEventData eventData) {
+            if (!this.Ready) return;
+
             List<MB_EnhancementChoice> choices = FindObjectsByType<MB_EnhancementChoice>(FindObjectsSortMode.None).ToList();
             this.ObjectsManager.Player.AddEnhancement(this.Choice);
-            this.ObjectsManager.DissolveManager.Hide(choices.Select(choice => choice.transform).ToList(), () => { });
+            this.ObjectsManager.DissolveManager.Hide(new List<Transform> { this.transform.parent }, () => { });
             foreach (MB_EnhancementChoice choice in choices) {
                 if (choice != this) Destroy(choice.Choice.gameObject);
                 Destroy(choice.gameObject);
             }
+
+            this.ObjectsManager.RoomManager.NextRoom();
         }
     }
 }

@@ -17,9 +17,21 @@ namespace Code.Enhancements.UnlockConditions {
 
         private E_Condition Condition { get => this.m_Condition; }
 
-        private C_Predicate Predicate { get => this.Condition == E_Condition.Predicate ? this.m_Predicate : null; }
-        private C_Or Or { get => this.Condition == E_Condition.Or ? this.m_Or : null; }
-        private C_And And { get => this.Condition == E_Condition.And ? this.m_And : null; }
+        private C_Predicate Predicate {
+            get => this.Condition == E_Condition.Predicate
+                ? this.m_Predicate
+                : null;
+        }
+        private C_Or Or {
+            get => this.Condition == E_Condition.Or
+                ? this.m_Or
+                : null;
+        }
+        private C_And And {
+            get => this.Condition == E_Condition.And
+                ? this.m_And
+                : null;
+        }
 
         public bool Check(MB_ObjectsManager objectManager) {
             return this.Condition switch {

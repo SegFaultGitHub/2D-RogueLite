@@ -52,11 +52,11 @@ MonoBehaviour:
     m_Condition: 0
     m_Predicate:
       m_Mode: 0
-      m_Predicate: 0
-      m_Value: 0
+      m_Predicate: 21
+      m_Value: 2
       m_Enemy: 0
       m_Source: 0
-      m_Enhancement: 0
+      m_Enhancement: 1
     m_Or:
       m_Conditions: []
     m_And:

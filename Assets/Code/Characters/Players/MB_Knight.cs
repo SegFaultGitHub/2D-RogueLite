@@ -35,7 +35,13 @@ namespace Code.Characters.Players {
         }
 
         public void ShowSword() {
-            this.SwordBox.localEulerAngles = new Vector3(0, 0, this.SwordDirection ? SWORD_ANGLE : -SWORD_ANGLE);
+            this.SwordBox.localEulerAngles = new Vector3(
+                0,
+                0,
+                this.SwordDirection
+                    ? SWORD_ANGLE
+                    : -SWORD_ANGLE
+            );
             this.Sword.gameObject.SetActive(true);
         }
 

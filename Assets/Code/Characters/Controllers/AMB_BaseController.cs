@@ -70,10 +70,12 @@ namespace Code.Characters.Controllers {
 
         public float AimAngle { get => Vector2.SignedAngle(Vector2.right, this.AimDirection); }
 
-        private int DisabledCharacterCollisionStack { get => this.m_DisabledCharacterCollisionStack;
+        private int DisabledCharacterCollisionStack {
+            get => this.m_DisabledCharacterCollisionStack;
             set => this.m_DisabledCharacterCollisionStack = value;
         }
-        private int DisabledSpellCollisionStack { get => this.m_DisabledSpellCollisionStack;
+        private int DisabledSpellCollisionStack {
+            get => this.m_DisabledSpellCollisionStack;
             set => this.m_DisabledSpellCollisionStack = value;
         }
         #endregion

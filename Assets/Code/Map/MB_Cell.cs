@@ -198,16 +198,16 @@ namespace Code.Map {
             if (this.HasObstacle) {
                 sequence.Join(
                         DOTween.To( //
-                                () => 0f,
-                                a => this.ObstacleSprite.color = new Color(
-                                    this.ObstacleSprite.color.r,
-                                    this.ObstacleSprite.color.g,
-                                    this.ObstacleSprite.color.b,
-                                    a
-                                ),
-                                1f,
-                                duration
-                            )
+                            () => 0f,
+                            a => this.ObstacleSprite.color = new Color(
+                                this.ObstacleSprite.color.r,
+                                this.ObstacleSprite.color.g,
+                                this.ObstacleSprite.color.b,
+                                a
+                            ),
+                            1f,
+                            duration
+                        )
                     )
                     .Join(
                         DOTween.To( //

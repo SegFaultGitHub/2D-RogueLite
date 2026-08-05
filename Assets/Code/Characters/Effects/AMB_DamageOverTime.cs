@@ -36,7 +36,8 @@ namespace Code.Characters.Effects {
 
         private void DealDamage() {
             for (int i = 0; i < this.TickCount; i++) {
-                this.InSeconds((i + 1) * this.TickInterval,
+                this.InSeconds(
+                    (i + 1) * this.TickInterval,
                     () => {
                         this.Character.TakeDamage(
                             becomeInvulnerable: false,
@@ -46,7 +47,8 @@ namespace Code.Characters.Effects {
                             from: this.From,
                             source: this.DamageSource
                         );
-                    });
+                    }
+                );
             }
 
             this.InSeconds((this.TickCount + 1) * this.TickInterval, () => this.Character.RemoveEffect(this));

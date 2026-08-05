@@ -17,7 +17,5 @@ namespace Code.UI.HUD {
 
         #region Unity methods
         #endregion
-
-
     }
 }

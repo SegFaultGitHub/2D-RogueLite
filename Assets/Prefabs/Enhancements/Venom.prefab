@@ -49,6 +49,19 @@ MonoBehaviour:
   m_Description: Inflicts a poison that deals <damage> damage when you deal direct
     damage
   m_Sprite: {fileID: 21300000, guid: 36b8cbbf1a131e84188724aa8c4289bb, type: 3}
+  m_UnlockCondition:
+    m_Condition: 0
+    m_Predicate:
+      m_Mode: 0
+      m_Predicate: 21
+      m_Value: 1
+      m_Enemy: 0
+      m_Source: 0
+      m_Enhancement: 7
+    m_Or:
+      m_Conditions: []
+    m_And:
+      m_Conditions: []
   m_Level: 0
   m_Data:
   - m_DamagePerTick: 1

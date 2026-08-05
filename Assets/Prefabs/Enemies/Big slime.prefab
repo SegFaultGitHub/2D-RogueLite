@@ -404,7 +404,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Code.Characters.Enemies.MB_BigSlime
   m_Center: {fileID: 8016412074800327169}
   m_EffectsParent: {fileID: 4947914314283401495}
-  m_Knockbackable: 0
+  m_Knockbackable: 1
   m_SpellSource: {fileID: 8016412074800327169}
   m_CastDistance: 0
   m_VisualEffects: {fileID: 692093567910109714}
@@ -414,14 +414,19 @@ MonoBehaviour:
   m_CharacterStats: {fileID: 0}
   m_Effects:
     Value: []
+  m_Dead: 0
   m_Invulnerable: 0
   m_SpeedRatio:
     Value: []
+  m_IsABoss: 0
   m_LifeBar: {fileID: 2646068287276734416}
+  m_BossName: 
   m_DisappearAnimation: {fileID: 2443055523485361720, guid: 2607b7d6104a8fa4ba180adb2577999a, type: 3}
   m_FOVSize: 0
   m_EnemyController: {fileID: 0}
   m_AI: {fileID: 0}
+  m_Summons:
+    Value: []
   m_IsSummon: 0
   m_Summoner: {fileID: 0}
   m_Room: {fileID: 0}

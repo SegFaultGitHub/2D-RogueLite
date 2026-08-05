@@ -69,7 +69,7 @@ namespace Code.Managers {
         public void GetChoices() => this.GetChoices(3, 1, 3);
 
         public void GetChoices(int count, int minLevel, int maxLevel) {
-            List<C_WeightedObject<AMB_Enhancement>> unlockedEnhancements = new List<C_WeightedObject<AMB_Enhancement>>();
+            List<C_WeightedObject<AMB_Enhancement>> unlockedEnhancements = new();
             foreach (MB_Enhancement enhancement in this.Enhancements) {
                 if (enhancement.Unlocked
                     && enhancement.Weight > 0
@@ -86,14 +86,34 @@ namespace Code.Managers {
             if (unlockedEnhancements.Count == 0) return;
 
             List<C_WeightedObject<AMB_Enhancement>> enhancements = SC_Utils.Sample(unlockedEnhancements, count);
-
+            List<MB_EnhancementChoice> enhancementChoices = new();
             foreach (C_WeightedObject<AMB_Enhancement> weightedObject in enhancements) {
                 AMB_Enhancement newEnhancement = Instantiate(weightedObject.Obj, this.transform);
                 newEnhancement.Level = Random.Range(minLevel, maxLevel + 1);
                 AMB_Enhancement existingEnhancement = this.ObjectsManager.Player.GetUpgradableEnhancement(newEnhancement);
-                MB_EnhancementChoice ec = Instantiate(this.EnhancementChoicePrefab, this.HUDCanvas);
-                ec.SetEnhancement(newEnhancement, existingEnhancement);
+                MB_EnhancementChoice choice = Instantiate(this.EnhancementChoicePrefab, this.HUDCanvas);
+                choice.SetEnhancement(newEnhancement, existingEnhancement);
+                enhancementChoices.Add(choice);
             }
+
+            enhancementChoices.ForEach(e => e.gameObject.SetActive(false));
+            this.InUpdates(
+                1,
+                () => {
+                    enhancementChoices.ForEach(e => e.gameObject.SetActive(true));
+                    this.ObjectsManager.DissolveManager.Show(
+                        new List<Transform> { this.HUDCanvas },
+                        () => {
+                            enhancementChoices.ForEach(e => {
+                                    e.gameObject.SetActive(true);
+                                    e.Ready = true;
+                                }
+                            );
+                        }
+                    );
+                    enhancementChoices.ForEach(e => e.gameObject.SetActive(false));
+                }
+            );
         }
     }
 }
