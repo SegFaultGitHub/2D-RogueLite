@@ -67,6 +67,7 @@ namespace Code.UI.HUD {
             this.ObjectsManager.Player.AddEnhancement(this.Choice);
             this.ObjectsManager.DissolveManager.Hide(choices.Select(choice => choice.transform).ToList(), () => { });
             foreach (MB_EnhancementChoice choice in choices) {
+                if (choice != this) Destroy(choice.Choice.gameObject);
                 Destroy(choice.gameObject);
             }
         }

@@ -360,7 +360,7 @@ namespace Code.Managers {
             if (!this.SkipGlobalSave) {
                 this.GlobalStats.AddKilled(enemy);
                 SC_Serializer.WriteGlobalStats(this.GlobalStats);
-                this.ObjectsManager.UnlockManager.CheckUnlocks();
+                this.ObjectsManager.EnhancementsManager.CheckUnlocks();
             }
         }
 
@@ -369,7 +369,7 @@ namespace Code.Managers {
             if (!this.SkipGlobalSave) {
                 this.GlobalStats.AddKilledBy(enemy);
                 SC_Serializer.WriteGlobalStats(this.GlobalStats);
-                this.ObjectsManager.UnlockManager.CheckUnlocks();
+                this.ObjectsManager.EnhancementsManager.CheckUnlocks();
             }
         }
 
@@ -378,7 +378,7 @@ namespace Code.Managers {
             if (!this.SkipGlobalSave) {
                 this.GlobalStats.AddDamageDealt(enemy, value, source);
                 SC_Serializer.WriteGlobalStats(this.GlobalStats);
-                this.ObjectsManager.UnlockManager.CheckUnlocks();
+                this.ObjectsManager.EnhancementsManager.CheckUnlocks();
             }
         }
 
@@ -387,7 +387,7 @@ namespace Code.Managers {
             if (!this.SkipGlobalSave) {
                 this.GlobalStats.AddDamageReceived(enemy, value, source);
                 SC_Serializer.WriteGlobalStats(this.GlobalStats);
-                this.ObjectsManager.UnlockManager.CheckUnlocks();
+                this.ObjectsManager.EnhancementsManager.CheckUnlocks();
             }
         }
 
@@ -396,7 +396,7 @@ namespace Code.Managers {
             if (!this.SkipGlobalSave) {
                 this.GlobalStats.AddEnhancementTaken(enhancement, level, owned, reachedMaxLevel);
                 SC_Serializer.WriteGlobalStats(this.GlobalStats);
-                this.ObjectsManager.UnlockManager.CheckUnlocks();
+                this.ObjectsManager.EnhancementsManager.CheckUnlocks();
             }
         }
 
@@ -405,7 +405,7 @@ namespace Code.Managers {
             if (!this.SkipGlobalSave) {
                 this.GlobalStats.AddDash();
                 SC_Serializer.WriteGlobalStats(this.GlobalStats);
-                this.ObjectsManager.UnlockManager.CheckUnlocks();
+                this.ObjectsManager.EnhancementsManager.CheckUnlocks();
             }
         }
         #endregion

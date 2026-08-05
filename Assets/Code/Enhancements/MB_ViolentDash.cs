@@ -50,8 +50,9 @@ namespace Code.Enhancements {
         public override string GetDescriptionWithUpgrade(int currentLevel, int newLevel) {
             float currentDamage = this.Data[currentLevel - 1].Damage;
             float newDamage = this.Data[newLevel - 1].Damage;
-            string damageString =
-                $"{SC_Utils.FormatNumber(currentDamage, decimals: 0).PositiveEffect()} > {SC_Utils.FormatNumber(newDamage, decimals: 0).PositiveEffect()}";
+            string before = $"{SC_Utils.FormatNumber(currentDamage, decimals: 0)}".PositiveEffect();
+            string after = $"{SC_Utils.FormatNumber(newDamage, decimals: 0)}".PositiveEffect();
+            string damageString = $"{before} > {after}";
             return this.Description.Replace("<damage>", damageString);
         }
 

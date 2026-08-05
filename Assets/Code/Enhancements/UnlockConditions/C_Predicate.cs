@@ -27,6 +27,14 @@ namespace Code.Enhancements.UnlockConditions {
             E_Predicate.MaxEnhancementsTaken,
             E_Predicate.MinSpecificEnhancementsTaken,
             E_Predicate.MaxSpecificEnhancementsTaken,
+            E_Predicate.MinEnhancementsOwned,
+            E_Predicate.MaxEnhancementsOwned,
+            E_Predicate.MinSpecificEnhancementsOwned,
+            E_Predicate.MaxSpecificEnhancementsOwned,
+            E_Predicate.MinEnhancementsOwnedMaxLevel,
+            E_Predicate.MaxEnhancementsOwnedMaxLevel,
+            E_Predicate.MinSpecificEnhancementsOwnedMaxLevel,
+            E_Predicate.MaxSpecificEnhancementsOwnedMaxLevel,
             E_Predicate.DashesPerformed
         )]
         [SerializeField] private int m_Value;
@@ -84,6 +92,10 @@ namespace Code.Enhancements.UnlockConditions {
                 E_Predicate.MinSpecificEnhancementsOwned => this.CheckMinSpecificEnhancementsOwned(objectsManager),
                 E_Predicate.MaxSpecificEnhancementsOwned => this.CheckMaxSpecificEnhancementsOwned(objectsManager),
                 E_Predicate.DashesPerformed => this.CheckDashesPerformed(objectsManager),
+                E_Predicate.MinEnhancementsOwnedMaxLevel => this.CheckMinEnhancementsOwnedMaxLevel(objectsManager),
+                E_Predicate.MaxEnhancementsOwnedMaxLevel => this.CheckMaxEnhancementsOwnedMaxLevel(objectsManager),
+                E_Predicate.MinSpecificEnhancementsOwnedMaxLevel => this.CheckMinSpecificEnhancementsOwnedMaxLevel(objectsManager),
+                E_Predicate.MaxSpecificEnhancementsOwnedMaxLevel => this.CheckMaxSpecificEnhancementsOwnedMaxLevel(objectsManager),
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
@@ -181,6 +193,30 @@ namespace Code.Enhancements.UnlockConditions {
         private bool CheckMaxSpecificEnhancementsOwned(MB_ObjectsManager objectsManager) => this.Mode switch {
             E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsMaxOwned(this.Enhancement) < this.Value,
             E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsMaxOwned(this.Enhancement) < this.Value,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+
+        private bool CheckMinEnhancementsOwnedMaxLevel(MB_ObjectsManager objectsManager) => this.Mode switch {
+            E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsOwnedMaxLevel() >= this.Value,
+            E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsOwnedMaxLevel() >= this.Value,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+
+        private bool CheckMaxEnhancementsOwnedMaxLevel(MB_ObjectsManager objectsManager) => this.Mode switch {
+            E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsOwnedMaxLevel() < this.Value,
+            E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsOwnedMaxLevel() < this.Value,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+
+        private bool CheckMinSpecificEnhancementsOwnedMaxLevel(MB_ObjectsManager objectsManager) => this.Mode switch {
+            E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsOwnedMaxLevel(this.Enhancement) >= this.Value,
+            E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsOwnedMaxLevel(this.Enhancement) >= this.Value,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+
+        private bool CheckMaxSpecificEnhancementsOwnedMaxLevel(MB_ObjectsManager objectsManager) => this.Mode switch {
+            E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetEnhancementsOwnedMaxLevel(this.Enhancement) < this.Value,
+            E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsOwnedMaxLevel(this.Enhancement) < this.Value,
             _ => throw new ArgumentOutOfRangeException()
         };
 

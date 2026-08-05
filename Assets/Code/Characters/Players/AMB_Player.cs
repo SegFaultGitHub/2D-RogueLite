@@ -117,22 +117,27 @@ namespace Code.Characters.Players {
         public override void PostInitialize() {
             this.ObjectsManager.PlayerHUD.SetHealth(this.CharacterStats.CurrentHealth, this.CharacterStats.MaxHealth);
 
-            foreach (AMB_Enhancement enhancement in this.m_TEMP_Enhancements) {
-                AMB_Enhancement e = Instantiate(enhancement);
-                e.Level = e.MaxLevel;
-                this.AddEnhancement(e);
+            this.InUpdates(
+                1,
+                () => {
+                    foreach (AMB_Enhancement enhancement in this.m_TEMP_Enhancements) {
+                        AMB_Enhancement e = Instantiate(enhancement);
+                        e.Level = e.MaxLevel - 1;
+                        this.AddEnhancement(e);
 
-                AMB_Enhancement ne = Instantiate(enhancement);
-                ne.Level = ne.MaxLevel;
-
-                if (this.CanAddEnhancement(ne)) {
-                    AMB_Enhancement ee = this.GetUpgradableEnhancement(ne);
-                    MB_EnhancementChoice ec = Instantiate(this.m_TEMP_EnhancementChoicePrefab, this.m_TEMP_HUDCanvas);
-                    ec.SetEnhancement(ne, ee);
-                } else {
-                    Destroy(ne.gameObject);
+                        // AMB_Enhancement ne = Instantiate(enhancement);
+                        // ne.Level = ne.MaxLevel;
+                        //
+                        // if (this.CanAddEnhancement(ne)) {
+                        //     AMB_Enhancement ee = this.GetUpgradableEnhancement(ne);
+                        //     MB_EnhancementChoice ec = Instantiate(this.m_TEMP_EnhancementChoicePrefab, this.m_TEMP_HUDCanvas);
+                        //     ec.SetEnhancement(ne, ee);
+                        // } else {
+                        //     Destroy(ne.gameObject);
+                        // }
+                    }
                 }
-            }
+            );
         }
 
         public void Hide() {

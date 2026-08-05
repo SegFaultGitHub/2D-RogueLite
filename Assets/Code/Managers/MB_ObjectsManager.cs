@@ -5,6 +5,7 @@ using Code.UI.Damage;
 using Code.UI.HUD;
 using MyBox;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Code.Managers {
     public class MB_ObjectsManager : MonoBehaviour {
@@ -26,7 +27,8 @@ namespace Code.Managers {
         [SerializeField] private protected MB_RoomManager m_RoomManager;
         [SerializeField] private protected MB_ScreenshotManager m_ScreenshotManager;
         [SerializeField] private protected MB_StatsManager m_StatsManager;
-        [SerializeField] private protected MB_UnlockManager m_UnlockManager;
+        [FormerlySerializedAs("m_UnlockManager")]
+        [SerializeField] private protected MB_EnhancementsManager m_EnhancementsManager;
         #endregion
 
         #region UI
@@ -55,7 +57,7 @@ namespace Code.Managers {
         public MB_RoomManager RoomManager { get => this.m_RoomManager; }
         public MB_ScreenshotManager ScreenshotManager { get => this.m_ScreenshotManager; }
         public MB_StatsManager StatsManager { get => this.m_StatsManager; }
-        public MB_UnlockManager UnlockManager { get => this.m_UnlockManager; }
+        public MB_EnhancementsManager EnhancementsManager { get => this.m_EnhancementsManager; }
         #endregion
 
         #region UI
@@ -85,7 +87,7 @@ namespace Code.Managers {
             this.RoomManager.ObjectsManager = this;
             this.ScreenshotManager.ObjectsManager = this;
             this.StatsManager.ObjectsManager = this;
-            this.UnlockManager.ObjectsManager = this;
+            this.EnhancementsManager.ObjectsManager = this;
 
             this.MainCamera.ObjectsManager = this;
             this.TransitionManager.ObjectsManager = this;
@@ -104,7 +106,7 @@ namespace Code.Managers {
             this.RoomManager.Initialize();
             this.ScreenshotManager.Initialize();
             this.StatsManager.Initialize();
-            this.UnlockManager.Initialize();
+            this.EnhancementsManager.Initialize();
 
             this.MainCamera.Initialize();
             this.TransitionManager.Initialize();
@@ -122,7 +124,7 @@ namespace Code.Managers {
             this.RoomManager.PostInitialize();
             this.ScreenshotManager.PostInitialize();
             this.StatsManager.PostInitialize();
-            this.UnlockManager.PostInitialize();
+            this.EnhancementsManager.PostInitialize();
 
             this.MainCamera.PostInitialize();
             this.TransitionManager.PostInitialize();
