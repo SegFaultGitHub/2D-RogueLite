@@ -40,27 +40,43 @@ namespace Code.Enhancements {
 
         public override string GetFullDescription() {
             string[] damages = new string[this.MaxLevel];
+            string[] durations = new string[this.MaxLevel];
             for (int i = 0; i < this.MaxLevel; i++) {
                 damages[i] = SC_Utils.FormatNumber(this.Data[i].DamagePerTick * this.Data[i].TickCount, decimals: 0);
+                durations[i] = SC_Utils.FormatNumber(this.Data[i].TickCount * MB_Poison.TICK_INTERVAL, decimals: 1);
             }
 
             string damageString = damages.AsList(this.EffectiveLevel, s => s.Green());
-            return this.Description.Replace("<damage>", damageString);
+            string durationString = durations.AsList(this.EffectiveLevel, s => s.Green());
+            return this.Description
+                .Replace("<damage>", damageString)
+                .Replace("<duration>", durationString);
         }
 
         public override string GetDescriptionWithUpgrade(int currentLevel, int newLevel) {
             float currentDamage = this.Data[currentLevel - 1].TickCount * this.Data[currentLevel - 1].DamagePerTick;
             float newDamage = this.Data[newLevel - 1].TickCount * this.Data[newLevel - 1].DamagePerTick;
-            string before = $"{SC_Utils.FormatNumber(currentDamage, decimals: 0)}".PositiveEffect();
-            string after = $"{SC_Utils.FormatNumber(newDamage, decimals: 0)}".PositiveEffect();
-            string damageString = $"{before} > {after}";
-            return this.Description.Replace("<damage>", damageString);
+            string beforeDamageString = $"{SC_Utils.FormatNumber(currentDamage, decimals: 0)}".PositiveEffect();
+            string afterDamageString = $"{SC_Utils.FormatNumber(newDamage, decimals: 0)}".PositiveEffect();
+            float currentDuration = this.Data[currentLevel - 1].TickCount * MB_Poison.TICK_INTERVAL;
+            float newDuration = this.Data[newLevel - 1].TickCount * MB_Poison.TICK_INTERVAL;
+            string beforeDurationString = $"{SC_Utils.FormatNumber(currentDuration, decimals: 1)}".PositiveEffect();
+            string afterDurationString = $"{SC_Utils.FormatNumber(newDuration, decimals: 1)}".PositiveEffect();
+            string damageString = $"{beforeDamageString} > {afterDamageString}";
+            string durationString = $"{beforeDurationString} > {afterDurationString}";
+            return this.Description
+                .Replace("<damage>", damageString)
+                .Replace("<duration>", durationString);
         }
 
         public override string GetDescription() {
             float damage = this.GetData().DamagePerTick * this.GetData().TickCount;
             string damageString = SC_Utils.FormatNumber(damage, decimals: 0).PositiveEffect();
-            return this.Description.Replace("<damage>", damageString);
+            float duration = this.GetData().TickCount * MB_Poison.TICK_INTERVAL;
+            string durationString = SC_Utils.FormatNumber(duration, decimals: 1).PositiveEffect();
+            return this.Description
+                .Replace("<damage>", damageString)
+                .Replace("<duration>", durationString);
         }
 
         public override void ApplyOnDamageInflicted(

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Code.Enhancements;
 using Code.Managers;
@@ -25,10 +26,12 @@ namespace Code.UI.HUD {
         private GameObject New { get => this.m_New; }
         private GameObject Upgrade { get => this.m_Upgrade; }
 
-        private AMB_Enhancement Choice { get => this.m_Choice; set => this.m_Choice = value; }
+        public AMB_Enhancement Choice { get => this.m_Choice; set => this.m_Choice = value; }
         public bool Ready { get => this.m_Ready; set => this.m_Ready = value; }
 
         private MB_ObjectsManager ObjectsManager { get => this.m_ObjectsManager; set => this.m_ObjectsManager = value; }
+
+        public Action OnClickAction { get; set; }
         #endregion
 
         #region Static / Readonly / Const
@@ -67,15 +70,14 @@ namespace Code.UI.HUD {
         public void OnPointerClick(PointerEventData eventData) {
             if (!this.Ready) return;
 
-            List<MB_EnhancementChoice> choices = FindObjectsByType<MB_EnhancementChoice>(FindObjectsSortMode.None).ToList();
+            List<MB_EnhancementChoice> choices = this.transform.parent.GetComponentsInChildren<MB_EnhancementChoice>(true).ToList();
             this.ObjectsManager.Player.AddEnhancement(this.Choice);
-            this.ObjectsManager.DissolveManager.Hide(new List<Transform> { this.transform.parent }, () => { });
+            this.ObjectsManager.DissolveManager.Hide(this.transform.parent, this.OnClickAction);
             foreach (MB_EnhancementChoice choice in choices) {
+                choice.Ready = false;
                 if (choice != this) Destroy(choice.Choice.gameObject);
                 Destroy(choice.gameObject);
             }
-
-            this.ObjectsManager.RoomManager.NextRoom();
         }
     }
 }

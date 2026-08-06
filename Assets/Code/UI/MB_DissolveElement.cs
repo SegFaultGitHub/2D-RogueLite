@@ -51,6 +51,7 @@ namespace Code.UI {
                 )
                 .OnComplete(() => {
                         action();
+                        (this.RawImage.texture as RenderTexture)?.Release();
                         Destroy(this.RawImage.texture);
                         Destroy(this.gameObject);
                     }
@@ -66,6 +67,7 @@ namespace Code.UI {
                 )
                 .OnComplete(() => {
                         action();
+                        (this.RawImage.texture as RenderTexture)?.Release();
                         Destroy(this.RawImage.texture);
                         Destroy(this.gameObject);
                     }

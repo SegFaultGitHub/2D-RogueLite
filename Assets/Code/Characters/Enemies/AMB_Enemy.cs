@@ -78,7 +78,7 @@ namespace Code.Characters.Enemies {
                 this.ObjectsManager.BossLifeBar.ForceSetRatio(1);
                 this.ObjectsManager.BossLifeBar.SetBossName(this.BossName);
                 this.ObjectsManager.DissolveManager.Show(
-                    new List<Transform> { this.ObjectsManager.BossLifeBar.transform },
+                    this.ObjectsManager.BossLifeBar.transform,
                     () => this.ObjectsManager.BossLifeBar.gameObject.SetActive(true)
                 );
             } else {
@@ -114,7 +114,7 @@ namespace Code.Characters.Enemies {
 
             if (this.IsABoss) {
                 this.LifeBar.ForceSetRatio(0);
-                this.ObjectsManager.DissolveManager.Hide(new List<Transform> { this.ObjectsManager.BossLifeBar.transform }, () => { });
+                this.ObjectsManager.DissolveManager.Hide(this.ObjectsManager.BossLifeBar.transform, () => { });
                 this.LifeBar.gameObject.SetActive(false);
             }
 

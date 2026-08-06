@@ -6,6 +6,7 @@ using Code.UI.HUD;
 using Code.Utils;
 using MyBox;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace Code.Managers {
@@ -27,7 +28,8 @@ namespace Code.Managers {
         [Foldout("MB_EnhancementsManager", true)]
         [SerializeField] private List<MB_Enhancement> m_Enhancements;
         [SerializeField] private MB_EnhancementChoice m_EnhancementChoicePrefab;
-        [SerializeField] private Transform m_HUDCanvas;
+        [FormerlySerializedAs("m_HUDCanvas")]
+        [SerializeField] private Transform m_ChoicesParent;
 
         [Separator("Read only")]
         [ReadOnly][SerializeField] private protected MB_ObjectsManager m_ObjectsManager;
@@ -36,7 +38,7 @@ namespace Code.Managers {
         #region Getters / Setters
         private List<MB_Enhancement> Enhancements { get => this.m_Enhancements; }
         private MB_EnhancementChoice EnhancementChoicePrefab { get => this.m_EnhancementChoicePrefab; }
-        private Transform HUDCanvas { get => this.m_HUDCanvas; }
+        private Transform ChoicesParent { get => this.m_ChoicesParent; }
 
         public MB_ObjectsManager ObjectsManager { get => this.m_ObjectsManager; set => this.m_ObjectsManager = value; }
         #endregion
@@ -91,29 +93,40 @@ namespace Code.Managers {
                 AMB_Enhancement newEnhancement = Instantiate(weightedObject.Obj, this.transform);
                 newEnhancement.Level = Random.Range(minLevel, maxLevel + 1);
                 AMB_Enhancement existingEnhancement = this.ObjectsManager.Player.GetUpgradableEnhancement(newEnhancement);
-                MB_EnhancementChoice choice = Instantiate(this.EnhancementChoicePrefab, this.HUDCanvas);
+                MB_EnhancementChoice choice = Instantiate(this.EnhancementChoicePrefab, this.ChoicesParent);
                 choice.SetEnhancement(newEnhancement, existingEnhancement);
+                choice.OnClickAction = this.ObjectsManager.RoomManager.NextRoom;
                 enhancementChoices.Add(choice);
             }
 
-            enhancementChoices.ForEach(e => e.gameObject.SetActive(false));
-            this.InUpdates(
-                1,
+            this.ObjectsManager.DissolveManager.Show(
+                this.ChoicesParent,
                 () => {
-                    enhancementChoices.ForEach(e => e.gameObject.SetActive(true));
-                    this.ObjectsManager.DissolveManager.Show(
-                        new List<Transform> { this.HUDCanvas },
-                        () => {
-                            enhancementChoices.ForEach(e => {
-                                    e.gameObject.SetActive(true);
-                                    e.Ready = true;
-                                }
-                            );
+                    enhancementChoices.ForEach(
+                        e => {
+                            e.gameObject.SetActive(true);
+                            e.Ready = true;
                         }
                     );
-                    enhancementChoices.ForEach(e => e.gameObject.SetActive(false));
                 }
             );
+            enhancementChoices.ForEach(e => e.gameObject.SetActive(false));
+        }
+
+        [ButtonMethod]
+        public void Reroll() => this.Reroll(3, 1, 3);
+
+        public void Reroll(int count, int minLevel, int maxLevel) {
+            List<MB_EnhancementChoice> choices = this.ChoicesParent.GetComponentsInChildren<MB_EnhancementChoice>(true).ToList();
+            this.ObjectsManager.DissolveManager.Hide(
+                this.ChoicesParent,
+                () => this.InSeconds(.5f, () => this.GetChoices(count, minLevel, maxLevel))
+            );
+            foreach (MB_EnhancementChoice choice in choices) {
+                choice.Ready = false;
+                Destroy(choice.Choice.gameObject);
+                Destroy(choice.gameObject);
+            }
         }
     }
 }

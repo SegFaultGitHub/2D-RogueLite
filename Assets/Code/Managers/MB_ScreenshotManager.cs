@@ -5,6 +5,7 @@ using Code.Serializer;
 using MyBox;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.RenderGraphModule;
 
 namespace Code.Managers {
     public class MB_ScreenshotManager : MonoBehaviour {
@@ -140,6 +141,7 @@ namespace Code.Managers {
         private void Resize(Camera renderCamera, RenderTexture renderTexture) {
             renderCamera.orthographicSize = this.ObjectsManager.MainCamera.Camera.orthographicSize;
             renderTexture.Release();
+            Debug.Log(Screen.width + " x " + Screen.height);
             renderTexture.width = Screen.width;
             renderTexture.height = Screen.height;
             renderTexture.Create();
