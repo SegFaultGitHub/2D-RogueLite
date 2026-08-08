@@ -1101,6 +1101,7 @@ MonoBehaviour:
   m_New: {fileID: 9818383865677228}
   m_Upgrade: {fileID: 2702646328890620085}
   m_Choice: {fileID: 0}
+  m_Ready: 0
   m_ObjectsManager: {fileID: 0}
 --- !u!1 &8910845921697446307
 GameObject:

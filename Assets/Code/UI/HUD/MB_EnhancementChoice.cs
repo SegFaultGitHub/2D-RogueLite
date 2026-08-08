@@ -31,7 +31,8 @@ namespace Code.UI.HUD {
 
         private MB_ObjectsManager ObjectsManager { get => this.m_ObjectsManager; set => this.m_ObjectsManager = value; }
 
-        public Action OnClickAction { get; set; }
+        public Action OnClickStartAction { get; set; }
+        public Action OnClickEndAction { get; set; }
         #endregion
 
         #region Static / Readonly / Const
@@ -70,9 +71,10 @@ namespace Code.UI.HUD {
         public void OnPointerClick(PointerEventData eventData) {
             if (!this.Ready) return;
 
+            this.OnClickStartAction?.Invoke();
             List<MB_EnhancementChoice> choices = this.transform.parent.GetComponentsInChildren<MB_EnhancementChoice>(true).ToList();
             this.ObjectsManager.Player.AddEnhancement(this.Choice);
-            this.ObjectsManager.DissolveManager.Hide(this.transform.parent, this.OnClickAction);
+            this.ObjectsManager.DissolveManager.Hide(this.transform.parent, this.OnClickEndAction);
             foreach (MB_EnhancementChoice choice in choices) {
                 choice.Ready = false;
                 if (choice != this) Destroy(choice.Choice.gameObject);

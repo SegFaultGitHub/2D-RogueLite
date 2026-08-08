@@ -7,6 +7,7 @@ using Code.Utils;
 using MyBox;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 namespace Code.Managers {
@@ -30,20 +31,27 @@ namespace Code.Managers {
         [SerializeField] private MB_EnhancementChoice m_EnhancementChoicePrefab;
         [FormerlySerializedAs("m_HUDCanvas")]
         [SerializeField] private Transform m_ChoicesParent;
+        [SerializeField] private protected Button m_RerollButton;
 
         [Separator("Read only")]
         [ReadOnly][SerializeField] private protected MB_ObjectsManager m_ObjectsManager;
+        [ReadOnly][SerializeField] private protected int m_RerollsRemaining;
+        [ReadOnly][SerializeField] private protected bool m_Locked = true;
         #endregion
 
         #region Getters / Setters
         private List<MB_Enhancement> Enhancements { get => this.m_Enhancements; }
         private MB_EnhancementChoice EnhancementChoicePrefab { get => this.m_EnhancementChoicePrefab; }
         private Transform ChoicesParent { get => this.m_ChoicesParent; }
+        private Button RerollButton { get => this.m_RerollButton; set => this.m_RerollButton = value; }
 
         public MB_ObjectsManager ObjectsManager { get => this.m_ObjectsManager; set => this.m_ObjectsManager = value; }
+        private int RerollsRemaining { get => this.m_RerollsRemaining; set => this.m_RerollsRemaining = value; }
+        private bool Locked { get => this.m_Locked; set => this.m_Locked = value; }
         #endregion
 
         #region Static / Readonly / Const
+        private const int DEFAULT_REROLLS = 1;
         #endregion
 
         #region Unity methods
@@ -70,7 +78,17 @@ namespace Code.Managers {
         [ButtonMethod]
         public void GetChoices() => this.GetChoices(3, 1, 3);
 
-        public void GetChoices(int count, int minLevel, int maxLevel) {
+        public void GetChoices(int count, int minLevel, int maxLevel, bool first = false) {
+            if (first) {
+                this.RerollButton.gameObject.SetActive(true);
+                this.RerollsRemaining = DEFAULT_REROLLS;
+                this.UpdateRerollButton();
+                this.ObjectsManager.DissolveManager.Show(this.RerollButton.transform, () => {
+                    this.RerollButton.gameObject.SetActive(true);
+                });
+                this.RerollButton.gameObject.SetActive(false);
+            }
+            this.Locked = true;
             List<C_WeightedObject<AMB_Enhancement>> unlockedEnhancements = new();
             foreach (MB_Enhancement enhancement in this.Enhancements) {
                 if (enhancement.Unlocked
@@ -95,7 +113,15 @@ namespace Code.Managers {
                 AMB_Enhancement existingEnhancement = this.ObjectsManager.Player.GetUpgradableEnhancement(newEnhancement);
                 MB_EnhancementChoice choice = Instantiate(this.EnhancementChoicePrefab, this.ChoicesParent);
                 choice.SetEnhancement(newEnhancement, existingEnhancement);
-                choice.OnClickAction = this.ObjectsManager.RoomManager.NextRoom;
+                choice.OnClickStartAction = () => {
+                    this.ObjectsManager.DissolveManager.Hide(this.RerollButton.transform,
+                        () => this.RerollButton.gameObject.SetActive(false)
+                    );
+                    this.RerollButton.gameObject.SetActive(false);
+                };
+                choice.OnClickEndAction = () => {
+                    this.ObjectsManager.RoomManager.NextRoom();
+                };
                 enhancementChoices.Add(choice);
             }
 
@@ -106,6 +132,7 @@ namespace Code.Managers {
                         e => {
                             e.gameObject.SetActive(true);
                             e.Ready = true;
+                            this.Locked = false;
                         }
                     );
                 }
@@ -117,16 +144,25 @@ namespace Code.Managers {
         public void Reroll() => this.Reroll(3, 1, 3);
 
         public void Reroll(int count, int minLevel, int maxLevel) {
+            if (this.Locked || this.RerollsRemaining <= 0) return;
+
+            this.RerollsRemaining--;
+            this.UpdateRerollButton();
+            this.Locked = true;
             List<MB_EnhancementChoice> choices = this.ChoicesParent.GetComponentsInChildren<MB_EnhancementChoice>(true).ToList();
             this.ObjectsManager.DissolveManager.Hide(
                 this.ChoicesParent,
-                () => this.InSeconds(.5f, () => this.GetChoices(count, minLevel, maxLevel))
+                () => this.InSeconds(.125f, () => this.GetChoices(count, minLevel, maxLevel))
             );
             foreach (MB_EnhancementChoice choice in choices) {
                 choice.Ready = false;
                 Destroy(choice.Choice.gameObject);
                 Destroy(choice.gameObject);
             }
+        }
+
+        private void UpdateRerollButton() {
+            this.RerollButton.interactable = this.RerollsRemaining > 0;
         }
     }
 }

@@ -43,7 +43,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _NoiseScale: 0
-    - _OrthographicSize: 8.4375
+    - _OrthographicSize: 5.0521555
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Size: 0

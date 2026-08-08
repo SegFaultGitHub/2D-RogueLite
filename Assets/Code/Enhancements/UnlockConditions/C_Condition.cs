@@ -9,11 +9,11 @@ namespace Code.Enhancements.UnlockConditions {
         [SerializeField] private E_Condition m_Condition;
 
         [ConditionalField(nameof(m_Condition), false, E_Condition.Predicate)]
-        [SerializeField] private C_Predicate m_Predicate;
+        [SerializeReference] private C_Predicate m_Predicate = null;
         [ConditionalField(nameof(m_Condition), false, E_Condition.Or)]
-        [SerializeField] private C_Or m_Or;
+        [SerializeReference] private C_Or m_Or = null;
         [ConditionalField(nameof(m_Condition), false, E_Condition.And)]
-        [SerializeField] private C_And m_And;
+        [SerializeReference] private C_And m_And = null;
 
         private E_Condition Condition { get => this.m_Condition; }
 
