@@ -48,7 +48,7 @@ namespace Code.UI.HUD {
     }
 
     public static class SC_MB_EnhancementDescriptionExtensions {
-        public static string AsList(this string[] s, int level, Func<string, string> colorCurrent) {
+        public static string AsList(this string[] s, int level, string suffix, Func<string, string> colorCurrent) {
             string result = "[".Yellow();
 
             for (int i = 0; i < s.Length; i++) {
@@ -59,7 +59,7 @@ namespace Code.UI.HUD {
                     : s[i].Yellow();
             }
 
-            result += "]".Yellow();
+            result += $"]{suffix}".Yellow();
 
             return result //
                 .NoBreak()

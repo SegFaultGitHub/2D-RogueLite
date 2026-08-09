@@ -61,13 +61,13 @@ namespace Code.Managers {
 
         public void PostInitialize() {
             foreach (MB_Enhancement unlockEnhancement in this.Enhancements) {
-                unlockEnhancement.Unlocked = unlockEnhancement.Enhancement.UnlockCondition.Check(this.ObjectsManager);
+                unlockEnhancement.Unlocked = unlockEnhancement.Enhancement.UnlockCondition.CheckGlobal(this.ObjectsManager);
             }
         }
 
         public void CheckUnlocks() {
             foreach (MB_Enhancement unlockEnhancement in this.Enhancements.Where(unlockEnhancement => !unlockEnhancement.Unlocked)) {
-                unlockEnhancement.Unlocked = unlockEnhancement.Enhancement.UnlockCondition.Check(this.ObjectsManager);
+                unlockEnhancement.Unlocked = unlockEnhancement.Enhancement.UnlockCondition.CheckGlobal(this.ObjectsManager);
 
                 if (unlockEnhancement.Unlocked) {
                     Debug.Log($"{unlockEnhancement.Enhancement.EnhancementName} unlocked!");
@@ -89,13 +89,12 @@ namespace Code.Managers {
                 this.RerollButton.gameObject.SetActive(false);
             }
             this.Locked = true;
-            List<C_WeightedObject<AMB_Enhancement>> unlockedEnhancements = new();
+            List<C_WeightedObject<AMB_Enhancement>> availableEnhancements = new();
             foreach (MB_Enhancement enhancement in this.Enhancements) {
-                if (enhancement.Unlocked
-                    && enhancement.Weight > 0
+                if (enhancement.Weight > 0
                     && this.ObjectsManager.Player.CanAddEnhancement(enhancement.Enhancement)
                     && enhancement.Enhancement.UnlockCondition.Check(this.ObjectsManager))
-                    unlockedEnhancements.Add(
+                    availableEnhancements.Add(
                         new C_WeightedObject<AMB_Enhancement> {
                             Weight = enhancement.Weight,
                             Obj = enhancement.Enhancement
@@ -103,9 +102,9 @@ namespace Code.Managers {
                     );
             }
 
-            if (unlockedEnhancements.Count == 0) return;
+            if (availableEnhancements.Count == 0) return;
 
-            List<C_WeightedObject<AMB_Enhancement>> enhancements = SC_Utils.Sample(unlockedEnhancements, count);
+            List<C_WeightedObject<AMB_Enhancement>> enhancements = SC_Utils.Sample(availableEnhancements, count);
             List<MB_EnhancementChoice> enhancementChoices = new();
             foreach (C_WeightedObject<AMB_Enhancement> weightedObject in enhancements) {
                 AMB_Enhancement newEnhancement = Instantiate(weightedObject.Obj, this.transform);

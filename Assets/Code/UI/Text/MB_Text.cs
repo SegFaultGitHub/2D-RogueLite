@@ -268,6 +268,17 @@ namespace Code.UI.Text {
         private void OnEnable() {
             if (this.IsStatic) this.SetText(this.StaticText);
 
+            if (this.Characters.Count > 0) {
+                for (int i = this.Sequences.Count - 1; i >= 0; i--) {
+                    this.Sequences[i].Kill();
+                    this.Sequences.RemoveAt(i);
+                }
+                foreach (C_Character character in this.Characters) {
+                    character.Groups.Sort((group1, group2) => group1.Priority.CompareTo(group2.Priority));
+                    character.Groups.ForEach(group => group.TweenCharacter(this, character));
+                }
+            }
+
             this.AlwaysUpdate();
         }
         #endregion
@@ -282,8 +293,8 @@ namespace Code.UI.Text {
                     }
                 );
             } else {
-                this.InSeconds(
-                    0,
+                this.InFixedUpdates(
+                    1,
                     () => {
                         this.Text.SetText(this.GetText());
                         this.AlwaysUpdate();

@@ -46,8 +46,8 @@ namespace Code.Enhancements {
                 durations[i] = SC_Utils.FormatNumber(this.Data[i].TickCount * MB_Poison.TICK_INTERVAL, decimals: 1);
             }
 
-            string damageString = damages.AsList(this.EffectiveLevel, s => s.Green());
-            string durationString = durations.AsList(this.EffectiveLevel, s => s.Green());
+            string damageString = damages.AsList(this.EffectiveLevel, "", s => s.Green());
+            string durationString = durations.AsList(this.EffectiveLevel, "", s => s.Green());
             return this.Description
                 .Replace("<damage>", damageString)
                 .Replace("<duration>", durationString);
@@ -58,12 +58,14 @@ namespace Code.Enhancements {
             float newDamage = this.Data[newLevel - 1].TickCount * this.Data[newLevel - 1].DamagePerTick;
             string beforeDamageString = $"{SC_Utils.FormatNumber(currentDamage, decimals: 0)}".PositiveEffect();
             string afterDamageString = $"{SC_Utils.FormatNumber(newDamage, decimals: 0)}".PositiveEffect();
+            string damageString = $"{beforeDamageString} > {afterDamageString}";
+
             float currentDuration = this.Data[currentLevel - 1].TickCount * MB_Poison.TICK_INTERVAL;
             float newDuration = this.Data[newLevel - 1].TickCount * MB_Poison.TICK_INTERVAL;
             string beforeDurationString = $"{SC_Utils.FormatNumber(currentDuration, decimals: 1)}".PositiveEffect();
             string afterDurationString = $"{SC_Utils.FormatNumber(newDuration, decimals: 1)}".PositiveEffect();
-            string damageString = $"{beforeDamageString} > {afterDamageString}";
             string durationString = $"{beforeDurationString} > {afterDurationString}";
+
             return this.Description
                 .Replace("<damage>", damageString)
                 .Replace("<duration>", durationString);

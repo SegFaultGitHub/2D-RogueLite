@@ -5,16 +5,14 @@ namespace Code.Enhancements.UnlockConditions.Editor_ {
     [Serializable]
     public abstract class C_Condition : Node {
         public abstract Runtime.C_Condition TranslateNode();
+        public abstract Runtime.C_Condition TranslateNodeGlobal();
 
-        public static T GetInputPortValue<T>(IPort port)
-        {
+        public static T GetInputPortValue<T>(IPort port) {
             T value = default;
 
             // If port is connected to another node, get value from connection
-            if (port.isConnected)
-            {
-                switch (port.firstConnectedPort.GetNode())
-                {
+            if (port.isConnected) {
+                switch (port.firstConnectedPort.GetNode()) {
                     case IVariableNode variableNode:
                         variableNode.variable.TryGetDefaultValue(out value);
                         return value;
@@ -22,9 +20,7 @@ namespace Code.Enhancements.UnlockConditions.Editor_ {
                         constantNode.TryGetValue(out value);
                         return value;
                 }
-            }
-            else
-            {
+            } else {
                 port.TryGetValue(out value);
             }
 

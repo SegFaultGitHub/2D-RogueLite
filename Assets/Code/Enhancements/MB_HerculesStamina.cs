@@ -38,7 +38,8 @@ namespace Code.Enhancements {
                 ratios[i] = SC_Utils.FormatNumber(this.Data[i].Ratio * 100f, decimals: 0);
             }
 
-            string ratioString = ratios.AsList(this.EffectiveLevel, s => s.Green());
+            string ratioString = ratios.AsList(this.EffectiveLevel, "%", s => s.Green());
+
             return this.Description.Replace("<ratio>", ratioString);
         }
 
@@ -48,12 +49,14 @@ namespace Code.Enhancements {
             string before = $"{SC_Utils.FormatNumber(currentRatio * 100f, decimals: 0)}%".PositiveEffect();
             string after = $"{SC_Utils.FormatNumber(newRatio * 100f, decimals: 0)}%".PositiveEffect();
             string ratioString = $"{before} > {after}";
+
             return this.Description.Replace("<ratio>", ratioString);
         }
 
         public override string GetDescription() {
             float ratio = this.GetData().Ratio;
             string ratioString = $"{SC_Utils.FormatNumber(ratio * 100f, decimals: 0)}%".PositiveEffect();
+
             return this.Description.Replace("<ratio>", ratioString);
         }
 

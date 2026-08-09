@@ -1,4 +1,5 @@
 ﻿using System;
+using Code.Enhancements.UnlockConditions.Runtime.Predicates;
 using Unity.GraphToolkit.Editor;
 
 namespace Code.Enhancements.UnlockConditions.Editor_ {
@@ -18,5 +19,13 @@ namespace Code.Enhancements.UnlockConditions.Editor_ {
         }
 
         protected virtual string GetHeader() { return string.Empty; }
+
+        public E_Mode GetMode() => GetInputPortValue<E_Mode>(this.GetInputPortByName(IN_PORT_MODE));
+
+        public override Runtime.C_Condition TranslateNodeGlobal() {
+            return this.GetMode() == E_Mode.CurrentRun
+                ? new C_Bool(E_Mode.Global, true)
+                : this.TranslateNode();
+        }
     }
 }

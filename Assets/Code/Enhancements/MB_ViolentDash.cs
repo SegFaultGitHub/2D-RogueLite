@@ -43,7 +43,8 @@ namespace Code.Enhancements {
                 damages[i] = SC_Utils.FormatNumber(this.Data[i].Damage, decimals: 0);
             }
 
-            string damageString = damages.AsList(this.EffectiveLevel, s => s.Green());
+            string damageString = damages.AsList(this.EffectiveLevel, "", s => s.Green());
+
             return this.Description.Replace("<damage>", damageString);
         }
 
@@ -53,12 +54,14 @@ namespace Code.Enhancements {
             string before = $"{SC_Utils.FormatNumber(currentDamage, decimals: 0)}".PositiveEffect();
             string after = $"{SC_Utils.FormatNumber(newDamage, decimals: 0)}".PositiveEffect();
             string damageString = $"{before} > {after}";
+
             return this.Description.Replace("<damage>", damageString);
         }
 
         public override string GetDescription() {
             float damage = this.GetData().Damage;
             string damageString = SC_Utils.FormatNumber(damage, decimals: 0).PositiveEffect();
+
             return this.Description.Replace("<damage>", damageString);
         }
 

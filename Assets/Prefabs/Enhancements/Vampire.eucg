@@ -431,14 +431,14 @@ MonoBehaviour:
           m_EnumType:
             m_Identification: Code.Enhancements.UnlockConditions.E_Mode, Assembly-CSharp,
               Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          m_Value: 0
+          m_Value: 1
         m_EnumType:
           m_Identification: Code.Enhancements.UnlockConditions.E_Mode, Assembly-CSharp,
             Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     - rid: 3236138895508767203
       type: {class: 'Constant`1[[System.Int32, mscorlib]]', ns: Unity.GraphToolkit.Editor, asm: Unity.GraphToolkit.Internal.Editor}
       data:
-        m_Value: 0
+        m_Value: 500
     - rid: 3236138895508767204
       type: {class: EnumConstant, ns: Unity.GraphToolkit.Editor, asm: Unity.GraphToolkit.Internal.Editor}
       data:

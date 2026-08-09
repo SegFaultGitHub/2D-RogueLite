@@ -47,7 +47,11 @@ namespace Code.UI.HUD {
 
         public void SetEnhancement(AMB_Enhancement enhancement, AMB_Enhancement currentEnhancement) {
             if (currentEnhancement == null) {
-                this.SetEnhancement(enhancement);
+                string nameString = enhancement.EnhancementName.Name();
+                string levelString = $"{enhancement.EffectiveLevel} / {enhancement.MaxLevel}";
+                string description = enhancement.GetFullDescription().LineHeight(8);
+
+                this.SetData(nameString, levelString, description);
 
                 this.New.SetActive(true);
                 this.Upgrade.SetActive(false);

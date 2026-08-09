@@ -38,7 +38,8 @@ namespace Code.Enhancements {
                 counts[i] = SC_Utils.FormatNumber(this.Data[i].Count, decimals: 0);
             }
 
-            string countString = counts.AsList(this.EffectiveLevel, s => s.Green());
+            string countString = counts.AsList(this.EffectiveLevel, "%", s => s.Green());
+
             return this.Description.Replace("<count>", countString);
         }
 
@@ -48,12 +49,14 @@ namespace Code.Enhancements {
             string before = $"{SC_Utils.FormatNumber(currentCount, decimals: 0)}".PositiveEffect();
             string after = $"{SC_Utils.FormatNumber(newCount, decimals: 0)}".PositiveEffect();
             string countString = $"{before} > {after}";
+
             return this.Description.Replace("<count>", countString);
         }
 
         public override string GetDescription() {
             int count = this.GetData().Count;
             string countString = SC_Utils.FormatNumber(count, decimals: 0).PositiveEffect();
+
             return this.Description.Replace("<count>", countString);
         }
 

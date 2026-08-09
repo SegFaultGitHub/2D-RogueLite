@@ -7,6 +7,7 @@ namespace Code.Enhancements.UnlockConditions.Runtime {
 
         public C_Root Root { get => this.m_Root; set => this.m_Root = value; }
 
-        public bool Check(MB_ObjectsManager objsManager) => this.Root.Condition.Check(objsManager);
+        public bool Check(MB_ObjectsManager objectsManager) => this.Root.Condition.Check(objectsManager);
+        public bool CheckGlobal(MB_ObjectsManager objectsManager) => this.Root.GlobalCondition.Check(objectsManager);
     }
 }
