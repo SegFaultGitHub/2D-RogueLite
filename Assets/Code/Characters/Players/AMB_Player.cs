@@ -36,6 +36,7 @@ namespace Code.Characters.Players {
         [ReadOnly][SerializeField] private protected float m_DashCastAt;
         [ReadOnly][SerializeField] private protected float m_DashAvailableAt;
 
+        [ReadOnly][SerializeField] private protected int m_MaxEnhancements;
         [ReadOnly][SerializeField] private protected CollectionWrapperList<AMB_Enhancement> m_Enhancements;
 
         [Separator("TEMP")]
@@ -43,8 +44,6 @@ namespace Code.Characters.Players {
         [SerializeField] private protected AMB_Spell m_TEMP_SecondarySpell;
 
         [SerializeField] private protected AMB_Enhancement[] m_TEMP_Enhancements;
-        [SerializeField] private protected MB_EnhancementChoice m_TEMP_EnhancementChoicePrefab;
-        [SerializeField] private protected Transform m_TEMP_HUDCanvas;
         #endregion
 
         #region Getters / Setters
@@ -68,6 +67,7 @@ namespace Code.Characters.Players {
         private float DashCastAt { get => this.m_DashCastAt; set => this.m_DashCastAt = value; }
         private float DashAvailableAt { get => this.m_DashAvailableAt; set => this.m_DashAvailableAt = value; }
 
+        private int MaxEnhancements { get => this.m_MaxEnhancements; set => this.m_MaxEnhancements = value; }
         public CollectionWrapperList<AMB_Enhancement> Enhancements { get => this.m_Enhancements; }
 
         public override IEnumerable<I_Effect> AllEffects {
@@ -80,7 +80,7 @@ namespace Code.Characters.Players {
         #endregion
 
         #region Static / Readonly / Const
-        public const int DEFAULT_MAX_ENHANCEMENTS = 8;
+        public const int DEFAULT_MAX_ENHANCEMENTS = 4;
         private const float DASH_DURATION = .15f;
         #endregion
 
@@ -112,6 +112,7 @@ namespace Code.Characters.Players {
             this.DashAvailableAt = 0;
             this.MainSpellCastAt = -1;
             this.MainSpellAvailableAt = 0;
+            this.MaxEnhancements = DEFAULT_MAX_ENHANCEMENTS;
         }
 
         public override void PostInitialize() {
@@ -232,8 +233,13 @@ namespace Code.Characters.Players {
         }
 
         #region Enhancements
+        public void AddEnhancementSlot() {
+            this.MaxEnhancements++;
+            this.ObjectsManager.PlayerHUD.AddEnhancementSlot();
+        }
+
         public bool CanAddEnhancement(AMB_Enhancement enhancement) {
-            if (this.Enhancements.Count < DEFAULT_MAX_ENHANCEMENTS) {
+            if (this.Enhancements.Count < this.MaxEnhancements) {
                 return true;
             } else {
                 AMB_Enhancement existingEnhancement =
@@ -262,6 +268,7 @@ namespace Code.Characters.Players {
                     this.Enhancements.Add(enhancement);
                 }
 
+                enhancement.OnNew(this);
                 this.ObjectsManager.StatsManager.AddEnhancementTaken( //
                     enhancement,
                     enhancement.EffectiveLevel,
@@ -269,10 +276,12 @@ namespace Code.Characters.Players {
                     enhancement.IsMaxLevel
                 );
             } else {
+                int previousLevel = existingEnhancement.EffectiveLevel;
                 existingEnhancement.Level += enhancement.Level;
                 Destroy(enhancement.gameObject);
                 this.ObjectsManager.PlayerHUD.UpdateEnhancement(existingEnhancement);
 
+                existingEnhancement.OnUpgrade(this, previousLevel);
                 this.ObjectsManager.StatsManager.AddEnhancementTaken(
                     existingEnhancement,
                     existingEnhancement.EffectiveLevel,

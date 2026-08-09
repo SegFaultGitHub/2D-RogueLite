@@ -280,8 +280,16 @@ namespace Code.Map {
 
         private void TryMoveToNextRoom() {
             if (this.IsEmpty) {
-                // this.InSeconds(1, this.ObjectsManager.RoomManager.NextRoom);
-                this.InSeconds(1, () => this.ObjectsManager.EnhancementsManager.GetChoices(3, 1, 3, true));
+                this.InSeconds(.5f, () => this.ObjectsManager.EnhancementsManager.GetChoices(3, 1, 3, true));
+            }
+        }
+
+        public void KillAll() {
+            for (int i = this.Enemies.Count - 1; i >= 0; i--) {
+                Destroy(this.Enemies[i].gameObject);
+            }
+            for (int i = this.EnemySpawners.Count - 1; i >= 0; i--) {
+                Destroy(this.EnemySpawners[i].gameObject);
             }
         }
 

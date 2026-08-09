@@ -48,43 +48,7 @@ MonoBehaviour:
   m_MaxLevel: 3
   m_Description: Heals you for <ratio> of all direct damage dealt
   m_Sprite: {fileID: 21300000, guid: 8adc0db44ca103543a8203116b7c9cae, type: 3}
-  m_UnlockCondition:
-    m_Condition: 1
-    m_Predicate:
-      m_Mode: 0
-      m_Predicate: 0
-      m_Value: 0
-      m_Enemy: 0
-      m_Source: 0
-      m_Enhancement: 0
-    m_Or:
-      m_Conditions: []
-    m_And:
-      m_Conditions:
-      - m_Condition: 0
-        m_Predicate:
-          m_Mode: 1
-          m_Predicate: 8
-          m_Value: 100
-          m_Enemy: 0
-          m_Source: 0
-          m_Enhancement: 0
-        m_Or:
-          m_Conditions: []
-        m_And:
-          m_Conditions: []
-      - m_Condition: 0
-        m_Predicate:
-          m_Mode: 0
-          m_Predicate: 21
-          m_Value: 1
-          m_Enemy: 0
-          m_Source: 0
-          m_Enhancement: 6
-        m_Or:
-          m_Conditions: []
-        m_And:
-          m_Conditions: []
+  m_UnlockCondition: {fileID: 2841676755933307327, guid: 2ddab5d070ae1b84c85574219c84a47e, type: 3}
   m_Level: 0
   m_Data:
   - m_Ratio: 0.1

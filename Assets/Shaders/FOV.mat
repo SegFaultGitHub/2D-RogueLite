@@ -50,7 +50,7 @@ Material:
     - _Foo: 0.4
     - _Max: 0.6
     - _Min: 0.4
-    - _OrthographicSize: 5.89095
+    - _OrthographicSize: 8.4375
     - _PixelSize: 8
     - _PlayerSize: 1
     - _QueueControl: 0

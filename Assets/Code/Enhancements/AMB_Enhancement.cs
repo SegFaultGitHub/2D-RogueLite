@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Code.Characters;
-using Code.Enhancements.UnlockConditions;
+using Code.Enhancements.UnlockConditions.Runtime;
 using MyBox;
 using UnityEngine;
 
@@ -14,7 +14,7 @@ namespace Code.Enhancements {
         [SerializeField][TextArea(10, 20)] private protected string m_Description;
         [SerializeField] private protected Sprite m_Sprite;
 
-        [SerializeField] private protected C_Condition m_UnlockCondition;
+        [SerializeField] private protected C_UnlockConditionsRuntimeGraph m_UnlockCondition;
 
         [Separator("Read only")]
         [ReadOnly][SerializeField] private protected int m_Level;
@@ -26,7 +26,7 @@ namespace Code.Enhancements {
         protected string Description { get => this.m_Description; }
         public Sprite Sprite { get => this.m_Sprite; }
 
-        public C_Condition UnlockCondition { get => this.m_UnlockCondition; }
+        public C_UnlockConditionsRuntimeGraph UnlockCondition { get => this.m_UnlockCondition; }
 
         public int Level { get => this.m_Level; set => this.m_Level = value; }
 
@@ -94,6 +94,11 @@ namespace Code.Enhancements {
         public virtual float GetCooldownModifier(AMB_Character character) => 0;
 
         public virtual void OnApply(AMB_Character character) { }
+        public virtual void OnNew(AMB_Character character) { }
+        public virtual void OnUpgrade(AMB_Character character, int previousLevel) { }
         public virtual void OnRemove(AMB_Character character) { }
+
+        // [ButtonMethod]
+        // public void EditConditions() => MyCustomWindow.Open(this);
     }
 }

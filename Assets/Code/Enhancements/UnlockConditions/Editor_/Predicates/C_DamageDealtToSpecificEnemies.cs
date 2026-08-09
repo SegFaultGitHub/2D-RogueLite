@@ -1,0 +1,29 @@
+﻿using Code.Characters.Enemies;
+
+namespace Code.Enhancements.UnlockConditions.Editor_.Predicates {
+    public class C_DamageDealtToSpecificEnemies : C_DamageDealt {
+        private const string IN_PORT_ENEMY = "Enemy";
+
+        protected override string GetHeader() => "Has dealt X or more damage to enemy type";
+
+        protected override void OnDefinePorts(IPortDefinitionContext context) {
+            base.OnDefinePorts(context);
+
+            context.AddInputPort("C_DamageDealtFromSpecificSource")
+                .WithDisplayName("to specific enemies")
+                .Build();
+
+            context.AddInputPort<E_Enemy>(IN_PORT_ENEMY)
+                .WithDisplayName("Enemy")
+                .Build();
+        }
+
+        public override Runtime.C_Condition TranslateNode() {
+            return new Runtime.Predicates.C_DamageDealtToSpecificEnemies(
+                GetInputPortValue<E_Mode>(this.GetInputPortByName(IN_PORT_MODE)),
+                GetInputPortValue<int>(this.GetInputPortByName(IN_PORT_DAMAGE)),
+                GetInputPortValue<E_Enemy>(this.GetInputPortByName(IN_PORT_ENEMY))
+            );
+        }
+    }
+}

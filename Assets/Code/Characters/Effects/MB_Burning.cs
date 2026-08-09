@@ -30,9 +30,9 @@ namespace Code.Characters.Effects {
             E_DamageSource damageSource,
             HashSet<Type> appliedTypes
         ) {
-            if (!appliedTypes.Add(typeof(MB_Burning))) return 0;
-
-            return this.DamageModifier;
+            return damageSource == E_DamageSource.Spell
+                ? this.DamageModifier
+                : 0;
         }
 
         // public override float ApplyOnDamageComputed(AMB_Character dealer, AMB_Character receiver, E_DamageSource damageSource, float value) {

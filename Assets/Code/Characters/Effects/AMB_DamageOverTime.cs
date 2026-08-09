@@ -36,11 +36,12 @@ namespace Code.Characters.Effects {
                 this.InSeconds(
                     (i + 1) * this.TickInterval,
                     () => {
+                        (float, bool) computedDamage = this.From.ComputeDamage(this.Character, this.DamagePerTick, this.DamageSource);
                         this.Character.TakeDamage(
                             becomeInvulnerable: false,
                             freeze: false,
-                            value: this.DamagePerTick,
-                            critical: false,
+                            value: computedDamage.Item1,
+                            critical: computedDamage.Item2,
                             from: this.From,
                             source: this.DamageSource
                         );

@@ -41,6 +41,8 @@ namespace Code.Managers {
             this.NextRoom();
         }
 
+        public void KillAll() => this.Room.KillAll();
+
         [ButtonMethod]
         public void NextRoom() {
             this.ObjectsManager.MainCamera.SetPixelSize(32, 2f, MB_TransitionManager.HIDE_EASE);
