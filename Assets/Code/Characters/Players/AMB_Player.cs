@@ -36,6 +36,8 @@ namespace Code.Characters.Players {
         [ReadOnly][SerializeField] private protected float m_DashCastAt;
         [ReadOnly][SerializeField] private protected float m_DashAvailableAt;
 
+        [ReadOnly][SerializeField] private protected float m_DamagePerSecond;
+
         [ReadOnly][SerializeField] private protected int m_MaxEnhancements;
         [ReadOnly][SerializeField] private protected CollectionWrapperList<AMB_Enhancement> m_Enhancements;
 
@@ -66,6 +68,8 @@ namespace Code.Characters.Players {
 
         private float DashCastAt { get => this.m_DashCastAt; set => this.m_DashCastAt = value; }
         private float DashAvailableAt { get => this.m_DashAvailableAt; set => this.m_DashAvailableAt = value; }
+
+        private float DamagePerSecond { get => this.m_DamagePerSecond; set => this.m_DamagePerSecond = value; }
 
         private int MaxEnhancements { get => this.m_MaxEnhancements; set => this.m_MaxEnhancements = value; }
         public CollectionWrapperList<AMB_Enhancement> Enhancements { get => this.m_Enhancements; }
@@ -182,7 +186,7 @@ namespace Code.Characters.Players {
             return alreadyDead;
         }
 
-        public override int TakeDamage(
+        public override float TakeDamage(
             bool becomeInvulnerable,
             bool freeze,
             float value,
@@ -194,7 +198,7 @@ namespace Code.Characters.Players {
                 this.ObjectsManager.DamageCanvas.Dodge(this);
                 return 0;
             } else {
-                int damageTaken = base.TakeDamage(becomeInvulnerable, freeze, value, critical, from, damageSource);
+                float damageTaken = base.TakeDamage(becomeInvulnerable, freeze, value, critical, from, damageSource);
 
                 if (damageTaken == 0) return 0;
 
@@ -209,11 +213,16 @@ namespace Code.Characters.Players {
             }
         }
 
-        protected override void DealtDamage(int damageDealt, AMB_Character character, E_DamageSource source) {
+        protected override void DealtDamage(float damageDealt, AMB_Character character, E_DamageSource source) {
             base.DealtDamage(damageDealt, character, source);
 
             if (character is AMB_Enemy enemy) {
                 this.ObjectsManager.StatsManager.AddDamageDealt(enemy, damageDealt, source);
+
+                this.DamagePerSecond += damageDealt;
+                this.ObjectsManager.StatsManager.SetMaxDamageDealt(damageDealt, source);
+                this.ObjectsManager.StatsManager.SetMaxDpsReached(this.DamagePerSecond);
+                this.InSeconds(1, () => this.DamagePerSecond -= damageDealt);
             }
         }
 

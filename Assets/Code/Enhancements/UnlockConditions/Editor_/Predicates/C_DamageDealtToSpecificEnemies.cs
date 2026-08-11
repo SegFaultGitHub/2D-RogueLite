@@ -1,6 +1,8 @@
-﻿using Code.Characters.Enemies;
+﻿using System;
+using Code.Characters.Enemies;
 
 namespace Code.Enhancements.UnlockConditions.Editor_.Predicates {
+    [Serializable]
     public class C_DamageDealtToSpecificEnemies : C_DamageDealt {
         private const string IN_PORT_ENEMY = "Enemy";
 

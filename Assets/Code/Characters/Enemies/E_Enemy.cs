@@ -12,7 +12,8 @@ namespace Code.Characters.Enemies {
         Necromancer,
         BigSlime,
         SmallSlime,
-        Ghost
+        Ghost,
+        Dummy
     }
 
     public static class SC_EnemyEnumExtension {
@@ -29,6 +30,7 @@ namespace Code.Characters.Enemies {
                 E_Enemy.BigSlime => "BigSlime",
                 E_Enemy.SmallSlime => "SmallSlime",
                 E_Enemy.Ghost => "Ghost",
+                E_Enemy.Dummy => "Dummy",
                 _ => throw new ArgumentOutOfRangeException(nameof(enemy), enemy, null)
             };
         }

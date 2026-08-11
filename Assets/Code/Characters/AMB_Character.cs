@@ -153,7 +153,7 @@ namespace Code.Characters {
             this.InSeconds(INVULNERABILITY_DURATION, () => this.Invulnerable = false);
         }
 
-        public virtual int TakeDamage(
+        public virtual float TakeDamage(
             bool becomeInvulnerable,
             bool freeze,
             float value,
@@ -162,6 +162,7 @@ namespace Code.Characters {
             E_DamageSource source
         ) {
             if (value <= 0) return 0;
+
             this.PlayHitAnimation();
             switch (source) {
                 case E_DamageSource.Spell:
@@ -181,11 +182,14 @@ namespace Code.Characters {
 
             if (becomeInvulnerable) this.SetInvulnerable();
 
-            int realDamageDealt = this.CharacterStats.TakeDamage(from, value, critical, source);
+            int healthBefore = Mathf.RoundToInt(this.CharacterStats.CurrentHealth);
+            float realDamageDealt = this.CharacterStats.TakeDamage(from, value, critical, source);
+            int healthAfter = Mathf.RoundToInt(this.CharacterStats.CurrentHealth);
             this.AllEffects.ForEach(effect => effect.ApplyOnDamageTaken(from, this, source, realDamageDealt));
 
             from?.DealtDamage(realDamageDealt, this, source);
-            this.ObjectsManager.DamageCanvas.DamageDealt(this, -realDamageDealt, critical);
+            int displayedDamage = Mathf.Max(1, healthBefore - healthAfter);
+            this.ObjectsManager.DamageCanvas.DamageDealt(this, displayedDamage, critical);
 
             if (this.CharacterStats.IsDead()) {
                 this.Die(from);
@@ -196,14 +200,19 @@ namespace Code.Characters {
         }
 
         public virtual float Heal(AMB_Character from, float value) {
+            int healthBefore = Mathf.RoundToInt(this.CharacterStats.CurrentHealth);
             float healReceived = this.CharacterStats.Heal(from, value);
+            int healthAfter = Mathf.RoundToInt(this.CharacterStats.CurrentHealth);
 
-            this.ObjectsManager.DamageCanvas.Heal(this, healReceived);
+            if (healReceived <= 0) return 0;
+
+            int displayedHeal = Mathf.Max(1, healthAfter - healthBefore);
+            this.ObjectsManager.DamageCanvas.Heal(this, displayedHeal);
 
             return healReceived;
         }
 
-        protected virtual void DealtDamage(int damageDealt, AMB_Character character, E_DamageSource source) {
+        protected virtual void DealtDamage(float damageDealt, AMB_Character character, E_DamageSource source) {
             this.AllEffects.ForEach(effect => effect.ApplyOnDamageInflicted(this, character, source, damageDealt));
         }
 

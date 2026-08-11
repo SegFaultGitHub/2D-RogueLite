@@ -1,6 +1,8 @@
-﻿using Code.Characters;
+﻿using System;
+using Code.Characters;
 
 namespace Code.Enhancements.UnlockConditions.Editor_.Predicates {
+    [Serializable]
     public class C_DamageDealtFromSpecificSource : C_DamageDealt {
         private const string IN_PORT_SOURCE = "Source";
 

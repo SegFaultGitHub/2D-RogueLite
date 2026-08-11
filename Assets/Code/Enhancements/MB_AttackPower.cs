@@ -49,7 +49,9 @@ namespace Code.Enhancements {
             float newRatio = this.Data[newLevel - 1].Ratio;
             string before = $"{SC_Utils.FormatNumber(currentRatio * 100f, decimals: 0)}%".PositiveEffect();
             string after = $"{SC_Utils.FormatNumber(newRatio * 100f, decimals: 0)}%".PositiveEffect();
-            string ratioString = $"{before} > {after}";
+            string ratioString = before == after
+                ? before
+                : $"{before} > {after}";
 
             return this.Description.Replace("<ratio>", ratioString);
         }

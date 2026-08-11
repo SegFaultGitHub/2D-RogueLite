@@ -17,16 +17,16 @@ namespace Code.Managers {
                 [ReadOnly][SerializeField] private E_Enemy m_Enemy;
                 [ReadOnly][SerializeField] private string m_EnemyVerbose;
                 [ReadOnly][SerializeField] private int m_Killed;
-                [ReadOnly][SerializeField] private int m_DamageDealt;
+                [ReadOnly][SerializeField] private float m_DamageDealt;
                 [ReadOnly][SerializeField] private int m_KilledBy;
-                [ReadOnly][SerializeField] private int m_DamageReceived;
+                [ReadOnly][SerializeField] private float m_DamageReceived;
 
                 public E_Enemy Enemy { get => this.m_Enemy; set => this.m_Enemy = value; }
                 private string EnemyVerbose { get => this.m_EnemyVerbose; set => this.m_EnemyVerbose = value; }
                 public int Killed { get => this.m_Killed; set => this.m_Killed = value; }
-                public int DamageDealt { get => this.m_DamageDealt; set => this.m_DamageDealt = value; }
+                public float DamageDealt { get => this.m_DamageDealt; set => this.m_DamageDealt = value; }
                 public int KilledBy { get => this.m_KilledBy; set => this.m_KilledBy = value; }
-                public int DamageReceived { get => this.m_DamageReceived; set => this.m_DamageReceived = value; }
+                public float DamageReceived { get => this.m_DamageReceived; set => this.m_DamageReceived = value; }
 
                 public C_BestiaryData(E_Enemy enemy) {
                     this.Enemy = enemy;
@@ -68,17 +68,17 @@ namespace Code.Managers {
             public class C_DamageData {
                 [ReadOnly][SerializeField] private E_DamageSource m_Source;
                 [ReadOnly][SerializeField] private string m_SourceVerbose;
-                [ReadOnly][SerializeField] private int m_Dealt;
-                [ReadOnly][SerializeField] private int m_Received;
-                [ReadOnly][SerializeField] private int m_MaxDealt;
-                [ReadOnly][SerializeField] private int m_MaxReceived;
+                [ReadOnly][SerializeField] private float m_Dealt;
+                [ReadOnly][SerializeField] private float m_Received;
+                [ReadOnly][SerializeField] private float m_MaxDealt;
+                [ReadOnly][SerializeField] private float m_MaxReceived;
 
                 public E_DamageSource Source { get => this.m_Source; set => this.m_Source = value; }
                 private string SourceVerbose { get => this.m_SourceVerbose; set => this.m_SourceVerbose = value; }
-                public int Dealt { get => this.m_Dealt; set => this.m_Dealt = value; }
-                public int Received { get => this.m_Received; set => this.m_Received = value; }
-                public int MaxDealt { get => this.m_MaxDealt; set => this.m_MaxDealt = value; }
-                public int MaxReceived { get => this.m_MaxReceived; set => this.m_MaxReceived = value; }
+                public float Dealt { get => this.m_Dealt; set => this.m_Dealt = value; }
+                public float Received { get => this.m_Received; set => this.m_Received = value; }
+                public float MaxDealt { get => this.m_MaxDealt; set => this.m_MaxDealt = value; }
+                public float MaxReceived { get => this.m_MaxReceived; set => this.m_MaxReceived = value; }
 
                 public C_DamageData(E_DamageSource source) {
                     this.Source = source;
@@ -143,7 +143,7 @@ namespace Code.Managers {
                 bestiaryData.KilledBy++;
             }
 
-            public void AddDamageDealt(AMB_Enemy enemy, int value, E_DamageSource source) {
+            public void AddDamageDealt(AMB_Enemy enemy, float value, E_DamageSource source) {
                 C_BestiaryData bestiaryData = this.BestiaryData.FirstOrDefault(bestiaryData => bestiaryData.Enemy == enemy.Enemy);
                 if (bestiaryData == null) {
                     bestiaryData = new C_BestiaryData(enemy.Enemy);
@@ -162,7 +162,7 @@ namespace Code.Managers {
                 damageData.MaxDealt = Mathf.Max(damageData.MaxDealt, value);
             }
 
-            public void AddDamageReceived(AMB_Enemy enemy, int value, E_DamageSource source) {
+            public void AddDamageReceived(AMB_Enemy enemy, float value, E_DamageSource source) {
                 if (enemy != null) {
                     C_BestiaryData bestiaryData = this.BestiaryData.FirstOrDefault(bestiaryData => bestiaryData.Enemy == enemy.Enemy);
                     if (bestiaryData == null) {
@@ -227,11 +227,11 @@ namespace Code.Managers {
                 return bestiaryData.KilledBy;
             }
 
-            public int GetDamageDealt() => this.DamageData.Sum(damageData => damageData.Dealt);
+            public float GetDamageDealt() => this.DamageData.Sum(damageData => damageData.Dealt);
 
-            public int GetDamageReceived() => this.DamageData.Sum(damageData => damageData.Received);
+            public float GetDamageReceived() => this.DamageData.Sum(damageData => damageData.Received);
 
-            public int GetDamageDealt(E_Enemy enemy) {
+            public float GetDamageDealt(E_Enemy enemy) {
                 C_BestiaryData bestiaryData = this.BestiaryData.FirstOrDefault(bestiaryData => bestiaryData.Enemy == enemy);
                 if (bestiaryData == null) {
                     bestiaryData = new C_BestiaryData(enemy);
@@ -241,7 +241,7 @@ namespace Code.Managers {
                 return bestiaryData.DamageDealt;
             }
 
-            public int GetDamageReceived(E_Enemy enemy) {
+            public float GetDamageReceived(E_Enemy enemy) {
                 C_BestiaryData bestiaryData = this.BestiaryData.FirstOrDefault(bestiaryData => bestiaryData.Enemy == enemy);
                 if (bestiaryData == null) {
                     bestiaryData = new C_BestiaryData(enemy);
@@ -251,7 +251,7 @@ namespace Code.Managers {
                 return bestiaryData.DamageReceived;
             }
 
-            public int GetDamageDealt(E_DamageSource source) {
+            public float GetDamageDealt(E_DamageSource source) {
                 C_DamageData damageData = this.DamageData.FirstOrDefault(damageData => damageData.Source == source);
                 if (damageData == null) {
                     damageData = new C_DamageData(source);
@@ -261,7 +261,7 @@ namespace Code.Managers {
                 return damageData.Dealt;
             }
 
-            public int GetDamageReceived(E_DamageSource source) {
+            public float GetDamageReceived(E_DamageSource source) {
                 C_DamageData damageData = this.DamageData.FirstOrDefault(damageData => damageData.Source == source);
                 if (damageData == null) {
                     damageData = new C_DamageData(source);
@@ -358,7 +358,6 @@ namespace Code.Managers {
 
         public void PostInitialize() { }
 
-        #region Bestiary data
         public void AddKilled(AMB_Enemy enemy) {
             this.CurrentRunStats.AddKilled(enemy);
             if (!this.SkipGlobalSave) {
@@ -377,7 +376,9 @@ namespace Code.Managers {
             }
         }
 
-        public void AddDamageDealt(AMB_Enemy enemy, int value, E_DamageSource source) {
+        public void AddDamageDealt(AMB_Enemy enemy, float value, E_DamageSource source) {
+            if (enemy?.Enemy == E_Enemy.Dummy) return;
+
             this.CurrentRunStats.AddDamageDealt(enemy, value, source);
             if (!this.SkipGlobalSave) {
                 this.GlobalStats.AddDamageDealt(enemy, value, source);
@@ -386,7 +387,9 @@ namespace Code.Managers {
             }
         }
 
-        public void AddDamageReceived(AMB_Enemy enemy, int value, E_DamageSource source) {
+        public void AddDamageReceived(AMB_Enemy enemy, float value, E_DamageSource source) {
+            if (enemy?.Enemy == E_Enemy.Dummy) return;
+
             this.CurrentRunStats.AddDamageReceived(enemy, value, source);
             if (!this.SkipGlobalSave) {
                 this.GlobalStats.AddDamageReceived(enemy, value, source);
@@ -412,6 +415,19 @@ namespace Code.Managers {
                 this.ObjectsManager.EnhancementsManager.CheckUnlocks();
             }
         }
-        #endregion
+
+        [ButtonMethod]
+        public void Reset() {
+            this.GlobalStats = new C_Stats();
+            SC_Serializer.WriteGlobalStats(this.GlobalStats);
+        }
+
+        public void SetMaxDamageDealt(float damageDealt, E_DamageSource source) {
+            throw new NotImplementedException();
+        }
+
+        public void SetMaxDpsReached(float damagePerSecond) {
+            throw new NotImplementedException();
+        }
     }
 }

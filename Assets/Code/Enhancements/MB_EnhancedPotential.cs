@@ -23,7 +23,7 @@ namespace Code.Enhancements {
         #region Getters / Setters
         private C_EnhancementData[] Data { get => this.m_Data; }
 
-        public override E_Enhancement Enhancement { get => E_Enhancement.HerculesStamina; }
+        public override E_Enhancement Enhancement { get => E_Enhancement.EnhancedPotential; }
         #endregion
 
         #region Static / Readonly / Const
@@ -38,7 +38,7 @@ namespace Code.Enhancements {
                 counts[i] = SC_Utils.FormatNumber(this.Data[i].Count, decimals: 0);
             }
 
-            string countString = counts.AsList(this.EffectiveLevel, "%", s => s.Green());
+            string countString = counts.AsList(this.EffectiveLevel, "", s => s.Green());
 
             return this.Description.Replace("<count>", countString);
         }
@@ -48,7 +48,9 @@ namespace Code.Enhancements {
             int newCount = this.Data[newLevel - 1].Count;
             string before = $"{SC_Utils.FormatNumber(currentCount, decimals: 0)}".PositiveEffect();
             string after = $"{SC_Utils.FormatNumber(newCount, decimals: 0)}".PositiveEffect();
-            string countString = $"{before} > {after}";
+            string countString = before == after
+                ? before
+                : $"{before} > {after}";
 
             return this.Description.Replace("<count>", countString);
         }

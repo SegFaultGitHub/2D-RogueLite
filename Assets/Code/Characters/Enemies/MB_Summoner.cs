@@ -1,5 +1,4 @@
-﻿using MyBox;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Code.Characters.Enemies {
     public class MB_Summoner : MonoBehaviour {

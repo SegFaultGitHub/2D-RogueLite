@@ -53,7 +53,9 @@ namespace Code.Enhancements {
             float newDamage = this.Data[newLevel - 1].Damage;
             string before = $"{SC_Utils.FormatNumber(currentDamage, decimals: 0)}".PositiveEffect();
             string after = $"{SC_Utils.FormatNumber(newDamage, decimals: 0)}".PositiveEffect();
-            string damageString = $"{before} > {after}";
+            string damageString = before == after
+                ? before
+                : $"{before} > {after}";
 
             return this.Description.Replace("<damage>", damageString);
         }

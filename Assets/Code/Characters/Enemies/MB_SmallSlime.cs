@@ -1,7 +1,4 @@
-﻿using MyBox;
-using UnityEngine;
-
-namespace Code.Characters.Enemies {
+﻿namespace Code.Characters.Enemies {
     public class MB_SmallSlime : AMB_Slime {
         #region Members
         // [Foldout("MB_SmallSlime", true)]

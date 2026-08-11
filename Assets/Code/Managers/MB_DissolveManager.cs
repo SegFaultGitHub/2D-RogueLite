@@ -10,6 +10,7 @@ namespace Code.Managers {
         [Foldout("MB_DissolveManager", true)]
         [SerializeField] private protected MB_DissolveElement m_DissolveElementPrefab;
         [SerializeField] private protected Canvas m_Canvas;
+        [SerializeField] private protected float m_DissolveDuration;
 
         [Separator("Read only")]
         [ReadOnly][SerializeField] private protected MB_ObjectsManager m_ObjectsManager;
@@ -18,12 +19,12 @@ namespace Code.Managers {
         #region Getters / Setters
         private MB_DissolveElement DissolveElement { get => this.m_DissolveElementPrefab; }
         private Canvas Canvas { get => this.m_Canvas; }
+        private float DissolveDuration { get => this.m_DissolveDuration; }
 
         public MB_ObjectsManager ObjectsManager { get => this.m_ObjectsManager; set => this.m_ObjectsManager = value; }
         #endregion
 
         #region Static / Readonly / Const
-        private const float SHOW_HIDE_DURATION = 1f;
         #endregion
 
         #region Unity methods
@@ -37,7 +38,7 @@ namespace Code.Managers {
             MB_DissolveElement dissolveElement = Instantiate(this.DissolveElement, this.Canvas.transform);
             dissolveElement.Canvas = this.Canvas;
             dissolveElement.SetTexture(screenshot);
-            dissolveElement.Show(SHOW_HIDE_DURATION, action);
+            dissolveElement.Show(this.DissolveDuration, action);
         }
 
         public void Hide(Transform uiComponent, Action action) =>
@@ -48,7 +49,7 @@ namespace Code.Managers {
             MB_DissolveElement dissolveElement = Instantiate(this.DissolveElement, this.Canvas.transform);
             dissolveElement.Canvas = this.Canvas;
             dissolveElement.SetTexture(screenshot);
-            dissolveElement.Hide(SHOW_HIDE_DURATION, action);
+            dissolveElement.Hide(this.DissolveDuration, action);
         }
     }
 }

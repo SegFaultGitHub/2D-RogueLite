@@ -55,13 +55,17 @@ namespace Code.Enhancements {
             float newSpeedRatio = this.Data[newLevel - 1].SpeedRatio;
             string speedBefore = $"{SC_Utils.FormatNumber(currentSpeedRatio * 100f, decimals: 0)}%".PositiveEffect();
             string speedAfter = $"{SC_Utils.FormatNumber(newSpeedRatio * 100f, decimals: 0)}%".PositiveEffect();
-            string speedRatioString = $"{speedBefore} > {speedAfter}";
+            string speedRatioString = speedBefore == speedAfter
+                ? speedBefore
+                : $"{speedBefore} > {speedAfter}";
             
             float currentAttackRatio = Mathf.Abs(this.Data[currentLevel - 1].AttackRatio);
             float newAttackRatio = Mathf.Abs(this.Data[newLevel - 1].AttackRatio);
             string attackBefore = $"{SC_Utils.FormatNumber(currentAttackRatio * 100f, decimals: 0)}%".NegativeEffect();
             string attackAfter = $"{SC_Utils.FormatNumber(newAttackRatio * 100f, decimals: 0)}%".NegativeEffect();
-            string attackRatioString = $"{attackBefore} > {attackAfter}";
+            string attackRatioString = attackBefore == attackAfter
+                ? attackBefore
+                : $"{attackBefore} > {attackAfter}";
             
             return this.Description
                 .Replace("<speedRatio>", speedRatioString)

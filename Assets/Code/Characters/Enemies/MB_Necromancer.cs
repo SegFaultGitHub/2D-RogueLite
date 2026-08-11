@@ -1,6 +1,4 @@
-﻿using Code.Characters.AI;
-using Code.Characters.Players;
-using Code.Spells;
+﻿using Code.Spells;
 using Code.Spells.Enemies;
 using MyBox;
 using UnityEngine;

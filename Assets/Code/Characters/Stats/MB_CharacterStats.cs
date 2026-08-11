@@ -8,20 +8,20 @@ namespace Code.Characters.Stats {
     public class MB_CharacterStats : MonoBehaviour {
         #region Members
         [Foldout("MB_CharacterStats", true)]
-        [SerializeField] private protected int m_CurrentHealth;
-        [SerializeField] private protected int m_MaxHealth;
+        [SerializeField] private protected float m_CurrentHealth;
+        [SerializeField] private protected float m_MaxHealth;
 
         [Separator("Read only")]
         [ReadOnly][SerializeField] private protected AMB_Character m_Character;
         #endregion
 
         #region Getters / Setters
-        public int CurrentHealth {
+        public float CurrentHealth {
             get => this.m_CurrentHealth;
             private set => this.m_CurrentHealth = Mathf.Clamp(value, 0, this.m_MaxHealth);
         }
-        public int MissingHealth { get => this.m_MaxHealth - this.m_CurrentHealth; }
-        public int MaxHealth { get => this.m_MaxHealth; }
+        public float MissingHealth { get => this.m_MaxHealth - this.m_CurrentHealth; }
+        public float MaxHealth { get => this.m_MaxHealth; }
         public float HealthRatio { get => (float)this.CurrentHealth / this.MaxHealth; }
 
         private AMB_Character Character { get => this.m_Character; set => this.m_Character = value; }
@@ -38,7 +38,7 @@ namespace Code.Characters.Stats {
 
         public bool IsDead() => this.CurrentHealth <= 0;
 
-        public int TakeDamage(AMB_Character from, float value, bool critical, E_DamageSource source) {
+        public float TakeDamage(AMB_Character from, float value, bool critical, E_DamageSource source) {
             HashSet<Type> appliedTypes = new();
             float damageModifier = this.Character.AllEffects.Aggregate(
                 0f,
@@ -51,7 +51,7 @@ namespace Code.Characters.Stats {
                 (current, effect) => effect.ApplyOnDamageReceived(from, this.Character, source, current)
             );
 
-            int realDamageDealt = Mathf.RoundToInt(Mathf.Clamp(value, 0, this.CurrentHealth));
+            float realDamageDealt = Mathf.Clamp(value, 0, this.CurrentHealth);
             this.CurrentHealth -= realDamageDealt;
             return realDamageDealt;
         }

@@ -1,4 +1,7 @@
-﻿namespace Code.Enhancements.UnlockConditions.Editor_.Predicates {
+﻿using System;
+
+namespace Code.Enhancements.UnlockConditions.Editor_.Predicates {
+    [Serializable]
     public class C_MaxSpecificEnhancementsTaken : C_MaxEnhancementsTaken {
         private const string IN_PORT_ENHANCEMENT = "Enhancement";
 

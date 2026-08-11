@@ -13,7 +13,8 @@ namespace Code.Enhancements {
         ViolentDash,
         Inhibition,
         EnhancedPotential,
-        Wisp
+        Wisp,
+        BrambleArmor
     }
 
     public static class SC_EnhancementEnumExtension {
@@ -31,6 +32,7 @@ namespace Code.Enhancements {
                 E_Enhancement.Inhibition => "Inhibition",
                 E_Enhancement.EnhancedPotential => "EnhancedPotential",
                 E_Enhancement.Wisp => "Wisp",
+                E_Enhancement.BrambleArmor => "BrambleArmor",
                 _ => throw new ArgumentOutOfRangeException(nameof(enhancement), enhancement, null)
             };
         }

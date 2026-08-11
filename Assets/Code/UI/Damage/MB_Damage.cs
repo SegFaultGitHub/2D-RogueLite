@@ -27,7 +27,7 @@ namespace Code.UI.Damage {
         #endregion
 
         public void SetDamage(float value, bool critical) {
-            string text = SC_Utils.FormatNumber(value, decimals: 0, prefix: true);
+            string text = SC_Utils.FormatNumber(-value, decimals: 0, prefix: true);
             if (critical) text += "!";
             text = critical
                 ? text.Color(this.CriticalColor)

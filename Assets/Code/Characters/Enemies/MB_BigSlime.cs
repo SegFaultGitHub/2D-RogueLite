@@ -1,5 +1,4 @@
-﻿using Code.Utils;
-using MyBox;
+﻿using MyBox;
 using UnityEngine;
 
 namespace Code.Characters.Enemies {

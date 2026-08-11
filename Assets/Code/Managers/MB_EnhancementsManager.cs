@@ -75,20 +75,9 @@ namespace Code.Managers {
             }
         }
 
-        [ButtonMethod]
-        public void GetChoices() => this.GetChoices(3, 1, 3);
+        public void GetChoices() => this.GetChoices(3, 1, 3, true, false);
 
-        public void GetChoices(int count, int minLevel, int maxLevel, bool first = false) {
-            if (first) {
-                this.RerollButton.gameObject.SetActive(true);
-                this.RerollsRemaining = DEFAULT_REROLLS;
-                this.UpdateRerollButton();
-                this.ObjectsManager.DissolveManager.Show(this.RerollButton.transform, () => {
-                    this.RerollButton.gameObject.SetActive(true);
-                });
-                this.RerollButton.gameObject.SetActive(false);
-            }
-            this.Locked = true;
+        public void GetChoices(int count, int minLevel, int maxLevel, bool first = false, bool moveToNextRoom = true) {
             List<C_WeightedObject<AMB_Enhancement>> availableEnhancements = new();
             foreach (MB_Enhancement enhancement in this.Enhancements) {
                 if (enhancement.Weight > 0
@@ -102,7 +91,21 @@ namespace Code.Managers {
                     );
             }
 
-            if (availableEnhancements.Count == 0) return;
+            if (availableEnhancements.Count == 0) {
+                if (moveToNextRoom) this.ObjectsManager.RoomManager.NextRoom();
+                return;
+            }
+
+            if (first) {
+                this.RerollButton.gameObject.SetActive(true);
+                this.RerollsRemaining = DEFAULT_REROLLS;
+                this.UpdateRerollButton();
+                this.ObjectsManager.DissolveManager.Show(this.RerollButton.transform, () => {
+                    this.RerollButton.gameObject.SetActive(true);
+                });
+                this.RerollButton.gameObject.SetActive(false);
+            }
+            this.Locked = true;
 
             List<C_WeightedObject<AMB_Enhancement>> enhancements = SC_Utils.Sample(availableEnhancements, count);
             List<MB_EnhancementChoice> enhancementChoices = new();
@@ -118,9 +121,10 @@ namespace Code.Managers {
                     );
                     this.RerollButton.gameObject.SetActive(false);
                 };
-                choice.OnClickEndAction = () => {
-                    this.ObjectsManager.RoomManager.NextRoom();
-                };
+                if (moveToNextRoom)
+                    choice.OnClickEndAction = () => {
+                        this.ObjectsManager.RoomManager.NextRoom();
+                    };
                 enhancementChoices.Add(choice);
             }
 

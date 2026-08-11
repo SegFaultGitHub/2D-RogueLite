@@ -5,9 +5,7 @@ using Code.Characters.AI;
 using Code.Characters.Controllers.Enemies;
 using Code.Managers;
 using Code.Map;
-using Code.UI.HUD;
 using Code.UI.Misc;
-using Code.Utils;
 using MyBox;
 using UnityEngine;
 
@@ -135,7 +133,7 @@ namespace Code.Characters.Enemies {
             return true;
         }
 
-        public override int TakeDamage(
+        public override float TakeDamage(
             bool becomeInvulnerable,
             bool freeze,
             float value,
@@ -143,7 +141,7 @@ namespace Code.Characters.Enemies {
             AMB_Character from,
             E_DamageSource source
         ) {
-            int damageTaken = base.TakeDamage(becomeInvulnerable, false, value, critical, from, source);
+            float damageTaken = base.TakeDamage(becomeInvulnerable, false, value, critical, from, source);
             if (damageTaken == 0) return 0;
 
             if (!this.IsABoss) {
@@ -155,6 +153,20 @@ namespace Code.Characters.Enemies {
             this.LifeBar.SetRatio(this.CharacterStats.HealthRatio);
 
             return damageTaken;
+        }
+
+        public override float Heal(AMB_Character from, float value) {
+            float healReceived = base.Heal(from, value);
+            if (healReceived == 0) return 0;
+
+            if (!this.IsABoss) {
+                this.LifeBar.gameObject.SetActive(true);
+                this.HideLifeBar();
+            }
+
+            this.LifeBar.SetRatio(this.CharacterStats.HealthRatio);
+
+            return healReceived;
         }
 
         private void HideLifeBar() {

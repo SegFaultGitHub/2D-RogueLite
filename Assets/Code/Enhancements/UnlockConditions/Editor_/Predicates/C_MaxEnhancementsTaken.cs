@@ -1,4 +1,7 @@
-﻿namespace Code.Enhancements.UnlockConditions.Editor_.Predicates {
+﻿using System;
+
+namespace Code.Enhancements.UnlockConditions.Editor_.Predicates {
+    [Serializable]
     public class C_MaxEnhancementsTaken : C_Predicate {
         protected const string IN_PORT_COUNT = "Count";
 
