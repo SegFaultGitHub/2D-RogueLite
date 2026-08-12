@@ -11,10 +11,10 @@ namespace Code.Enhancements.UnlockConditions.Editor_ {
             T value = default;
 
             // If port is connected to another node, get value from connection
-            if (port.isConnected) {
-                switch (port.firstConnectedPort.GetNode()) {
+            if (port.IsConnected) {
+                switch (port.FirstConnectedPort.GetNode()) {
                     case IVariableNode variableNode:
-                        variableNode.variable.TryGetDefaultValue(out value);
+                        variableNode.Variable.TryGetDefaultValue(out value);
                         return value;
                     case IConstantNode constantNode:
                         constantNode.TryGetValue(out value);

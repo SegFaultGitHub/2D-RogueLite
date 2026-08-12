@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 
 namespace Code.Managers {
     public class MB_AudioManager : MonoBehaviour {
-        public enum BackgroundMusic {
+        public enum E_BackgroundMusic {
             Unset,
             Battle1,
             Battle2,
@@ -23,11 +23,7 @@ namespace Code.Managers {
         [SerializeField] private protected AudioSource[] m_BackgroundMusicAudioSourceAudioSources;
 
         [Header("BGMs")]
-        [SerializeField] private protected AudioResource m_BattleBGM1;
-        [SerializeField] private protected AudioResource m_BattleBGM2;
-        [SerializeField] private protected AudioResource m_BattleBGM3;
-        [SerializeField] private protected AudioResource m_BattleBGM4;
-        [SerializeField] private protected AudioResource m_BossBGM1;
+        [SerializeField] private protected Dictionary<E_BackgroundMusic, AudioResource> m_BackgroundMusicsCatalog;
 
         [Header("Player")]
         [SerializeField] private protected AudioResource[] m_PlayerHurt;
@@ -73,7 +69,7 @@ namespace Code.Managers {
 
         [Separator("Read only")]
         [ReadOnly][SerializeField] private protected CollectionWrapperList<AudioSource> m_SoundEffects;
-        [ReadOnly][SerializeField] private protected BackgroundMusic m_CurrentBackgroundMusic;
+        [ReadOnly][SerializeField] private protected E_BackgroundMusic m_CurrentEBackgroundMusic;
 
         [ReadOnly][SerializeField][Range(0, 1)] private protected float m_BackgroundMusicVolume = 1;
         [ReadOnly][SerializeField][Range(0, 1)] private protected float m_SoundEffectsVolume = 1;
@@ -86,11 +82,7 @@ namespace Code.Managers {
         #region Getters / Setters
         private AudioSource[] BackgroundMusicAudioSources { get => this.m_BackgroundMusicAudioSourceAudioSources; }
 
-        private AudioResource BattleBGM1 { get => this.m_BattleBGM1; }
-        private AudioResource BattleBGM2 { get => this.m_BattleBGM2; }
-        private AudioResource BattleBGM3 { get => this.m_BattleBGM3; }
-        private AudioResource BattleBGM4 { get => this.m_BattleBGM4; }
-        private AudioResource BossBGM1 { get => this.m_BossBGM1; }
+        private Dictionary<E_BackgroundMusic, AudioResource> BackgroundMusicsCatalog { get => this.m_BackgroundMusicsCatalog; }
 
         private AudioResource[] PlayerHurt { get => this.m_PlayerHurt; }
         private AudioResource[] PlayerHurtFromDamageOverTime { get => this.m_PlayerHurtFromDamageOverTime; }
@@ -126,9 +118,9 @@ namespace Code.Managers {
         private AudioResource[] SpawnerSpawn { get => this.m_SpawnerSpawn; }
 
         private CollectionWrapperList<AudioSource> SoundEffects { get => this.m_SoundEffects; }
-        private BackgroundMusic CurrentBackgroundMusic {
-            get => this.m_CurrentBackgroundMusic;
-            set => this.m_CurrentBackgroundMusic = value;
+        private E_BackgroundMusic CurrentEBackgroundMusic {
+            get => this.m_CurrentEBackgroundMusic;
+            set => this.m_CurrentEBackgroundMusic = value;
         }
 
         private float BackgroundMusicVolume { get => this.m_BackgroundMusicVolume; set => this.m_BackgroundMusicVolume = value; }
@@ -147,7 +139,6 @@ namespace Code.Managers {
         #endregion
 
         #region Static / Readonly / Const
-        private Dictionary<BackgroundMusic, AudioResource> BackgroundMusicsCatalog { get; } = new();
         #endregion
 
         #region Unity methods
@@ -164,14 +155,8 @@ namespace Code.Managers {
         #endregion
 
         public void Initialize() {
-            this.BackgroundMusicsCatalog[BackgroundMusic.Battle1] = this.BattleBGM1;
-            this.BackgroundMusicsCatalog[BackgroundMusic.Battle2] = this.BattleBGM2;
-            this.BackgroundMusicsCatalog[BackgroundMusic.Battle3] = this.BattleBGM3;
-            this.BackgroundMusicsCatalog[BackgroundMusic.Battle4] = this.BattleBGM4;
-            this.BackgroundMusicsCatalog[BackgroundMusic.Boss1] = this.BossBGM1;
-
-            this.CurrentBackgroundMusic = BackgroundMusic.Unset;
-            this.ChangeBackgroundMusic(BackgroundMusic.Battle1, 0);
+            this.CurrentEBackgroundMusic = E_BackgroundMusic.Unset;
+            this.ChangeBackgroundMusic(E_BackgroundMusic.Battle1, 0);
         }
 
         public void PostInitialize() { }
@@ -181,11 +166,11 @@ namespace Code.Managers {
         public void SetCustomBackgroundMusicVolume(float volume) => this.CustomBackgroundMusicVolume = volume;
         public void SetCustomSoundEffectsVolume(float volume) => this.CustomSoundEffectsVolume = volume;
 
-        public void ChangeBackgroundMusic(BackgroundMusic newBackgroundMusic, float fadeDuration) {
-            if (newBackgroundMusic == this.CurrentBackgroundMusic) return;
+        public void ChangeBackgroundMusic(E_BackgroundMusic newEBackgroundMusic, float fadeDuration) {
+            if (newEBackgroundMusic == this.CurrentEBackgroundMusic) return;
 
-            this.CurrentBackgroundMusic = newBackgroundMusic;
-            this.ChangeBackgroundMusic(this.BackgroundMusicsCatalog[newBackgroundMusic], fadeDuration);
+            this.CurrentEBackgroundMusic = newEBackgroundMusic;
+            this.ChangeBackgroundMusic(this.BackgroundMusicsCatalog[newEBackgroundMusic], fadeDuration);
         }
 
         private void ChangeBackgroundMusic(AudioResource newBackgroundMusic, float fadeDuration) {
@@ -216,19 +201,19 @@ namespace Code.Managers {
 
         #region Background Music
         [ButtonMethod]
-        public void SetBattleBGM1() => this.ChangeBackgroundMusic(BackgroundMusic.Battle1, 3f);
+        public void SetBattleBGM1() => this.ChangeBackgroundMusic(E_BackgroundMusic.Battle1, 3f);
 
         [ButtonMethod]
-        public void SetBattleBGM2() => this.ChangeBackgroundMusic(BackgroundMusic.Battle2, 3f);
+        public void SetBattleBGM2() => this.ChangeBackgroundMusic(E_BackgroundMusic.Battle2, 3f);
 
         [ButtonMethod]
-        public void SetBattleBGM3() => this.ChangeBackgroundMusic(BackgroundMusic.Battle3, 3f);
+        public void SetBattleBGM3() => this.ChangeBackgroundMusic(E_BackgroundMusic.Battle3, 3f);
 
         [ButtonMethod]
-        public void SetBattleBGM4() => this.ChangeBackgroundMusic(BackgroundMusic.Battle4, 3f);
+        public void SetBattleBGM4() => this.ChangeBackgroundMusic(E_BackgroundMusic.Battle4, 3f);
 
         [ButtonMethod]
-        public void SetBossBGM1() => this.ChangeBackgroundMusic(BackgroundMusic.Boss1, 3f);
+        public void SetBossBGM1() => this.ChangeBackgroundMusic(E_BackgroundMusic.Boss1, 3f);
         #endregion
 
         #region Sound Effects

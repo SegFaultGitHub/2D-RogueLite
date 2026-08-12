@@ -48,5 +48,5 @@ MonoBehaviour:
   m_MaxLevel: 1
   m_Description: Does <nothing>?...
   m_Sprite: {fileID: -5338332612186525698, guid: 52c15c8ef9d3a7041a07c3dc39a19018, type: 3}
-  m_UnlockCondition: {fileID: 2841676755933307327, guid: 270af31753920ec4caaf12ba699d9576, type: 3}
+  m_UnlockCondition: {fileID: 2841676755933307327, guid: 124e54c9dc1c3b74bb63b359370b6a76, type: 3}
   m_Level: 0

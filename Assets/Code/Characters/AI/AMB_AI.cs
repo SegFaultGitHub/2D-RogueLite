@@ -94,6 +94,7 @@ namespace Code.Characters.AI {
         [ReadOnly][SerializeField] private protected bool m_WallsBlockingSight;
         [ReadOnly][SerializeField] private protected bool m_HolesBlockingSight;
 
+        [ReadOnly][SerializeField] private protected Vector2 m_PlayerPosition;
         [ReadOnly][SerializeField] private protected Vector2 m_TrueVectorToPlayer;
         [ReadOnly][SerializeField] private protected Vector2 m_VectorToPlayer;
         [ReadOnly][SerializeField] private protected Vector2Int m_EnemyNodePosition;
@@ -136,6 +137,7 @@ namespace Code.Characters.AI {
         protected bool WallsBlockingSight { get => this.m_WallsBlockingSight; private set => this.m_WallsBlockingSight = value; }
         protected bool HolesBlockingSight { get => this.m_HolesBlockingSight; private set => this.m_HolesBlockingSight = value; }
 
+        public Vector2 PlayerPosition { get => this.m_PlayerPosition; private set => this.m_PlayerPosition = value; }
         protected Vector2 TrueVectorToPlayer { get => this.m_TrueVectorToPlayer; private set => this.m_TrueVectorToPlayer = value; }
         protected Vector2 VectorToPlayer { get => this.m_VectorToPlayer; private set => this.m_VectorToPlayer = value; }
         private Vector2Int EnemyNodePosition { get => this.m_EnemyNodePosition; set => this.m_EnemyNodePosition = value; }
@@ -305,6 +307,7 @@ namespace Code.Characters.AI {
         }
 
         private void UpdatePlayerDistance() {
+            this.PlayerPosition = this.ObjectsManager.Player.transform.position;
             this.VectorToPlayer = this.ObjectsManager.Player.transform.position - this.Enemy.transform.position;
             this.TrueVectorToPlayer = this.VectorToPlayer;
             this.DistanceToPlayer = this.VectorToPlayer.magnitude;

@@ -8,6 +8,7 @@ using Code.Spells;
 using Code.UI.HUD;
 using Code.Utils;
 using MyBox;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -37,6 +38,7 @@ namespace Code.Characters.Players {
         [ReadOnly][SerializeField] private protected float m_DashAvailableAt;
 
         [ReadOnly][SerializeField] private protected float m_DamagePerSecond;
+        [ReadOnly][SerializeField] private protected Dictionary<E_DamageSource, float> m_DamagePerSecondPerSource;
 
         [ReadOnly][SerializeField] private protected int m_MaxEnhancements;
         [ReadOnly][SerializeField] private protected CollectionWrapperList<AMB_Enhancement> m_Enhancements;
@@ -46,6 +48,8 @@ namespace Code.Characters.Players {
         [SerializeField] private protected AMB_Spell m_TEMP_SecondarySpell;
 
         [SerializeField] private protected AMB_Enhancement[] m_TEMP_Enhancements;
+
+        [SerializeField] private protected TMP_Text m_TEMP_DamagePerSecondText;
         #endregion
 
         #region Getters / Setters
@@ -70,7 +74,7 @@ namespace Code.Characters.Players {
         private float DashAvailableAt { get => this.m_DashAvailableAt; set => this.m_DashAvailableAt = value; }
 
         private float DamagePerSecond { get => this.m_DamagePerSecond; set => this.m_DamagePerSecond = value; }
-
+        private Dictionary<E_DamageSource, float> DamagePerSecondPerSource { get => this.m_DamagePerSecondPerSource; }
         private int MaxEnhancements { get => this.m_MaxEnhancements; set => this.m_MaxEnhancements = value; }
         public CollectionWrapperList<AMB_Enhancement> Enhancements { get => this.m_Enhancements; }
 
@@ -106,6 +110,8 @@ namespace Code.Characters.Players {
 
             this.DashReloadFrame.SetActive(this.DashReloadImage.fillAmount < 1);
             this.DashReloadImage.fillAmount = SC_Utils.MapFrom(this.DashCastAt, this.DashAvailableAt, 0, 1, Time.time);
+
+            this.m_TEMP_DamagePerSecondText.SetText(SC_Utils.FormatNumber(this.DamagePerSecond, decimals: 0));
         }
         #endregion
 
@@ -220,9 +226,20 @@ namespace Code.Characters.Players {
                 this.ObjectsManager.StatsManager.AddDamageDealt(enemy, damageDealt, source);
 
                 this.DamagePerSecond += damageDealt;
-                this.ObjectsManager.StatsManager.SetMaxDamageDealt(damageDealt, source);
-                this.ObjectsManager.StatsManager.SetMaxDpsReached(this.DamagePerSecond);
-                this.InSeconds(1, () => this.DamagePerSecond -= damageDealt);
+                this.DamagePerSecondPerSource.TryAdd(source, 0);
+                this.DamagePerSecondPerSource[source] += damageDealt;
+                this.ObjectsManager.StatsManager.SetMaxDamagePerSecondReached(
+                    this.DamagePerSecond,
+                    this.DamagePerSecondPerSource[source],
+                    source
+                );
+                this.InSeconds(
+                    1,
+                    () => {
+                        this.DamagePerSecond -= damageDealt;
+                        this.DamagePerSecondPerSource[source] -= damageDealt;
+                    }
+                );
             }
         }
 

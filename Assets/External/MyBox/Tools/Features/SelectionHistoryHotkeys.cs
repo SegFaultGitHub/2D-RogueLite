@@ -9,65 +9,74 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace MyBox.Internal {
-    [InitializeOnLoad]
-    public static class SelectionHistoryHotkeys {
-        /// <summary>
-        /// Adds Back and Forward items to the Edit > Selection menu to navigate between Hierarchy and Project pane selections.
-        /// </summary>
-        private static Object _activeSelection;
+namespace MyBox.Internal
+{
+	[InitializeOnLoad]
+	public static class SelectionHistoryHotkeys
+	{
+		/// <summary>
+		/// Adds Back and Forward items to the Edit > Selection menu to navigate between Hierarchy and Project pane selections.
+		/// </summary>
+		private static Object _activeSelection;
 
-        private static bool _ignoreNextSelectionChangedEvent;
-        private static readonly Stack<Object> NextSelections = new Stack<Object>();
-        private static readonly Stack<Object> PreviousSelections = new Stack<Object>();
+		private static bool _ignoreNextSelectionChangedEvent;
+		private static readonly Stack<Object> NextSelections = new Stack<Object>();
+		private static readonly Stack<Object> PreviousSelections = new Stack<Object>();
 
-        static SelectionHistoryHotkeys() {
-            Selection.selectionChanged += SelectionChangedHandler;
-        }
+		static SelectionHistoryHotkeys()
+		{
+			Selection.selectionChanged += SelectionChangedHandler;
+		}
 
-        private static void SelectionChangedHandler() {
-            if (_ignoreNextSelectionChangedEvent) {
-                _ignoreNextSelectionChangedEvent = false;
-                return;
-            }
+		private static void SelectionChangedHandler()
+		{
+			if (_ignoreNextSelectionChangedEvent)
+			{
+				_ignoreNextSelectionChangedEvent = false;
+				return;
+			}
 
-            if (_activeSelection != null) PreviousSelections.Push(_activeSelection);
+			if (_activeSelection != null) PreviousSelections.Push(_activeSelection);
 
-            _activeSelection = Selection.activeObject;
-            NextSelections.Clear();
-        }
+			_activeSelection = Selection.activeObject;
+			NextSelections.Clear();
+		}
 
 
-        private const string BackMenuLabel = "Tools/MyBox/Back In Selection History %#[";
-        private const string ForwardMenuLabel = "Tools/MyBox/Forward In Selection History %#]";
+		private const string BackMenuLabel = "Tools/MyBox/Back In Selection History %#[";
+		private const string ForwardMenuLabel = "Tools/MyBox/Forward In Selection History %#]";
 
-        [MenuItem(BackMenuLabel)]
-        private static void Back() {
-            if (_activeSelection != null) NextSelections.Push(_activeSelection);
+		[MenuItem(BackMenuLabel)]
+		private static void Back()
+		{
+			if (_activeSelection != null) NextSelections.Push(_activeSelection);
 
-            Selection.activeObject = PreviousSelections.Pop();
-            _activeSelection = Selection.activeObject;
-            _ignoreNextSelectionChangedEvent = true;
-        }
+			Selection.activeObject = PreviousSelections.Pop();
+			_activeSelection = Selection.activeObject;
+			_ignoreNextSelectionChangedEvent = true;
+		}
 
-        [MenuItem(ForwardMenuLabel)]
-        private static void Forward() {
-            if (_activeSelection != null) PreviousSelections.Push(_activeSelection);
+		[MenuItem(ForwardMenuLabel)]
+		private static void Forward()
+		{
+			if (_activeSelection != null) PreviousSelections.Push(_activeSelection);
 
-            Selection.activeObject = NextSelections.Pop();
-            _activeSelection = Selection.activeObject;
-            _ignoreNextSelectionChangedEvent = true;
-        }
+			Selection.activeObject = NextSelections.Pop();
+			_activeSelection = Selection.activeObject;
+			_ignoreNextSelectionChangedEvent = true;
+		}
 
-        [MenuItem(BackMenuLabel, true)]
-        static bool ValidateBack() {
-            return PreviousSelections.Count > 0;
-        }
+		[MenuItem(BackMenuLabel, true)]
+		static bool ValidateBack()
+		{
+			return PreviousSelections.Count > 0;
+		}
 
-        [MenuItem(ForwardMenuLabel, true)]
-        static bool ValidateForward() {
-            return NextSelections.Count > 0;
-        }
-    }
+		[MenuItem(ForwardMenuLabel, true)]
+		static bool ValidateForward()
+		{
+			return NextSelections.Count > 0;
+		}
+	}
 }
 #endif

@@ -59,8 +59,11 @@ namespace Code.UI.HUD {
                 string nameString = enhancement.EnhancementName.Name();
                 int currentLevel = currentEnhancement.Level;
                 int newLevel = Mathf.Clamp(enhancement.Level + currentEnhancement.Level, 1, enhancement.MaxLevel);
-                string levelString =
-                    $"{currentEnhancement.EffectiveLevel} / {currentEnhancement.MaxLevel} > {newLevel} / {enhancement.MaxLevel}";
+                string currentLevelString = $"{currentEnhancement.EffectiveLevel} / {currentEnhancement.MaxLevel}";
+                string newLevelString = newLevel >= enhancement.MaxLevel
+                    ? $"MAX"
+                    : $"{newLevel} / {enhancement.MaxLevel}";
+                string levelString = $"{currentLevelString} > {newLevelString}";
                 string description = enhancement.GetDescriptionWithUpgrade(currentLevel, newLevel).LineHeight(8);
 
                 this.SetData(nameString, levelString, description);

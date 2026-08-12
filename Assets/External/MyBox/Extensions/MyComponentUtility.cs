@@ -1,19 +1,23 @@
 ﻿using JetBrains.Annotations;
 using UnityEngine;
 
-namespace MyBox {
-    [PublicAPI]
-    public static class MyComponentUtility {
-        public static void MoveComponentInspectorToTop(Component component) {
+namespace MyBox
+{
+	[PublicAPI]
+	public static class MyComponentUtility
+	{
+		public static void MoveComponentInspectorToTop(Component component)
+		{
 #if UNITY_EDITOR
-            while (UnityEditorInternal.ComponentUtility.MoveComponentUp(component)) { }
+			while (UnityEditorInternal.ComponentUtility.MoveComponentUp(component)){}
 #endif
-        }
+		}
 
-        public static void MoveComponentInspectorToBottom(Component component) {
+		public static void MoveComponentInspectorToBottom(Component component)
+		{
 #if UNITY_EDITOR
-            while (UnityEditorInternal.ComponentUtility.MoveComponentDown(component)) { }
+			while (UnityEditorInternal.ComponentUtility.MoveComponentDown(component)){}
 #endif
-        }
-    }
+		}
+	}
 }

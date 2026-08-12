@@ -66,7 +66,7 @@ namespace Code.Managers {
                 action3: () => {
                     this.ObjectsManager.MainCamera.SetPixelSize(8, 1f, MB_TransitionManager.SHOW_EASE);
                     this.Room.ShowMap();
-                    this.ObjectsManager.AudioManager.ChangeBackgroundMusic(this.Room.BackgroundMusic, 3f);
+                    this.ObjectsManager.AudioManager.ChangeBackgroundMusic(this.Room.EBackgroundMusic, 3f);
                 },
                 action4: () => {
                     MB_PlayerSpawner playerSpawner = Instantiate(this.PlayerSpawner);

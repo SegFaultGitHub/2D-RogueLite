@@ -48,7 +48,7 @@ MonoBehaviour:
   m_MaxLevel: 4
   m_Description: Grants <count> extra enhancements spots
   m_Sprite: {fileID: 7980907516002592024, guid: 94f581f4e51b8824ab8f51ae7769909a, type: 3}
-  m_UnlockCondition: {fileID: 2841676755933307327, guid: fec3f53583782bb42958a96aad1642f4, type: 3}
+  m_UnlockCondition: {fileID: 2841676755933307327, guid: 124e54c9dc1c3b74bb63b359370b6a76, type: 3}
   m_Level: 0
   m_Data:
   - m_Count: 1

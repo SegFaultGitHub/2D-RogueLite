@@ -3,72 +3,81 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace MyBox {
-    [RequireComponent(typeof(Button), typeof(Image))]
-    public class UIImageBasedButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPointerEnterHandler, IPointerExitHandler {
+namespace MyBox
+{
+	[RequireComponent(typeof(Button), typeof(Image))]
+	public class UIImageBasedButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPointerEnterHandler, IPointerExitHandler
+	{
 #pragma warning disable 0649
-        [SerializeField, MustBeAssigned] private Sprite _regularSprite;
-        [SerializeField, MustBeAssigned] private Sprite _regularSelectedSprite;
-        [SerializeField, MustBeAssigned] private Sprite _clickedSprite;
-        [SerializeField, MustBeAssigned] private Sprite _clickedSelectedSprite;
+		[SerializeField, MustBeAssigned] private Sprite _regularSprite;
+		[SerializeField, MustBeAssigned] private Sprite _regularSelectedSprite;
+		[SerializeField, MustBeAssigned] private Sprite _clickedSprite;
+		[SerializeField, MustBeAssigned] private Sprite _clickedSelectedSprite;
 #pragma warning restore 0649
 
-        public Action<bool> OnToggled;
+		public Action<bool> OnToggled;
+		
+		public bool AlternativeSpriteset
+		{
+			get => _alternative;
+			set => _alternative = value;
+		}
 
-        public bool AlternativeSpriteset { get => this._alternative; set => this._alternative = value; }
-
-        private bool _alternative;
-        private bool _selected;
-        private Image _image;
-        private Button _button;
-
-
-        private void Awake() {
-            this._image = this.GetComponent<Image>();
-            this._button = this.GetComponent<Button>();
-        }
-
-        private void OnEnable() => this._button.onClick.AddListener(this.ToggleSprites);
-        private void OnDisable() => this._button.onClick.RemoveListener(this.ToggleSprites);
-
-        private void ToggleSprites() {
-            this._alternative = !this._alternative;
-            this.OnToggled?.Invoke(this._alternative);
-
-            this.UpdateSprites();
-        }
+		private bool _alternative;
+		private bool _selected;
+		private Image _image;
+		private Button _button;
 
 
-        private void UpdateSprites() {
-            this._image.sprite = !this._alternative
-                ? !this._selected
-                    ? this._regularSprite
-                    : this._regularSelectedSprite
-                : !this._selected
-                    ? this._clickedSprite
-                    : this._clickedSelectedSprite;
-        }
+		private void Awake()
+		{
+			_image = GetComponent<Image>();
+			_button = GetComponent<Button>();
+		}
 
-        private void UpdateSprites(bool selected) {
-            this._selected = selected;
-            this.UpdateSprites();
-        }
+		private void OnEnable() => _button.onClick.AddListener(ToggleSprites);
+		private void OnDisable() => _button.onClick.RemoveListener(ToggleSprites);
+
+		private void ToggleSprites()
+		{
+			_alternative = !_alternative;
+			OnToggled?.Invoke(_alternative);
+			
+			UpdateSprites();
+		}
 
 
-        public void OnSelect(BaseEventData eventData) {
-            this.UpdateSprites(true);
-        }
+		private void UpdateSprites()
+		{
+			_image.sprite = !_alternative ? !_selected ? _regularSprite : _regularSelectedSprite :
+				!_selected ? _clickedSprite : _clickedSelectedSprite;
+		}
 
-        public void OnDeselect(BaseEventData eventData) {
-            this.UpdateSprites(false);
-        }
+		private void UpdateSprites(bool selected)
+		{
+			_selected = selected;
+			UpdateSprites();
+		}
 
-        public void OnPointerEnter(PointerEventData eventData) {
-            this.UpdateSprites(true);
-        }
 
-        public void OnPointerExit(PointerEventData eventData) {
-            this.UpdateSprites(false);
-        }
-    }
+		public void OnSelect(BaseEventData eventData)
+		{
+			UpdateSprites(true);
+		}
+
+		public void OnDeselect(BaseEventData eventData)
+		{
+			UpdateSprites(false);
+		}
+
+		public void OnPointerEnter(PointerEventData eventData)
+		{
+			UpdateSprites(true);
+		}
+
+		public void OnPointerExit(PointerEventData eventData)
+		{
+			UpdateSprites(false);
+		}
+	}
 }

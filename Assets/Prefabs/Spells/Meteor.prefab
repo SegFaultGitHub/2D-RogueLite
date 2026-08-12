@@ -67,7 +67,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3957062433852058582
 SpriteRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -124,6 +124,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!1 &4474128738368606301
 GameObject:
   m_ObjectHideFlags: 0
@@ -709,7 +710,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4551151498357598041
 SpriteRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -766,6 +767,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!1 &8554724000619479283
 GameObject:
   m_ObjectHideFlags: 0
@@ -831,9 +833,9 @@ MonoBehaviour:
   m_SpellPosition: 0
   m_CollisionTarget: 0
   m_HitMetadata:
-    m_Damage: 500
+    m_Damage: 20
     m_KnockbackForce: 15
-  m_Cooldown: 0.5
+  m_Cooldown: 15
   m_CanHitMultipleTimes: 0
   m_TriggersInvulnerable: 0
   m_HasCharacterCollider: 1
@@ -855,10 +857,13 @@ MonoBehaviour:
   m_Size: 2
   m_Delay: 1
   m_DropTime: 0.75
-  m_CircleRenderer: {fileID: 8517572827611389572}
   m_AngleSpread: 25
+  m_BurningPrefab: {fileID: 6249741078826281008, guid: 52f6aeb422716bd489a85efc86bf319f, type: 3}
+  m_BurningDamagePerTick: 4
+  m_BurningTickCount: 5
   m_Sprites: {fileID: 7789056170708973282}
   m_Shadow: {fileID: 6023790142408952952}
+  m_CircleRenderer: {fileID: 8517572827611389572}
   m_InnerCircleCollider: {fileID: 3802458542786411452}
   m_OuterCircleCollider: {fileID: 6702392727996591697}
   m_Animator: {fileID: 0}

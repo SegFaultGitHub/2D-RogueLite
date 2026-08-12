@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using Code.Cameras;
+﻿using System.Collections.Generic;
 using Code.Characters.Enemies;
 using Code.UI.HUD;
-using Code.Utils;
 using MyBox;
 using UnityEngine;
 
@@ -16,6 +13,7 @@ namespace Code.Managers {
 
         [Separator("Read only")]
         [ReadOnly][SerializeField] private protected MB_ObjectsManager m_ObjectsManager;
+        [ReadOnly][SerializeField] private protected Dictionary<AMB_Enemy, MB_EnemyIndicator> m_EnemyIndicators = new();
         #endregion
 
         #region Getters / Setters
@@ -23,8 +21,7 @@ namespace Code.Managers {
         private Transform EnemyIndicatorsParent { get => this.m_EnemyIndicatorsParent; }
 
         public MB_ObjectsManager ObjectsManager { get => this.m_ObjectsManager; set => this.m_ObjectsManager = value; }
-
-        private Dictionary<AMB_Enemy, MB_EnemyIndicator> EnemyIndicators { get; } = new();
+        private Dictionary<AMB_Enemy, MB_EnemyIndicator> EnemyIndicators { get => this.m_EnemyIndicators; }
         #endregion
 
         #region Static / Readonly / Const

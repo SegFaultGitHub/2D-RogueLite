@@ -1,12 +1,15 @@
 using System;
 
-namespace MyBox {
-    [AttributeUsage(AttributeTargets.Class)]
-    public class RequireTagAttribute : Attribute {
-        public string Tag;
+namespace MyBox
+{
+	[AttributeUsage(AttributeTargets.Class)]
+	public class RequireTagAttribute : Attribute
+	{
+		public string Tag;
 
-        public RequireTagAttribute(string tag) {
-            this.Tag = tag;
-        }
-    }
+		public RequireTagAttribute(string tag)
+		{
+			Tag = tag;
+		}
+	}
 }
