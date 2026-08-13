@@ -10365,7 +10365,7 @@ PrefabInstance:
     - target: {fileID: 89892910917094427, guid: ccf2a1bd022c0cf49ad397b6bc3bf592, type: 3}
       propertyPath: m_Enemies.Array.data[0].m_Obj
       value: 
-      objectReference: {fileID: 3491636358948034243, guid: 0dbe17e241a5d4f45ab132c1eefabae7, type: 3}
+      objectReference: {fileID: 718534902371574714, guid: 1ab2a1cb163213e479f6bce6ff041715, type: 3}
     - target: {fileID: 89892910917094427, guid: ccf2a1bd022c0cf49ad397b6bc3bf592, type: 3}
       propertyPath: m_Enemies.Array.data[0].m_Weight
       value: 1

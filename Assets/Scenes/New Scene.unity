@@ -4704,6 +4704,12 @@ MonoBehaviour:
   - m_Enhancement: {fileID: 2118614966029018655, guid: 852b2aec9629167439d0aa42494cf3a8, type: 3}
     m_Weight: 1
     m_Unlocked: 0
+  - m_Enhancement: {fileID: 4926766125074361817, guid: 7b1d1630e7e3c4c60a3ac65a83759548, type: 3}
+    m_Weight: 1000
+    m_Unlocked: 0
+  - m_Enhancement: {fileID: 7388452869838562437, guid: 351c003ff35e94c1cb6620030a8dce04, type: 3}
+    m_Weight: 1000
+    m_Unlocked: 0
   m_EnhancementChoicePrefab: {fileID: 9027092331437116080, guid: 22c9368ea93cc8947a8bd97478734bcf, type: 3}
   m_ChoicesParent: {fileID: 75989380}
   m_RerollButton: {fileID: 1934277047}

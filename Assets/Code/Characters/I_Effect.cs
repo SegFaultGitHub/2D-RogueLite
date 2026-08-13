@@ -28,6 +28,9 @@ namespace Code.Characters {
 
         public float GetCooldownModifier(AMB_Character character);
 
+        public float GetCriticalRateModifier(AMB_Character character, E_DamageSource damageSource);
+        public float GetCriticalDamageModifier(AMB_Character character, E_DamageSource damageSource);
+
         public void OnApply(AMB_Character character);
         public void OnRemove(AMB_Character character);
     }

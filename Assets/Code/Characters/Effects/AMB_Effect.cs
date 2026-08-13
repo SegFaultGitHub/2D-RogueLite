@@ -102,6 +102,8 @@ namespace Code.Characters.Effects {
             0;
 
         public virtual float GetCooldownModifier(AMB_Character character) => 0;
+        public float GetCriticalRateModifier(AMB_Character character, E_DamageSource damageSource) => 0;
+        public float GetCriticalDamageModifier(AMB_Character character, E_DamageSource damageSource) => 0;
 
         public virtual void OnApply(AMB_Character character) { }
         public virtual void OnRemove(AMB_Character character) { }

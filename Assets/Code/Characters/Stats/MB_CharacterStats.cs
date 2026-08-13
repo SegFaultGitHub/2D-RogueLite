@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Code.Utils;
 using MyBox;
 using UnityEngine;
 
@@ -11,6 +12,9 @@ namespace Code.Characters.Stats {
         [SerializeField] private protected float m_CurrentHealth;
         [SerializeField] private protected float m_MaxHealth;
 
+        [SerializeField] private protected Dictionary<E_DamageSource, float> m_BaseCriticalRate;
+        [SerializeField] private protected Dictionary<E_DamageSource, float> m_CriticalDamageRatio;
+
         [Separator("Read only")]
         [ReadOnly][SerializeField] private protected AMB_Character m_Character;
         #endregion
@@ -20,9 +24,13 @@ namespace Code.Characters.Stats {
             get => this.m_CurrentHealth;
             private set => this.m_CurrentHealth = Mathf.Clamp(value, 0, this.m_MaxHealth);
         }
-        public float MissingHealth { get => this.m_MaxHealth - this.m_CurrentHealth; }
         public float MaxHealth { get => this.m_MaxHealth; }
-        public float HealthRatio { get => (float)this.CurrentHealth / this.MaxHealth; }
+
+        public float MissingHealth { get => this.m_MaxHealth - this.m_CurrentHealth; }
+        public float HealthRatio { get => this.CurrentHealth / this.MaxHealth; }
+
+        public Dictionary<E_DamageSource, float> BaseCriticalRate { get => this.m_BaseCriticalRate; }
+        public Dictionary<E_DamageSource, float> CriticalDamageRatio { get => this.m_CriticalDamageRatio; }
 
         private AMB_Character Character { get => this.m_Character; set => this.m_Character = value; }
         #endregion
@@ -68,6 +76,14 @@ namespace Code.Characters.Stats {
                 0f,
                 (acc, effect) => acc + effect.GetComputedDamageModifier(this.Character, target, source, appliedTypes)
             );
+            float criticalRate = this.Character.AllEffects.Aggregate(
+                this.BaseCriticalRate.GetOrAdd(source, 0),
+                (acc, effect) => acc + effect.GetCriticalRateModifier(this.Character, source)
+            );
+            float additionalCriticalDamage = this.Character.AllEffects.Aggregate(
+                this.CriticalDamageRatio.GetOrAdd(source, 0),
+                (acc, effect) => acc + effect.GetCriticalDamageModifier(this.Character, source)
+            );
 
             baseDamage *= 1 + damageModifier;
             baseDamage = this.Character.AllEffects.Aggregate(
@@ -75,7 +91,10 @@ namespace Code.Characters.Stats {
                 (current, effect) => effect.ApplyOnDamageComputed(this.Character, target, source, current)
             );
 
-            return (baseDamage, false);
+            bool critical = SC_Utils.Rate(criticalRate);
+            if (critical) baseDamage *= 1 + additionalCriticalDamage;
+
+            return (baseDamage, critical);
         }
     }
 }
