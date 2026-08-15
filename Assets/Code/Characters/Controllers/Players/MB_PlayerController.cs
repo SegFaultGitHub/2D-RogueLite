@@ -1,4 +1,5 @@
 using Code.Characters.Players;
+using Code.Managers;
 using MyBox;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -35,7 +36,8 @@ namespace Code.Characters.Controllers.Players {
         }
 
         protected void Update() {
-            this.Aim(this.Camera.ScreenToWorldPoint(this.PlayerInputs.Actions.AimMouse.ReadValue<Vector2>()));
+            if (this.ObjectsManager.PauseManager.PauseState == MB_PauseManager.E_PauseState.NotPaused)
+                this.Aim(this.Camera.ScreenToWorldPoint(this.PlayerInputs.Actions.AimMouse.ReadValue<Vector2>()));
         }
         #endregion
 

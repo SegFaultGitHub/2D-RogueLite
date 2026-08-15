@@ -19,7 +19,7 @@ namespace Code.Managers {
         #region Getters / Setters
         private MB_DissolveElement DissolveElement { get => this.m_DissolveElementPrefab; }
         private Canvas Canvas { get => this.m_Canvas; }
-        private float DissolveDuration { get => this.m_DissolveDuration; }
+        public float DissolveDuration { get => this.m_DissolveDuration; }
 
         public MB_ObjectsManager ObjectsManager { get => this.m_ObjectsManager; set => this.m_ObjectsManager = value; }
         #endregion
@@ -30,26 +30,26 @@ namespace Code.Managers {
         #region Unity methods
         #endregion
 
-        public void Show(Transform uiComponent, Action action) =>
-            this.Show(new List<Transform> { uiComponent }, action);
+        public void Show(Transform uiComponent, bool realTime, Action action) =>
+            this.Show(new List<Transform> { uiComponent }, realTime, action);
 
-        public void Show(List<Transform> uiComponents, Action action) {
+        public void Show(List<Transform> uiComponents, bool realTime, Action action) {
             RenderTexture screenshot = this.ObjectsManager.ScreenshotManager.ScreenshotUIComponents(uiComponents);
             MB_DissolveElement dissolveElement = Instantiate(this.DissolveElement, this.Canvas.transform);
             dissolveElement.Canvas = this.Canvas;
             dissolveElement.SetTexture(screenshot);
-            dissolveElement.Show(this.DissolveDuration, action);
+            dissolveElement.Show(this.DissolveDuration, realTime, action);
         }
 
-        public void Hide(Transform uiComponent, Action action) =>
-            this.Hide(new List<Transform> { uiComponent }, action);
+        public void Hide(Transform uiComponent, bool realTime, Action action) =>
+            this.Hide(new List<Transform> { uiComponent }, realTime, action);
 
-        public void Hide(List<Transform> uiComponents, Action action) {
+        public void Hide(List<Transform> uiComponents, bool realTime, Action action) {
             RenderTexture screenshot = this.ObjectsManager.ScreenshotManager.ScreenshotUIComponents(uiComponents);
             MB_DissolveElement dissolveElement = Instantiate(this.DissolveElement, this.Canvas.transform);
             dissolveElement.Canvas = this.Canvas;
             dissolveElement.SetTexture(screenshot);
-            dissolveElement.Hide(this.DissolveDuration, action);
+            dissolveElement.Hide(this.DissolveDuration, realTime, action);
         }
     }
 }

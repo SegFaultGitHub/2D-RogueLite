@@ -53,7 +53,9 @@ TextureImporter:
   spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
+  spriteTessellationMethod: 0
   spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
@@ -980,6 +982,50 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Frames_39
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 442
+        width: 32
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 7, y: 9, z: 9, w: 9}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e4625effc136794ea3a5d0d2b91f49d
+      internalID: -1921464927
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Frames_40
+      rect:
+        serializedVersion: 2
+        x: 763
+        y: 441
+        width: 34
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 8, y: 10, z: 8, w: 7}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1528fe545afcff54b84d7169ec17bf90
+      internalID: 87958393
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -1027,7 +1073,9 @@ TextureImporter:
       Frames_36: 482207904
       Frames_37: 1474986884
       Frames_38: 1290910385
+      Frames_39: -1921464927
       Frames_4: -533684452
+      Frames_40: 87958393
       Frames_5: -229643674
       Frames_6: -758068141
       Frames_7: 1842569003

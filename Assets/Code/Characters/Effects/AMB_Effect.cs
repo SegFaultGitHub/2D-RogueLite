@@ -45,7 +45,7 @@ namespace Code.Characters.Effects {
         public void Initialize(AMB_Character target, AMB_Character from, float? duration = null) {
             this.Character = target;
             this.From = from;
-            this.ObjectsManager = FindFirstObjectByType<MB_ObjectsManager>(FindObjectsInactive.Include);
+            this.ObjectsManager = FindAnyObjectByType<MB_ObjectsManager>(FindObjectsInactive.Include);
             this.ExpiresAt = duration.HasValue
                 ? Time.time + duration.Value
                 : -1;

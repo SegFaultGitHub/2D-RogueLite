@@ -88,7 +88,7 @@ namespace Code.Map {
 
         #region Unity methods
         private void Awake() {
-            this.ObjectsManager = FindFirstObjectByType<MB_ObjectsManager>(FindObjectsInactive.Include);
+            this.ObjectsManager = FindAnyObjectByType<MB_ObjectsManager>(FindObjectsInactive.Include);
             this.Cells.Value = this.GetComponentsInChildren<MB_Cell>(true);
         }
 

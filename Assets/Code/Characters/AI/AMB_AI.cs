@@ -193,7 +193,7 @@ namespace Code.Characters.AI {
 
         #region Unity methods
         protected virtual void Awake() {
-            this.Room = FindFirstObjectByType<MB_Room>(FindObjectsInactive.Include);
+            this.Room = FindAnyObjectByType<MB_Room>(FindObjectsInactive.Include);
             // this.Room = this.GetComponentInParent<MB_Room>();
             this.Enemy = this.GetComponent<AMB_Enemy>();
             this.OtherAIs = FindObjectsByType<AMB_AI>(FindObjectsSortMode.None).Where(ai => ai != this).ToArray();
@@ -212,7 +212,7 @@ namespace Code.Characters.AI {
             this.MovementSeed = (int)Random.Range((float)-1e3, (float)1e3);
             this.XOff = (int)Random.Range((float)-1e3, (float)1e3);
             this.YOff = (int)Random.Range((float)-1e3, (float)1e3);
-            this.ObjectsManager = FindFirstObjectByType<MB_ObjectsManager>(FindObjectsInactive.Include);
+            this.ObjectsManager = FindAnyObjectByType<MB_ObjectsManager>(FindObjectsInactive.Include);
 
             foreach (C_Avoidance avoidance in this.Avoidances) {
                 avoidance.AvoidanceLayers = new LayerMask();
@@ -244,9 +244,7 @@ namespace Code.Characters.AI {
             this.AvoidanceDirection = directions.Aggregate(Vector2.zero, (acc, direction) => acc - direction);
             this.UpdatePlayerDistance();
             this.UpdateBehaviour();
-            Vector2 movementDirection = this.Enemy.HasEffect(typeof(MB_Confused))
-                ? this.GetRandomDirection()
-                : this.GetMovementDirection();
+            Vector2 movementDirection = this.GetMovementDirection();
             Vector2 aimDirection = this.GetAimDirection();
 
             this.Decision = new C_Decision {
@@ -337,6 +335,9 @@ namespace Code.Characters.AI {
 
         // Normalized
         protected Vector2 GetDirectionToPlayer(float directionWeight, float noiseWeight, float avoidanceWeight) {
+            if (this.Enemy.HasEffect(typeof(MB_Confused)))
+                return this.GetRandomDirection();
+
             Vector2 direction = Vector2.zero;
             if (directionWeight != 0) direction += this.VectorToPlayer.normalized * directionWeight;
             if (noiseWeight != 0) direction += this.GetRandomDirection() * noiseWeight;

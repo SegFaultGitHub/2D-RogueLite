@@ -68,7 +68,7 @@ namespace Code.Characters.Enemies {
             this.EnemyController = this.GetComponent<MB_EnemyController>();
             this.AI = this.GetComponent<AMB_AI>();
 
-            this.ObjectsManager = FindFirstObjectByType<MB_ObjectsManager>(FindObjectsInactive.Include);
+            this.ObjectsManager = FindAnyObjectByType<MB_ObjectsManager>(FindObjectsInactive.Include);
 
             if (this.IsABoss) {
                 this.LifeBar = this.ObjectsManager.BossLifeBar;
@@ -77,6 +77,7 @@ namespace Code.Characters.Enemies {
                 this.ObjectsManager.BossLifeBar.SetBossName(this.BossName);
                 this.ObjectsManager.DissolveManager.Show(
                     this.ObjectsManager.BossLifeBar.transform,
+                    false,
                     () => this.ObjectsManager.BossLifeBar.gameObject.SetActive(true)
                 );
             } else {
@@ -112,7 +113,7 @@ namespace Code.Characters.Enemies {
 
             if (this.IsABoss) {
                 this.LifeBar.ForceSetRatio(0);
-                this.ObjectsManager.DissolveManager.Hide(this.ObjectsManager.BossLifeBar.transform, () => { });
+                this.ObjectsManager.DissolveManager.Hide(this.ObjectsManager.BossLifeBar.transform, false, () => { });
                 this.LifeBar.gameObject.SetActive(false);
             }
 

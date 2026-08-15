@@ -84,7 +84,7 @@ namespace Code.Spells {
 
         #region Unity methods
         protected virtual void Awake() {
-            this.ObjectsManager = FindFirstObjectByType<MB_ObjectsManager>(FindObjectsInactive.Include);
+            this.ObjectsManager = FindAnyObjectByType<MB_ObjectsManager>(FindObjectsInactive.Include);
             this.transform.SetParent(this.ObjectsManager.SpellsTransform);
             this.Destroyer = this.GetComponent<MB_DestroyOnAnimationEvent>();
         }

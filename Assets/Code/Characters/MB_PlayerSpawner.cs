@@ -19,7 +19,7 @@ namespace Code.Characters {
 
         #region Unity methods
         private void Awake() {
-            this.ObjectsManager = FindFirstObjectByType<MB_ObjectsManager>(FindObjectsInactive.Include);
+            this.ObjectsManager = FindAnyObjectByType<MB_ObjectsManager>(FindObjectsInactive.Include);
         }
         #endregion
 

@@ -12,7 +12,8 @@ namespace Code.Managers {
     public class MB_PauseManager : MonoBehaviour {
         public enum E_PauseState {
             NotPaused,
-            Paused
+            Paused,
+            EnhancementChoices
         }
 
         #region Members
@@ -57,6 +58,9 @@ namespace Code.Managers {
         public void Pause(E_PauseState pauseState) {
             if (this.PauseState is not E_PauseState.NotPaused) return;
 
+            if (this.QuickPauseCoroutine != null) this.StopCoroutine(this.QuickPauseCoroutine);
+            if (this.QuickPauseTweener is { active: true }) DOTween.Kill(this.QuickPauseTweener);
+
             switch (pauseState) {
                 case E_PauseState.Paused:
                     this.Cursor.gameObject.SetActive(false);
@@ -68,6 +72,17 @@ namespace Code.Managers {
                             this.ToggleComponents(pausedOverlay: true);
                         }
                     );
+                    break;
+                case E_PauseState.EnhancementChoices:
+                    this.QuickPauseTweener = DOTween.To( //
+                            () => Time.timeScale,
+                            timeScale => Time.timeScale = timeScale,
+                            0,
+                            this.ObjectsManager.DissolveManager.DissolveDuration
+                        )
+                        .SetEase(Ease.OutExpo)
+                        .SetUpdate(true)
+                        .OnComplete(() => this.QuickPauseTweener = null);
                     break;
                 case E_PauseState.NotPaused:
                 default: throw new ArgumentOutOfRangeException(nameof(pauseState), pauseState, null);
@@ -81,6 +96,7 @@ namespace Code.Managers {
         }
 
         public void Unpause() {
+            E_PauseState previousPauseState = this.PauseState;
             if (this.PauseState is E_PauseState.NotPaused) return;
 
             this.ToggleComponents(pausedOverlay: false);
@@ -89,7 +105,24 @@ namespace Code.Managers {
             this.ObjectsManager.AudioManager.SetBackgroundMusicVolume(1);
             this.ObjectsManager.AudioManager.SetSoundEffectsVolume(1);
             // this.ObjectsManager.BlurCanvas.gameObject.SetActive(false);
-            Time.timeScale = 1;
+
+            switch (previousPauseState) {
+                case E_PauseState.Paused:
+                    Time.timeScale = 1; break;
+                case E_PauseState.EnhancementChoices:
+                    this.QuickPauseTweener = DOTween.To( //
+                            () => Time.timeScale,
+                            timeScale => Time.timeScale = timeScale,
+                            1,
+                            this.ObjectsManager.DissolveManager.DissolveDuration
+                        )
+                        .SetEase(Ease.OutExpo)
+                        .SetUpdate(true)
+                        .OnComplete(() => this.QuickPauseTweener = null);
+                    break;
+                case E_PauseState.NotPaused:
+                default: throw new ArgumentOutOfRangeException();
+            }
         }
 
         public void QuickPause(float duration) {
@@ -107,6 +140,7 @@ namespace Code.Managers {
                             .OnComplete(() => this.QuickPauseTweener = null);
                         break;
                     case E_PauseState.Paused:
+                    case E_PauseState.EnhancementChoices:
                     default:
                         yield break;
                 }
@@ -118,6 +152,7 @@ namespace Code.Managers {
                         Time.timeScale = 1;
                         break;
                     case E_PauseState.Paused:
+                    case E_PauseState.EnhancementChoices:
                     default:
                         yield break;
                 }
@@ -144,6 +179,9 @@ namespace Code.Managers {
                     break;
                 case E_PauseState.Paused:
                     this.Unpause();
+                    break;
+                // Can't exist paused state manually from these
+                case E_PauseState.EnhancementChoices:
                     break;
                 default: throw new ArgumentOutOfRangeException();
             }

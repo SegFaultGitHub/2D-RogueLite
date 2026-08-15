@@ -53,17 +53,17 @@ MonoBehaviour:
   m_Data:
   - m_DamageRatio: 0.1
     m_ConfusedRatio: 0.05
-    m_Duration: 2
+    m_Duration: 5
   - m_DamageRatio: 0.2
     m_ConfusedRatio: 0.07
-    m_Duration: 2
+    m_Duration: 5
   - m_DamageRatio: 0.3
     m_ConfusedRatio: 0.09
-    m_Duration: 2
+    m_Duration: 5
   - m_DamageRatio: 0.4
     m_ConfusedRatio: 0.11
-    m_Duration: 2
+    m_Duration: 5
   - m_DamageRatio: 0.5
     m_ConfusedRatio: 0.15
-    m_Duration: 2
+    m_Duration: 5
   m_ConfusedPrefab: {fileID: -8334203723137315743, guid: 8fd5f53b69837b14a8dc22424da1367e, type: 3}

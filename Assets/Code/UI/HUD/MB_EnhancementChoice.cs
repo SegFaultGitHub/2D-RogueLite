@@ -40,7 +40,7 @@ namespace Code.UI.HUD {
 
         #region Unity methods
         private void Awake() {
-            this.ObjectsManager = FindFirstObjectByType<MB_ObjectsManager>(FindObjectsInactive.Include);
+            this.ObjectsManager = FindAnyObjectByType<MB_ObjectsManager>(FindObjectsInactive.Include);
             this.Ready = false;
         }
         #endregion
@@ -81,7 +81,7 @@ namespace Code.UI.HUD {
             this.OnClickStartAction?.Invoke();
             List<MB_EnhancementChoice> choices = this.transform.parent.GetComponentsInChildren<MB_EnhancementChoice>(true).ToList();
             this.ObjectsManager.Player.AddEnhancement(this.Choice);
-            this.ObjectsManager.DissolveManager.Hide(this.transform.parent, this.OnClickEndAction);
+            this.ObjectsManager.DissolveManager.Hide(this.transform.parent, true, this.OnClickEndAction);
             foreach (MB_EnhancementChoice choice in choices) {
                 choice.Ready = false;
                 if (choice != this) Destroy(choice.Choice.gameObject);

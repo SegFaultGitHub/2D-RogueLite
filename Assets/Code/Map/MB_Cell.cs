@@ -82,7 +82,7 @@ namespace Code.Map {
 
         #region Unity methods
         private void Awake() {
-            this.ObjectsManager = FindFirstObjectByType<MB_ObjectsManager>(FindObjectsInactive.Include);
+            this.ObjectsManager = FindAnyObjectByType<MB_ObjectsManager>(FindObjectsInactive.Include);
             if (!this.IsHole) {
                 List<Sprite> groundSprites = MB_InitializationManager.BIOME switch {
                     E_Biome.Dungeon => this.GroundSprites.DungeonSprites,

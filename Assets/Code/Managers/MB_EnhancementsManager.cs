@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Code.Enhancements;
 using Code.UI.HUD;
+using Code.UI.Notifications;
 using Code.Utils;
 using MyBox;
 using UnityEngine;
@@ -71,6 +72,7 @@ namespace Code.Managers {
 
                 if (unlockEnhancement.Unlocked) {
                     Debug.Log($"{unlockEnhancement.Enhancement.EnhancementName} unlocked!");
+                    this.ObjectsManager.NotificationsContainer.CreateNotification(unlockEnhancement.Enhancement);
                 }
             }
         }
@@ -97,14 +99,21 @@ namespace Code.Managers {
             }
 
             if (first) {
+                this.ObjectsManager.PauseManager.Pause(MB_PauseManager.E_PauseState.EnhancementChoices);
+
                 this.RerollButton.gameObject.SetActive(true);
                 this.RerollsRemaining = DEFAULT_REROLLS;
                 this.UpdateRerollButton();
-                this.ObjectsManager.DissolveManager.Show(this.RerollButton.transform, () => {
-                    this.RerollButton.gameObject.SetActive(true);
-                });
+                this.ObjectsManager.DissolveManager.Show(
+                    this.RerollButton.transform,
+                    true,
+                    () => {
+                        this.RerollButton.gameObject.SetActive(true);
+                    }
+                );
                 this.RerollButton.gameObject.SetActive(false);
             }
+
             this.Locked = true;
 
             List<C_WeightedObject<AMB_Enhancement>> enhancements = SC_Utils.Sample(availableEnhancements, count);
@@ -116,23 +125,27 @@ namespace Code.Managers {
                 MB_EnhancementChoice choice = Instantiate(this.EnhancementChoicePrefab, this.ChoicesParent);
                 choice.SetEnhancement(newEnhancement, existingEnhancement);
                 choice.OnClickStartAction = () => {
-                    this.ObjectsManager.DissolveManager.Hide(this.RerollButton.transform,
+                    this.ObjectsManager.DissolveManager.Hide(
+                        this.RerollButton.transform,
+                        true,
                         () => this.RerollButton.gameObject.SetActive(false)
                     );
                     this.RerollButton.gameObject.SetActive(false);
                 };
-                if (moveToNextRoom)
-                    choice.OnClickEndAction = () => {
+                choice.OnClickEndAction = () => {
+                    this.ObjectsManager.PauseManager.Unpause();
+                    if (moveToNextRoom) {
                         this.ObjectsManager.RoomManager.NextRoom();
-                    };
+                    }
+                };
                 enhancementChoices.Add(choice);
             }
 
             this.ObjectsManager.DissolveManager.Show(
                 this.ChoicesParent,
+                true,
                 () => {
-                    enhancementChoices.ForEach(
-                        e => {
+                    enhancementChoices.ForEach(e => {
                             e.gameObject.SetActive(true);
                             e.Ready = true;
                             this.Locked = false;
@@ -155,6 +168,7 @@ namespace Code.Managers {
             List<MB_EnhancementChoice> choices = this.ChoicesParent.GetComponentsInChildren<MB_EnhancementChoice>(true).ToList();
             this.ObjectsManager.DissolveManager.Hide(
                 this.ChoicesParent,
+                true,
                 () => this.InSeconds(.125f, () => this.GetChoices(count, minLevel, maxLevel))
             );
             foreach (MB_EnhancementChoice choice in choices) {

@@ -92,7 +92,7 @@ namespace Code.Characters.Controllers {
             this.Rigidbody = this.GetComponentInChildren<Rigidbody2D>();
             this.Animator = this.GetComponent<Animator>();
 
-            this.ObjectsManager = FindFirstObjectByType<MB_ObjectsManager>(FindObjectsInactive.Include);
+            this.ObjectsManager = FindAnyObjectByType<MB_ObjectsManager>(FindObjectsInactive.Include);
         }
 
         protected virtual void FixedUpdate() {

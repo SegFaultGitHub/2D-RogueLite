@@ -23,13 +23,12 @@ namespace MyBox
 	{
 		public List<T> Value = new List<T>();
         public int Count => this.Value.Count;
-
-        public void Add(T t) => this.Value.Add(t);
-
-        public void Remove(T t) => this.Value.Remove(t);
         public T this[int i] { get => this.Value[i]; set => this.Value[i] = value; }
 
+        public void Add(T t) => this.Value.Add(t);
+        public void Remove(T t) => this.Value.Remove(t);
         public bool Contains(T t) => this.Value.Contains(t);
+        public void Insert(int index, T t) => this.Value.Insert(index, t);
     }
 }
 

@@ -41,7 +41,7 @@ namespace Code.Characters {
         #region Unity methods
         private void Awake() {
             this.Animator = this.GetComponent<Animator>();
-            this.ObjectsManager = FindFirstObjectByType<MB_ObjectsManager>(FindObjectsInactive.Include);
+            this.ObjectsManager = FindAnyObjectByType<MB_ObjectsManager>(FindObjectsInactive.Include);
 
             this.Room = this.GetComponentInParent<MB_Room>();
             this.Room.Register(this);

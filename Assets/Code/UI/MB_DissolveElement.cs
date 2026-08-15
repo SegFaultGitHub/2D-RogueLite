@@ -42,7 +42,7 @@ namespace Code.UI {
             this.RawImage.texture = texture;
         }
 
-        public void Show(float duration, Action action) {
+        public void Show(float duration, bool realTime, Action action) {
             DOTween.To( //
                     () => 1f,
                     ratio => this.RawImage.material.SetFloat(DISSOLVE_AMOUNT, ratio),
@@ -55,10 +55,11 @@ namespace Code.UI {
                         Destroy(this.RawImage.texture);
                         Destroy(this.gameObject);
                     }
-                );
+                )
+                .SetUpdate(realTime);
         }
 
-        public void Hide(float duration, Action action) {
+        public void Hide(float duration, bool realTime, Action action) {
             DOTween.To( //
                     () => 0f,
                     ratio => this.RawImage.material.SetFloat(DISSOLVE_AMOUNT, ratio),
@@ -71,7 +72,8 @@ namespace Code.UI {
                         Destroy(this.RawImage.texture);
                         Destroy(this.gameObject);
                     }
-                );
+                )
+                .SetUpdate(realTime);
         }
     }
 }

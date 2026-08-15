@@ -67,7 +67,6 @@ namespace Code.Managers {
                 [ReadOnly][SerializeField] private float m_MaxReceived;
                 [ReadOnly][SerializeField] private float m_MaxDamagePerSecond;
 
-
                 private string SourceVerbose { get => this.m_SourceVerbose; set => this.m_SourceVerbose = value; }
                 public float Dealt { get => this.m_Dealt; set => this.m_Dealt = value; }
                 public float Received { get => this.m_Received; set => this.m_Received = value; }

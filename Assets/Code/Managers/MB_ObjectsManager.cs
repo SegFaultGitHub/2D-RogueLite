@@ -3,6 +3,7 @@ using Code.Characters.Controllers;
 using Code.Characters.Players;
 using Code.UI.Damage;
 using Code.UI.HUD;
+using Code.UI.Notifications;
 using MyBox;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -27,19 +28,19 @@ namespace Code.Managers {
         [SerializeField] private protected MB_RoomManager m_RoomManager;
         [SerializeField] private protected MB_ScreenshotManager m_ScreenshotManager;
         [SerializeField] private protected MB_StatsManager m_StatsManager;
-        [FormerlySerializedAs("m_UnlockManager")]
         [SerializeField] private protected MB_EnhancementsManager m_EnhancementsManager;
+        [SerializeField] private protected MB_TransitionManager m_TransitionManager;
+        [SerializeField] private protected MB_EnemyIndicatorsManager m_EnemyIndicatorsManager;
+        [SerializeField] private protected MB_DissolveManager m_DissolveManager;
         #endregion
 
         #region UI
         [Separator("UI")]
         [SerializeField] private protected MB_MainCamera m_MainCamera;
-        [SerializeField] private protected MB_TransitionManager m_TransitionManager;
         [SerializeField] private protected MB_DamageCanvas m_DamageCanvas;
         [SerializeField] private protected MB_PlayerHUD m_PlayerHUD;
-        [SerializeField] private protected MB_EnemyIndicatorsManager m_EnemyIndicatorsManager;
         [SerializeField] private protected MB_BossLifeBar m_BossLifeBar;
-        [SerializeField] private protected MB_DissolveManager m_DissolveManager;
+        [SerializeField] private protected MB_NotificationsContainer m_NotificationsContainer;
         #endregion
         #endregion
 
@@ -58,16 +59,17 @@ namespace Code.Managers {
         public MB_ScreenshotManager ScreenshotManager { get => this.m_ScreenshotManager; }
         public MB_StatsManager StatsManager { get => this.m_StatsManager; }
         public MB_EnhancementsManager EnhancementsManager { get => this.m_EnhancementsManager; }
+        public MB_TransitionManager TransitionManager { get => this.m_TransitionManager; }
+        public MB_EnemyIndicatorsManager EnemyIndicatorsManager { get => this.m_EnemyIndicatorsManager; }
+        public MB_DissolveManager DissolveManager { get => this.m_DissolveManager; }
         #endregion
 
         #region UI
         public MB_MainCamera MainCamera { get => this.m_MainCamera; }
-        public MB_TransitionManager TransitionManager { get => this.m_TransitionManager; }
         public MB_DamageCanvas DamageCanvas { get => this.m_DamageCanvas; }
         public MB_PlayerHUD PlayerHUD { get => this.m_PlayerHUD; }
-        public MB_EnemyIndicatorsManager EnemyIndicatorsManager { get => this.m_EnemyIndicatorsManager; }
         public MB_BossLifeBar BossLifeBar { get => this.m_BossLifeBar; }
-        public MB_DissolveManager DissolveManager { get => this.m_DissolveManager; }
+        public MB_NotificationsContainer NotificationsContainer { get => this.m_NotificationsContainer; }
         #endregion
         #endregion
 
@@ -88,12 +90,12 @@ namespace Code.Managers {
             this.ScreenshotManager.ObjectsManager = this;
             this.StatsManager.ObjectsManager = this;
             this.EnhancementsManager.ObjectsManager = this;
-
-            this.MainCamera.ObjectsManager = this;
             this.TransitionManager.ObjectsManager = this;
-            this.PlayerHUD.ObjectsManager = this;
             this.EnemyIndicatorsManager.ObjectsManager = this;
             this.DissolveManager.ObjectsManager = this;
+
+            this.MainCamera.ObjectsManager = this;
+            this.PlayerHUD.ObjectsManager = this;
 
             /*----------------------------------------------------*/
 
@@ -107,11 +109,12 @@ namespace Code.Managers {
             this.ScreenshotManager.Initialize();
             this.StatsManager.Initialize();
             this.EnhancementsManager.Initialize();
+            this.TransitionManager.Initialize();
+            this.EnemyIndicatorsManager.Initialize();
 
             this.MainCamera.Initialize();
-            this.TransitionManager.Initialize();
             this.PlayerHUD.Initialize();
-            this.EnemyIndicatorsManager.Initialize();
+            this.NotificationsContainer.Initialize();
 
             /*----------------------------------------------------*/
 
@@ -125,11 +128,12 @@ namespace Code.Managers {
             this.ScreenshotManager.PostInitialize();
             this.StatsManager.PostInitialize();
             this.EnhancementsManager.PostInitialize();
+            this.TransitionManager.PostInitialize();
+            this.EnemyIndicatorsManager.PostInitialize();
 
             this.MainCamera.PostInitialize();
-            this.TransitionManager.PostInitialize();
             this.PlayerHUD.PostInitialize();
-            this.EnemyIndicatorsManager.PostInitialize();
+            this.NotificationsContainer.PostInitialize();
         }
     }
 }
