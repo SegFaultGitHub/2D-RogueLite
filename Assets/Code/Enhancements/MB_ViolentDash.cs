@@ -40,7 +40,7 @@ namespace Code.Enhancements {
         public override string GetFullDescription() {
             string[] damages = new string[this.MaxLevel];
             for (int i = 0; i < this.MaxLevel; i++) {
-                damages[i] = SC_Utils.FormatNumber(this.Data[i].Damage, decimals: 0);
+                damages[i] = this.Data[i].Damage.Damage();
             }
 
             string damageString = damages.AsList(this.EffectiveLevel, "", s => s.Green());
@@ -51,8 +51,8 @@ namespace Code.Enhancements {
         public override string GetDescriptionWithUpgrade(int currentLevel, int newLevel) {
             float currentDamage = this.Data[currentLevel - 1].Damage;
             float newDamage = this.Data[newLevel - 1].Damage;
-            string before = $"{SC_Utils.FormatNumber(currentDamage, decimals: 0)}".PositiveEffect();
-            string after = $"{SC_Utils.FormatNumber(newDamage, decimals: 0)}".PositiveEffect();
+            string before = currentDamage.Damage().PositiveEffect();
+            string after = newDamage.Damage().PositiveEffect();
             string damageString = before == after
                 ? before
                 : $"{before} > {after}";
@@ -62,7 +62,7 @@ namespace Code.Enhancements {
 
         public override string GetDescription() {
             float damage = this.GetData().Damage;
-            string damageString = SC_Utils.FormatNumber(damage, decimals: 0).PositiveEffect();
+            string damageString = damage.Damage().PositiveEffect();
 
             return this.Description.Replace("<damage>", damageString);
         }

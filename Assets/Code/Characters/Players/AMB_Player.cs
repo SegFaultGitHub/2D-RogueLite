@@ -208,7 +208,7 @@ namespace Code.Characters.Players {
 
                 if (damageTaken == 0) return 0;
 
-                this.ObjectsManager.StatsManager.AddDamageReceived(from as AMB_Enemy, damageTaken, damageSource);
+                this.ObjectsManager.StatsManager.AddDamageReceived(from as AMB_Enemy, damageTaken, damageSource, critical);
 
                 this.ObjectsManager.PlayerHUD.SetHealth(this.CharacterStats.CurrentHealth, this.CharacterStats.MaxHealth);
                 this.ObjectsManager.MainCamera.Shake(0.065f);
@@ -219,11 +219,11 @@ namespace Code.Characters.Players {
             }
         }
 
-        protected override void DealtDamage(float damageDealt, AMB_Character character, E_DamageSource source) {
-            base.DealtDamage(damageDealt, character, source);
+        protected override void DealtDamage(float damageDealt, AMB_Character character, E_DamageSource source, bool critical) {
+            base.DealtDamage(damageDealt, character, source, critical);
 
             if (character is AMB_Enemy enemy) {
-                this.ObjectsManager.StatsManager.AddDamageDealt(enemy, damageDealt, source);
+                this.ObjectsManager.StatsManager.AddDamageDealt(enemy, damageDealt, source, critical);
 
                 this.DamagePerSecond += damageDealt;
                 this.DamagePerSecondPerSource.TryAdd(source, 0);

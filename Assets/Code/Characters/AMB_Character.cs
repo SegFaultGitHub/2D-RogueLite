@@ -148,6 +148,8 @@ namespace Code.Characters {
             this.VisualEffects.UpdateVisuals(this);
         }
 
+        public bool HasEffect(Type type) => this.Effects.Value.Exists(e => e.GetType() == type);
+
         public void SetInvulnerable() {
             this.Invulnerable = true;
             this.InSeconds(INVULNERABILITY_DURATION, () => this.Invulnerable = false);
@@ -187,7 +189,7 @@ namespace Code.Characters {
             int healthAfter = Mathf.RoundToInt(this.CharacterStats.CurrentHealth);
             this.AllEffects.ForEach(effect => effect.ApplyOnDamageTaken(from, this, source, realDamageDealt));
 
-            from?.DealtDamage(realDamageDealt, this, source);
+            from?.DealtDamage(realDamageDealt, this, source, critical);
             int displayedDamage = Mathf.Max(1, healthBefore - healthAfter);
             this.ObjectsManager.DamageCanvas.DamageDealt(this, displayedDamage, critical);
 
@@ -212,7 +214,7 @@ namespace Code.Characters {
             return healReceived;
         }
 
-        protected virtual void DealtDamage(float damageDealt, AMB_Character character, E_DamageSource source) {
+        protected virtual void DealtDamage(float damageDealt, AMB_Character character, E_DamageSource source, bool critical) {
             this.AllEffects.ForEach(effect => effect.ApplyOnDamageInflicted(this, character, source, damageDealt));
         }
 

@@ -3,7 +3,7 @@
 namespace Code.Enhancements.UnlockConditions.Editor_.Predicates {
     [Serializable]
     public class C_MinSpecificEnhancementsTaken : C_MinEnhancementsTaken {
-        private const string IN_PORT_ENHANCEMENT = "Enhancement";
+        protected const string IN_PORT_ENHANCEMENT = "Enhancement";
 
         protected override string GetHeader() => "Has taken X or more of the specific enhancement";
 

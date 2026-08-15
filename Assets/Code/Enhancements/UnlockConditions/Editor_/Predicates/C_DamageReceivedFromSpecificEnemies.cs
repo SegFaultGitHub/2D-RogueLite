@@ -4,7 +4,7 @@ using Code.Characters.Enemies;
 namespace Code.Enhancements.UnlockConditions.Editor_.Predicates {
     [Serializable]
     public class C_DamageReceivedFromSpecificEnemies : C_DamageReceived {
-        private const string IN_PORT_ENEMY = "Enemy";
+        protected const string IN_PORT_ENEMY = "Enemy";
 
         protected override string GetHeader() => "Has received X or more damage from enemy type";
 

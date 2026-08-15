@@ -89,13 +89,19 @@ namespace Code.Managers {
             public class C_GeneralData {
                 [ReadOnly][SerializeField] private int m_Dashes;
                 [ReadOnly][SerializeField] private float m_MaxDamagePerSecond;
+                [ReadOnly][SerializeField] private Dictionary<E_DamageSource, int> m_CriticalHitsDealt;
+                [ReadOnly][SerializeField] private Dictionary<E_DamageSource, int> m_CriticalHitsReceived;
 
                 public int Dashes { get => this.m_Dashes; set => this.m_Dashes = value; }
                 public float MaxDamagePerSecond { get => this.m_MaxDamagePerSecond; set => this.m_MaxDamagePerSecond = value; }
+                public Dictionary<E_DamageSource, int> CriticalHitsDealt { get => this.m_CriticalHitsDealt; set => this.m_CriticalHitsDealt = value; }
+                public Dictionary<E_DamageSource, int> CriticalHitsReceived { get => this.m_CriticalHitsReceived; set => this.m_CriticalHitsReceived = value; }
 
                 public C_GeneralData() {
                     this.Dashes = 0;
                     this.MaxDamagePerSecond = 0;
+                    this.CriticalHitsDealt = new Dictionary<E_DamageSource, int>();
+                    this.CriticalHitsReceived = new Dictionary<E_DamageSource, int>();
                 }
             }
 
@@ -135,7 +141,7 @@ namespace Code.Managers {
                 bestiaryData.KilledBy++;
             }
 
-            public void AddDamageDealt(AMB_Enemy enemy, float value, E_DamageSource source) {
+            public void AddDamageDealt(AMB_Enemy enemy, float value, E_DamageSource source, bool critical) {
                 this.BestiaryData.TryAdd(enemy.Enemy, new C_BestiaryData(enemy.Enemy));
                 C_BestiaryData bestiaryData = this.BestiaryData[enemy.Enemy];
 
@@ -146,9 +152,14 @@ namespace Code.Managers {
 
                 damageData.Dealt += value;
                 damageData.MaxDealt = Mathf.Max(damageData.MaxDealt, value);
+
+                if (critical) {
+                    this.GeneralData.CriticalHitsDealt.TryAdd(source, 0);
+                    this.GeneralData.CriticalHitsDealt[source]++;
+                }
             }
 
-            public void AddDamageReceived(AMB_Enemy enemy, float value, E_DamageSource source) {
+            public void AddDamageReceived(AMB_Enemy enemy, float value, E_DamageSource source, bool critical) {
                 if (enemy != null) {
                     this.BestiaryData.TryAdd(enemy.Enemy, new C_BestiaryData(enemy.Enemy));
                     C_BestiaryData bestiaryData = this.BestiaryData[enemy.Enemy];
@@ -161,6 +172,11 @@ namespace Code.Managers {
 
                 damageData.Received += value;
                 damageData.MaxReceived = Mathf.Max(damageData.MaxReceived, value);
+
+                if (critical) {
+                    this.GeneralData.CriticalHitsReceived.TryAdd(source, 0);
+                    this.GeneralData.CriticalHitsReceived[source]++;
+                }
             }
 
             public void SetMaxDamagePerSecondReached(float damagePerSecond, float damagePerSecondFromSource, E_DamageSource source) {
@@ -275,6 +291,29 @@ namespace Code.Managers {
             }
 
             public int GetDashes() => this.GeneralData.Dashes;
+
+            public float GetMaxDamagePerSecond() => this.GeneralData.MaxDamagePerSecond;
+
+            public float GetMaxDamagePerSecond(E_DamageSource source) {
+                this.DamageData.TryAdd(source, new C_DamageData(source));
+                C_DamageData damageData = this.DamageData[source];
+
+                return damageData.MaxDamagePerSecond;
+            }
+
+            public int GetCriticalHitsDealt() => this.GeneralData.CriticalHitsDealt.Values.Sum();
+            public int GetCriticalHitsDealt(E_DamageSource source) {
+                this.GeneralData.CriticalHitsDealt.TryAdd(source, 0);
+
+                return this.GeneralData.CriticalHitsDealt[source];
+            }
+
+            public int GetCriticalHitsReceived() => this.GeneralData.CriticalHitsReceived.Values.Sum();
+            public int GetCriticalHitsReceived(E_DamageSource source) {
+                this.GeneralData.CriticalHitsReceived.TryAdd(source, 0);
+
+                return this.GeneralData.CriticalHitsReceived[source];
+            }
             #endregion
         }
 
@@ -327,23 +366,23 @@ namespace Code.Managers {
             }
         }
 
-        public void AddDamageDealt(AMB_Enemy enemy, float value, E_DamageSource source) {
+        public void AddDamageDealt(AMB_Enemy enemy, float value, E_DamageSource source, bool critical) {
             // if (enemy?.Enemy == E_Enemy.Dummy) return;
 
-            this.CurrentRunStats.AddDamageDealt(enemy, value, source);
+            this.CurrentRunStats.AddDamageDealt(enemy, value, source, critical);
             if (!this.SkipGlobalSave) {
-                this.GlobalStats.AddDamageDealt(enemy, value, source);
+                this.GlobalStats.AddDamageDealt(enemy, value, source, critical);
                 SC_Serializer.WriteGlobalStats(this.GlobalStats);
                 this.ObjectsManager.EnhancementsManager.CheckUnlocks();
             }
         }
 
-        public void AddDamageReceived(AMB_Enemy enemy, float value, E_DamageSource source) {
+        public void AddDamageReceived(AMB_Enemy enemy, float value, E_DamageSource source, bool critical) {
             // if (enemy?.Enemy == E_Enemy.Dummy) return;
 
-            this.CurrentRunStats.AddDamageReceived(enemy, value, source);
+            this.CurrentRunStats.AddDamageReceived(enemy, value, source, critical);
             if (!this.SkipGlobalSave) {
-                this.GlobalStats.AddDamageReceived(enemy, value, source);
+                this.GlobalStats.AddDamageReceived(enemy, value, source, critical);
                 SC_Serializer.WriteGlobalStats(this.GlobalStats);
                 this.ObjectsManager.EnhancementsManager.CheckUnlocks();
             }

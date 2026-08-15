@@ -4,7 +4,7 @@ using Code.Characters;
 namespace Code.Enhancements.UnlockConditions.Editor_.Predicates {
     [Serializable]
     public class C_DamageReceivedFromSpecificSource : C_DamageReceived {
-        private const string IN_PORT_SOURCE = "Source";
+        protected const string IN_PORT_SOURCE = "Source";
 
         protected override string GetHeader() => "Has received X or more damage from source";
 

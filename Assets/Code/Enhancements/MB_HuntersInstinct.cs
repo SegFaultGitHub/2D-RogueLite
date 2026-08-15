@@ -34,7 +34,7 @@ namespace Code.Enhancements {
         public override string GetFullDescription() {
             string[] ratios = new string[this.MaxLevel];
             for (int i = 0; i < this.MaxLevel; i++) {
-                ratios[i] = SC_Utils.FormatNumber(this.Data[i].Ratio * 100f, decimals: 0);
+                ratios[i] = this.Data[i].Ratio.Percentage(false);
             }
 
             string ratioString = ratios.AsList(this.EffectiveLevel, "%", s => s.Green());
@@ -45,8 +45,8 @@ namespace Code.Enhancements {
         public override string GetDescriptionWithUpgrade(int currentLevel, int newLevel) {
             float currentRatio = this.Data[currentLevel - 1].Ratio;
             float newRatio = this.Data[newLevel - 1].Ratio;
-            string before = $"{SC_Utils.FormatNumber(currentRatio * 100f, decimals: 0)}%".PositiveEffect();
-            string after = $"{SC_Utils.FormatNumber(newRatio * 100f, decimals: 0)}%".PositiveEffect();
+            string before = currentRatio.Percentage().PositiveEffect();
+            string after = newRatio.Percentage().PositiveEffect();
             string ratioString = before == after
                 ? before
                 : $"{before} > {after}";
@@ -56,7 +56,7 @@ namespace Code.Enhancements {
 
         public override string GetDescription() {
             float ratio = this.GetData().Ratio;
-            string ratioString = $"{SC_Utils.FormatNumber(ratio * 100f, decimals: 0)}%".PositiveEffect();
+            string ratioString = ratio.Percentage().PositiveEffect();
 
             return this.Description.Replace("<ratio>", ratioString);
         }

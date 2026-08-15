@@ -16,7 +16,8 @@ namespace Code.Enhancements {
         Wisp,
         BrambleArmor,
         HuntersInstinct,
-        WeakPoint
+        WeakPoint,
+        BluntHit
     }
 
     public static class SC_EnhancementEnumExtension {
@@ -37,6 +38,7 @@ namespace Code.Enhancements {
                 E_Enhancement.BrambleArmor => "BrambleArmor",
                 E_Enhancement.HuntersInstinct => "HuntersInstinct",
                 E_Enhancement.WeakPoint => "WeakPoint",
+                E_Enhancement.BluntHit => "BluntHit",
                 _ => throw new ArgumentOutOfRangeException(nameof(enhancement), enhancement, null)
             };
         }

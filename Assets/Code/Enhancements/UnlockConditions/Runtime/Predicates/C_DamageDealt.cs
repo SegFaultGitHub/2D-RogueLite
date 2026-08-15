@@ -5,16 +5,16 @@ using UnityEngine;
 namespace Code.Enhancements.UnlockConditions.Runtime.Predicates {
     [Serializable]
     public class C_DamageDealt : C_Predicate {
-        [field: SerializeReference] public int Value { get; set; }
+        [field: SerializeReference] public float Damage { get; set; }
 
-        public C_DamageDealt(E_Mode mode, int value) : base(mode) {
-            this.Value = value;
+        public C_DamageDealt(E_Mode mode, float damage) : base(mode) {
+            this.Damage = damage;
         }
 
         public override bool Check(MB_ObjectsManager objectsManager) =>
             this.Mode switch {
-                E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetDamageDealt() >= this.Value,
-                E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetDamageDealt() >= this.Value,
+                E_Mode.CurrentRun => objectsManager.StatsManager.CurrentRunStats.GetDamageDealt() >= this.Damage,
+                E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetDamageDealt() >= this.Damage,
                 _ => throw new ArgumentOutOfRangeException()
             };
     }

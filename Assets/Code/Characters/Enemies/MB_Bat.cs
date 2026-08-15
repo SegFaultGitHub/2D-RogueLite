@@ -46,8 +46,8 @@ namespace Code.Characters.Enemies {
             return damageTaken;
         }
 
-        protected override void DealtDamage(float damageDealt, AMB_Character character, E_DamageSource source) {
-            base.DealtDamage(damageDealt, character, source);
+        protected override void DealtDamage(float damageDealt, AMB_Character character, E_DamageSource source, bool critical) {
+            base.DealtDamage(damageDealt, character, source, critical);
 
             this.AI.SetBehaviour(E_Behaviour.Fleeing, false);
         }

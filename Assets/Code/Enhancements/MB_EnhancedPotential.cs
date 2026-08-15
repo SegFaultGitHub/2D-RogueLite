@@ -35,7 +35,7 @@ namespace Code.Enhancements {
         public override string GetFullDescription() {
             string[] counts = new string[this.MaxLevel];
             for (int i = 0; i < this.MaxLevel; i++) {
-                counts[i] = SC_Utils.FormatNumber(this.Data[i].Count, decimals: 0);
+                counts[i] = this.Data[i].Count.Count();
             }
 
             string countString = counts.AsList(this.EffectiveLevel, "", s => s.Green());
@@ -46,8 +46,8 @@ namespace Code.Enhancements {
         public override string GetDescriptionWithUpgrade(int currentLevel, int newLevel) {
             int currentCount = this.Data[currentLevel - 1].Count;
             int newCount = this.Data[newLevel - 1].Count;
-            string before = $"{SC_Utils.FormatNumber(currentCount, decimals: 0)}".PositiveEffect();
-            string after = $"{SC_Utils.FormatNumber(newCount, decimals: 0)}".PositiveEffect();
+            string before = currentCount.Count().PositiveEffect();
+            string after = newCount.Count().PositiveEffect();
             string countString = before == after
                 ? before
                 : $"{before} > {after}";
@@ -57,7 +57,7 @@ namespace Code.Enhancements {
 
         public override string GetDescription() {
             int count = this.GetData().Count;
-            string countString = SC_Utils.FormatNumber(count, decimals: 0).PositiveEffect();
+            string countString = count.Count().PositiveEffect();
 
             return this.Description.Replace("<count>", countString);
         }

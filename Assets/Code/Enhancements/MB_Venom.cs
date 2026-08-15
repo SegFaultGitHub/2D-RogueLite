@@ -42,8 +42,8 @@ namespace Code.Enhancements {
             string[] damages = new string[this.MaxLevel];
             string[] durations = new string[this.MaxLevel];
             for (int i = 0; i < this.MaxLevel; i++) {
-                damages[i] = SC_Utils.FormatNumber(this.Data[i].DamagePerTick * this.Data[i].TickCount, decimals: 0);
-                durations[i] = SC_Utils.FormatNumber(this.Data[i].TickCount * MB_Poison.TICK_INTERVAL, decimals: 1);
+                damages[i] = (this.Data[i].DamagePerTick * this.Data[i].TickCount).Damage();
+                durations[i] = (this.Data[i].TickCount * MB_Poison.TICK_INTERVAL).Duration();
             }
 
             string damageString = damages.AsList(this.EffectiveLevel, "", s => s.Green());
@@ -56,16 +56,16 @@ namespace Code.Enhancements {
         public override string GetDescriptionWithUpgrade(int currentLevel, int newLevel) {
             float currentDamage = this.Data[currentLevel - 1].TickCount * this.Data[currentLevel - 1].DamagePerTick;
             float newDamage = this.Data[newLevel - 1].TickCount * this.Data[newLevel - 1].DamagePerTick;
-            string damageBefore = $"{SC_Utils.FormatNumber(currentDamage, decimals: 0)}".PositiveEffect();
-            string damageAfter = $"{SC_Utils.FormatNumber(newDamage, decimals: 0)}".PositiveEffect();
+            string damageBefore = currentDamage.Damage().PositiveEffect();
+            string damageAfter = newDamage.Damage().PositiveEffect();
             string damageString = damageBefore == damageAfter
                 ? damageBefore
                 : $"{damageBefore} > {damageAfter}";
 
             float currentDuration = this.Data[currentLevel - 1].TickCount * MB_Poison.TICK_INTERVAL;
             float newDuration = this.Data[newLevel - 1].TickCount * MB_Poison.TICK_INTERVAL;
-            string durationBefore = $"{SC_Utils.FormatNumber(currentDuration, decimals: 1)}".PositiveEffect();
-            string durationAfter = $"{SC_Utils.FormatNumber(newDuration, decimals: 1)}".PositiveEffect();
+            string durationBefore = currentDuration.Duration().PositiveEffect();
+            string durationAfter = newDuration.Duration().PositiveEffect();
             string durationString = durationBefore == durationAfter
                 ? durationBefore
                 : $"{durationBefore} > {durationAfter}";
@@ -77,9 +77,11 @@ namespace Code.Enhancements {
 
         public override string GetDescription() {
             float damage = this.GetData().DamagePerTick * this.GetData().TickCount;
-            string damageString = SC_Utils.FormatNumber(damage, decimals: 0).PositiveEffect();
+            string damageString = damage.Damage().PositiveEffect();
+
             float duration = this.GetData().TickCount * MB_Poison.TICK_INTERVAL;
-            string durationString = SC_Utils.FormatNumber(duration, decimals: 1).PositiveEffect();
+            string durationString = duration.Duration().PositiveEffect();
+
             return this.Description
                 .Replace("<damage>", damageString)
                 .Replace("<duration>", durationString);

@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Code.Characters.Effects;
 using Code.Characters.Enemies;
 using Code.Managers;
 using Code.Map;
-using Code.Utils;
 using MyBox;
 using UnityEditor;
 using UnityEngine;
@@ -244,7 +244,9 @@ namespace Code.Characters.AI {
             this.AvoidanceDirection = directions.Aggregate(Vector2.zero, (acc, direction) => acc - direction);
             this.UpdatePlayerDistance();
             this.UpdateBehaviour();
-            Vector2 movementDirection = this.GetMovementDirection();
+            Vector2 movementDirection = this.Enemy.HasEffect(typeof(MB_Confused))
+                ? this.GetRandomDirection()
+                : this.GetMovementDirection();
             Vector2 aimDirection = this.GetAimDirection();
 
             this.Decision = new C_Decision {

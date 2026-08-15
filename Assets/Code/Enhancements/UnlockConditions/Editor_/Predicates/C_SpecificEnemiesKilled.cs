@@ -4,7 +4,7 @@ using Code.Characters.Enemies;
 namespace Code.Enhancements.UnlockConditions.Editor_.Predicates {
     [Serializable]
     public class C_SpecificEnemiesKilled : C_EnemiesKilled {
-        private const string IN_PORT_ENEMY = "Enemy";
+        protected const string IN_PORT_ENEMY = "Enemy";
 
         protected override string GetHeader() => "Has killed X or more of the enemy type";
 
