@@ -13,39 +13,46 @@ namespace Code.Managers {
         public enum E_PauseState {
             NotPaused,
             Paused,
-            EnhancementChoices
+            EnhancementChoices,
+            EnhancementList
         }
 
         #region Members
         [Foldout("MB_PauseManager", true)]
         [SerializeField] private protected MB_Cursor m_Cursor;
-        [SerializeField] private protected RawImage m_PausedImage;
-        [SerializeField] private protected GameObject m_PausedOverlay;
+        [SerializeField] private protected RawImage m_Screenshot;
+        [SerializeField] private protected GameObject[] m_PausedOverlays;
+        [SerializeField] private protected GameObject m_EnhancementList;
 
         [Separator("Read only")]
         [ReadOnly][SerializeField] private protected MB_ObjectsManager m_ObjectsManager;
         [ReadOnly][SerializeField] private protected E_PauseState m_PauseState;
-        [ReadOnly][SerializeField] private protected Texture2D m_PausedFrame;
         #endregion
 
         #region Getters / Setters
         private MB_Cursor Cursor { get => this.m_Cursor; }
-        private RawImage PausedImage { get => this.m_PausedImage; }
-        private GameObject PausedOverlay { get => this.m_PausedOverlay; }
+        private RawImage Screenshot { get => this.m_Screenshot; }
+        private GameObject[] PausedOverlays { get => this.m_PausedOverlays; }
+        private GameObject EnhancementList { get => this.m_EnhancementList; }
 
         public MB_ObjectsManager ObjectsManager { get => this.m_ObjectsManager; set => this.m_ObjectsManager = value; }
         public E_PauseState PauseState { get => this.m_PauseState; private set => this.m_PauseState = value; }
-        private Texture2D PausedFrame { get => this.m_PausedFrame; set => this.m_PausedFrame = value; }
 
         private Tweener QuickPauseTweener { get; set; }
         private Coroutine QuickPauseCoroutine { get; set; }
+        private Tweener BlurTweener { get; set; }
         private string QuickPauseGuid { get; set; }
         #endregion
 
         #region Static / Readonly / Const
+        private static readonly int BLUR_AMOUNT = Shader.PropertyToID("_BlurAmount");
+        private const float PAUSE_ENTER_EXIT_DURATION = .25f;
         #endregion
 
         #region Unity methods
+        private void Awake() {
+            this.Screenshot.material = new  Material(this.Screenshot.material);
+        }
         #endregion
 
         public void Initialize() {
@@ -61,64 +68,72 @@ namespace Code.Managers {
             if (this.QuickPauseCoroutine != null) this.StopCoroutine(this.QuickPauseCoroutine);
             if (this.QuickPauseTweener is { active: true }) DOTween.Kill(this.QuickPauseTweener);
 
-            switch (pauseState) {
-                case E_PauseState.Paused:
-                    this.Cursor.gameObject.SetActive(false);
-                    this.OnEndOfFrame(() => {
-                            this.ObjectsManager.ScreenshotManager.Screenshot();
-                            this.ObjectsManager.ScreenshotManager.ScreenshotUIComponents();
-                            //this.PausedFrame = ScreenCapture.CaptureScreenshotAsTexture(ScreenCapture.StereoScreenCaptureMode.BothEyes);
-                            this.Cursor.gameObject.SetActive(true);
-                            this.ToggleComponents(pausedOverlay: true);
-                        }
-                    );
-                    break;
-                case E_PauseState.EnhancementChoices:
-                    this.QuickPauseTweener = DOTween.To( //
-                            () => Time.timeScale,
-                            timeScale => Time.timeScale = timeScale,
-                            0,
-                            this.ObjectsManager.DissolveManager.DissolveDuration
+            this.Cursor.gameObject.SetActive(false);
+            this.OnEndOfFrame(() => {
+                    this.ObjectsManager.ScreenshotManager.Screenshot();
+                    this.Cursor.gameObject.SetActive(true);
+
+                    switch (pauseState) {
+                        case E_PauseState.Paused:
+                            this.ToggleComponents(pausedOverlay: true, enhancementList: false);
+                            break;
+                        case E_PauseState.EnhancementChoices:
+                            this.ToggleComponents(pausedOverlay: false, enhancementList: false);
+                            break;
+                        case E_PauseState.EnhancementList:
+                            this.ToggleComponents(pausedOverlay: false, enhancementList: true);
+                            break;
+                        case E_PauseState.NotPaused:
+                        default: throw new ArgumentOutOfRangeException(nameof(pauseState), pauseState, null);
+                    }
+
+                    Time.timeScale = 0;
+                    this.PauseState = pauseState;
+                    this.ObjectsManager.AudioManager.SetBackgroundMusicVolume(.5f);
+                    this.ObjectsManager.AudioManager.SetSoundEffectsVolume(.5f);
+
+                    if (this.BlurTweener is { active: true }) DOTween.Kill(this.BlurTweener);
+                    this.BlurTweener = DOTween.To( //
+                            () => this.Screenshot.material.GetFloat(BLUR_AMOUNT),
+                            amount => this.Screenshot.material.SetFloat(BLUR_AMOUNT, amount),
+                            1f,
+                            PAUSE_ENTER_EXIT_DURATION
                         )
                         .SetEase(Ease.OutExpo)
                         .SetUpdate(true)
-                        .OnComplete(() => this.QuickPauseTweener = null);
-                    break;
-                case E_PauseState.NotPaused:
-                default: throw new ArgumentOutOfRangeException(nameof(pauseState), pauseState, null);
-            }
-
-            this.PauseState = pauseState;
-            this.ObjectsManager.AudioManager.SetBackgroundMusicVolume(.5f);
-            this.ObjectsManager.AudioManager.SetSoundEffectsVolume(.5f);
-            // this.ObjectsManager.BlurCanvas.gameObject.SetActive(true);
-            Time.timeScale = 0;
+                        .OnComplete(() => this.BlurTweener = null);
+                }
+            );
         }
 
         public void Unpause() {
             E_PauseState previousPauseState = this.PauseState;
             if (this.PauseState is E_PauseState.NotPaused) return;
 
-            this.ToggleComponents(pausedOverlay: false);
-
-            this.PauseState = E_PauseState.NotPaused;
             this.ObjectsManager.AudioManager.SetBackgroundMusicVolume(1);
             this.ObjectsManager.AudioManager.SetSoundEffectsVolume(1);
-            // this.ObjectsManager.BlurCanvas.gameObject.SetActive(false);
+
+            this.ToggleComponents(pausedOverlay: false, enhancementList: false);
 
             switch (previousPauseState) {
                 case E_PauseState.Paused:
-                    Time.timeScale = 1; break;
                 case E_PauseState.EnhancementChoices:
-                    this.QuickPauseTweener = DOTween.To( //
-                            () => Time.timeScale,
-                            timeScale => Time.timeScale = timeScale,
-                            1,
-                            this.ObjectsManager.DissolveManager.DissolveDuration
+                case E_PauseState.EnhancementList:
+                    if (this.BlurTweener is { active: true }) DOTween.Kill(this.BlurTweener);
+                    this.BlurTweener = DOTween.To( //
+                            () => this.Screenshot.material.GetFloat(BLUR_AMOUNT),
+                            amount => this.Screenshot.material.SetFloat(BLUR_AMOUNT, amount),
+                            0f,
+                            PAUSE_ENTER_EXIT_DURATION
                         )
                         .SetEase(Ease.OutExpo)
                         .SetUpdate(true)
-                        .OnComplete(() => this.QuickPauseTweener = null);
+                        .OnComplete(() => {
+                                this.BlurTweener = null;
+                                Time.timeScale = 1;
+                                this.PauseState = E_PauseState.NotPaused;
+                            }
+                        );
                     break;
                 case E_PauseState.NotPaused:
                 default: throw new ArgumentOutOfRangeException();
@@ -141,6 +156,7 @@ namespace Code.Managers {
                         break;
                     case E_PauseState.Paused:
                     case E_PauseState.EnhancementChoices:
+                    case E_PauseState.EnhancementList:
                     default:
                         yield break;
                 }
@@ -153,6 +169,7 @@ namespace Code.Managers {
                         break;
                     case E_PauseState.Paused:
                     case E_PauseState.EnhancementChoices:
+                    case E_PauseState.EnhancementList:
                     default:
                         yield break;
                 }
@@ -165,11 +182,14 @@ namespace Code.Managers {
             this.QuickPauseCoroutine = this.StartCoroutine(_Coroutine());
         }
 
-        private void ToggleComponents(bool pausedOverlay) {
-            if (this.PausedOverlay.activeInHierarchy != pausedOverlay) {
-                //this.PausedImage.texture = this.PausedFrame;
-                this.PausedOverlay.SetActive(pausedOverlay);
+        private void ToggleComponents(bool pausedOverlay, bool enhancementList) {
+            foreach (GameObject overlay in this.PausedOverlays) {
+                if (overlay.activeInHierarchy != pausedOverlay) {
+                    overlay.SetActive(pausedOverlay);
+                }
             }
+
+            this.EnhancementList.SetActive(enhancementList);
         }
 
         private void TogglePause() {
@@ -178,6 +198,7 @@ namespace Code.Managers {
                     this.Pause(E_PauseState.Paused);
                     break;
                 case E_PauseState.Paused:
+                case E_PauseState.EnhancementList:
                     this.Unpause();
                     break;
                 // Can't exist paused state manually from these
@@ -186,6 +207,9 @@ namespace Code.Managers {
                 default: throw new ArgumentOutOfRangeException();
             }
         }
+
+        [ButtonMethod]
+        public void Foo() => this.Pause(E_PauseState.EnhancementList);
 
         #region Input
         private PlayerInputs PlayerInputs { get; set; }

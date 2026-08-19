@@ -1,4 +1,6 @@
-﻿using Code.Enhancements;
+﻿using System;
+using Code.Enhancements;
+using Code.Managers;
 using Code.Utils;
 using MyBox;
 using TMPro;
@@ -12,12 +14,17 @@ namespace Code.UI.Notifications {
         [SerializeField] private protected RectTransform m_ContainerRect;
         [SerializeField] private protected TMP_Text m_Text;
         [SerializeField] private protected Image m_Icon;
+
+        [Separator("Read only")]
+        [ReadOnly][SerializeField] private protected MB_ObjectsManager m_ObjectsManager;
         #endregion
 
         #region Getters / Setters
         private RectTransform ContainerRect { get => this.m_ContainerRect; }
         private TMP_Text Text { get => this.m_Text; }
         private Image Icon { get => this.m_Icon; }
+
+        private MB_ObjectsManager ObjectsManager { get => this.m_ObjectsManager; set => this.m_ObjectsManager = value; }
 
         public override float Width { get => this.ContainerRect.sizeDelta.x; }
         public override float Height { get => this.ContainerRect.sizeDelta.y; }
@@ -28,6 +35,10 @@ namespace Code.UI.Notifications {
         #endregion
 
         #region Unity methods
+        private void Start() {
+            this.ObjectsManager = FindAnyObjectByType<MB_ObjectsManager>(FindObjectsInactive.Include);
+            this.ObjectsManager.AudioManager.PlayNotification();
+        }
         #endregion
 
         public void SetEnhancement(AMB_Enhancement enhancement) {

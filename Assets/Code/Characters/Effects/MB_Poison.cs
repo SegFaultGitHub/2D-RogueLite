@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Code.Characters.Effects {
     public class MB_Poison : AMB_DamageOverTime {
         #region Members
-        [Foldout("AMB_Poison", true)]
+        [Foldout("MB_Poison", true)]
         [SerializeField] private protected float m_DamageModifier;
         #endregion
 
@@ -30,15 +30,11 @@ namespace Code.Characters.Effects {
             E_DamageSource damageSource,
             HashSet<Type> appliedTypes
         ) {
-            return damageSource == E_DamageSource.Spell
+            if (!appliedTypes.Add(typeof(MB_Poison))) return 0;
+
+            return damageSource == E_DamageSource.Direct
                 ? this.DamageModifier
                 : 0;
         }
-
-        // public override float ApplyOnDamageReceived(AMB_Character dealer, AMB_Character receiver, E_DamageSource damageSource, float value) {
-        //     value = base.ApplyOnDamageReceived(dealer, receiver, damageSource, value);
-        //
-        //     return value * this.DamageModifier;
-        // }
     }
 }

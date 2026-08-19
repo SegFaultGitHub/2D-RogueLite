@@ -2,11 +2,11 @@ using Code.Cameras;
 using Code.Characters.Controllers;
 using Code.Characters.Players;
 using Code.UI.Damage;
+using Code.UI.EnhancementList;
 using Code.UI.HUD;
 using Code.UI.Notifications;
 using MyBox;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Code.Managers {
     public class MB_ObjectsManager : MonoBehaviour {
@@ -41,6 +41,7 @@ namespace Code.Managers {
         [SerializeField] private protected MB_PlayerHUD m_PlayerHUD;
         [SerializeField] private protected MB_BossLifeBar m_BossLifeBar;
         [SerializeField] private protected MB_NotificationsContainer m_NotificationsContainer;
+        [SerializeField] private protected MB_EnhancementList m_EnhancementList;
         #endregion
         #endregion
 
@@ -70,6 +71,7 @@ namespace Code.Managers {
         public MB_PlayerHUD PlayerHUD { get => this.m_PlayerHUD; }
         public MB_BossLifeBar BossLifeBar { get => this.m_BossLifeBar; }
         public MB_NotificationsContainer NotificationsContainer { get => this.m_NotificationsContainer; }
+        public MB_EnhancementList EnhancementList { get => this.m_EnhancementList; }
         #endregion
         #endregion
 
@@ -94,6 +96,8 @@ namespace Code.Managers {
             this.EnemyIndicatorsManager.ObjectsManager = this;
             this.DissolveManager.ObjectsManager = this;
 
+            this.EnhancementList.ObjectsManager = this;
+
             this.MainCamera.ObjectsManager = this;
             this.PlayerHUD.ObjectsManager = this;
 
@@ -111,6 +115,8 @@ namespace Code.Managers {
             this.EnhancementsManager.Initialize();
             this.TransitionManager.Initialize();
             this.EnemyIndicatorsManager.Initialize();
+
+            this.EnhancementList.Initialize();
 
             this.MainCamera.Initialize();
             this.PlayerHUD.Initialize();
@@ -130,6 +136,8 @@ namespace Code.Managers {
             this.EnhancementsManager.PostInitialize();
             this.TransitionManager.PostInitialize();
             this.EnemyIndicatorsManager.PostInitialize();
+
+            this.EnhancementList.PostInitialize();
 
             this.MainCamera.PostInitialize();
             this.PlayerHUD.PostInitialize();

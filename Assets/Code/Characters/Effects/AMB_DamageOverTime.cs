@@ -29,6 +29,7 @@ namespace Code.Characters.Effects {
         public void SetDamage(float damagePerTick, int tickCount) {
             this.DamagePerTick = damagePerTick;
             this.TickCount = tickCount;
+            this.ExpiresAt = this.TickCount * this.TickInterval + Time.time;
         }
 
         private void DealDamage() {

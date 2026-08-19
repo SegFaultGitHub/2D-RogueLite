@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Code.Characters;
 using Code.Map;
-using Code.Utils;
-using DG.Tweening;
 using MyBox;
 using UnityEngine;
 

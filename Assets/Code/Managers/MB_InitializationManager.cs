@@ -1,4 +1,3 @@
-using System;
 using Code.Characters.Players;
 using Code.Map;
 using DG.Tweening;

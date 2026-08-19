@@ -47,6 +47,6 @@ MonoBehaviour:
   m_EnhancementName: Inhibition
   m_MaxLevel: 1
   m_Description: Does <nothing>?...
-  m_Sprite: {fileID: -5338332612186525698, guid: 52c15c8ef9d3a7041a07c3dc39a19018, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fa06d85d8cd155940ae860bea146fab4, type: 3}
   m_UnlockCondition: {fileID: 2841676755933307327, guid: a79a532ea57584e6fa456bb18eda411d, type: 3}
   m_Level: 0

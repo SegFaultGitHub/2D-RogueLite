@@ -2,7 +2,6 @@
 using Code.Characters;
 using Code.UI.HUD;
 using Code.UI.Text;
-using Code.Utils;
 using MyBox;
 using UnityEngine;
 
@@ -67,7 +66,7 @@ namespace Code.Enhancements {
             E_DamageSource damageSource,
             float value
         ) {
-            if (damageSource != E_DamageSource.Spell) return;
+            if (damageSource != E_DamageSource.Direct) return;
 
             float heal = Mathf.Floor(this.GetData().Ratio * value);
             dealer.Heal(dealer, heal);

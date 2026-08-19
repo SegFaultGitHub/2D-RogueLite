@@ -2,7 +2,6 @@ using System;
 using Code.Characters;
 using Code.UI.HUD;
 using Code.UI.Text;
-using Code.Utils;
 using MyBox;
 using UnityEngine;
 
@@ -62,7 +61,7 @@ namespace Code.Enhancements {
         }
 
         public override float GetCriticalDamageModifier(AMB_Character character, E_DamageSource damageSource) {
-            return damageSource == E_DamageSource.Spell
+            return damageSource == E_DamageSource.Direct
                 ? this.GetData().Ratio
                 : 0;
         }

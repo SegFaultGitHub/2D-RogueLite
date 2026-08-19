@@ -104,9 +104,9 @@ namespace Code.Spells {
 
             if (this.HitMetadata.Damage > 0) {
                 (float damage, bool critical) = this.Character == null
-                    ? this.BackupCharacterStats.ComputeDamage(character, this.HitMetadata.Damage, E_DamageSource.Spell)
-                    : this.Character.ComputeDamage(character, this.HitMetadata.Damage, E_DamageSource.Spell);
-                character.TakeDamage(this.TriggersInvulnerable, true, damage, critical, this.Character, E_DamageSource.Spell);
+                    ? this.BackupCharacterStats.ComputeDamage(character, this.HitMetadata.Damage, E_DamageSource.Direct)
+                    : this.Character.ComputeDamage(character, this.HitMetadata.Damage, E_DamageSource.Direct);
+                character.TakeDamage(this.TriggersInvulnerable, true, damage, critical, this.Character, E_DamageSource.Direct);
             }
 
             return E_SpellCollisionFlag.Character;

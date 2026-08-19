@@ -253,6 +253,23 @@ namespace Code.Managers {
                 return damageData.Received;
             }
 
+            public float GetMaxDamageDealt() => this.DamageData.Values.Max(damageData => damageData.MaxDealt);
+            public float GetMaxDamageReceived() => this.DamageData.Values.Max(damageData => damageData.MaxReceived);
+
+            public float GetMaxDamageDealt(E_DamageSource source) {
+                this.DamageData.TryAdd(source, new C_DamageData(source));
+                C_DamageData damageData = this.DamageData[source];
+
+                return damageData.MaxDealt;
+            }
+
+            public float GetMaxDamageReceived(E_DamageSource source) {
+                this.DamageData.TryAdd(source, new C_DamageData(source));
+                C_DamageData damageData = this.DamageData[source];
+
+                return damageData.MaxReceived;
+            }
+
             public int GetEnhancementsTaken() => this.EnhancementData.Values.Sum(e => e.Taken);
 
             public int GetEnhancementsTaken(E_Enhancement enhancement) {

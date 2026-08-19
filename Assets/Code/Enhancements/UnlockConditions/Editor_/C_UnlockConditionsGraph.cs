@@ -53,6 +53,10 @@ namespace Code.Enhancements.UnlockConditions.Editor_ {
                 if (outPorts.Count < 2) {
                     infos.LogWarning("And Node should have at least 2 sub-conditions.", andNode);
                 }
+
+                for (int i = 0; i < outPorts.Count; i++) {
+                    infos.Log(i, outPorts[i]);
+                }
             }
 
             List<C_Or> orNodes = this.GetNodes().OfType<C_Or>().ToList();
@@ -61,6 +65,19 @@ namespace Code.Enhancements.UnlockConditions.Editor_ {
                 orNode.GetOutputPortByName(EXECUTION_PORT_DEFAULT_NAME).GetConnectedPorts(outPorts);
                 if (outPorts.Count < 2) {
                     infos.LogWarning("Or Node should have at least 2 sub-conditions.", orNode);
+                }
+
+                for (int i = 0; i < outPorts.Count; i++) {
+                    infos.Log(i, outPorts[i]);
+                }
+            }
+
+            List<C_Not> notNodes = this.GetNodes().OfType<C_Not>().ToList();
+            foreach (C_Not notNode in notNodes) {
+                List<IPort> outPorts = new();
+                notNode.GetOutputPortByName(EXECUTION_PORT_DEFAULT_NAME).GetConnectedPorts(outPorts);
+                if (outPorts.Count != 1) {
+                    infos.LogError("Not Node must have exactly 1 sub-condition.", notNode);
                 }
             }
         }

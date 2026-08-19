@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Code.Characters;
 using Code.UI.HUD;
 using Code.UI.Text;
-using Code.Utils;
 using MyBox;
 using UnityEngine;
 
@@ -69,7 +67,7 @@ namespace Code.Enhancements {
             E_DamageSource damageSource,
             HashSet<Type> appliedTypes
         ) {
-            return damageSource == E_DamageSource.Spell
+            return damageSource == E_DamageSource.Direct
                 ? this.GetData().Ratio
                 : 0;
         }

@@ -78,6 +78,7 @@ namespace Code.Characters.Enemies {
                 this.ObjectsManager.DissolveManager.Show(
                     this.ObjectsManager.BossLifeBar.transform,
                     false,
+                    MB_DissolveManager.E_Position.BeforeBlur,
                     () => this.ObjectsManager.BossLifeBar.gameObject.SetActive(true)
                 );
             } else {
@@ -113,7 +114,12 @@ namespace Code.Characters.Enemies {
 
             if (this.IsABoss) {
                 this.LifeBar.ForceSetRatio(0);
-                this.ObjectsManager.DissolveManager.Hide(this.ObjectsManager.BossLifeBar.transform, false, () => { });
+                this.ObjectsManager.DissolveManager.Hide(
+                    this.ObjectsManager.BossLifeBar.transform,
+                    false,
+                    MB_DissolveManager.E_Position.BeforeBlur,
+                    () => { }
+                );
                 this.LifeBar.gameObject.SetActive(false);
             }
 

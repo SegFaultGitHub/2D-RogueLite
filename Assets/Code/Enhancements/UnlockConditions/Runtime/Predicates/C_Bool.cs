@@ -11,6 +11,10 @@ namespace Code.Enhancements.UnlockConditions.Runtime.Predicates {
             this.Bool = b;
         }
 
-        public override bool Check(MB_ObjectsManager objectManager) => this.Bool;
+        public override bool Check(MB_ObjectsManager objectsManager) => this.Bool;
+        public override bool ShouldSkip() => true;
+
+        public override string GetVerbose(MB_ObjectsManager objectsManager, int indent) =>
+            $"{new string(' ', indent)}- {this.Name} / {this.Bool}";
     }
 }

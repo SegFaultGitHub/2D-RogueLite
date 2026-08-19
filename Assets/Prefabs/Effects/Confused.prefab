@@ -45,4 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Code.Characters.Effects.MB_Confused
   m_Priority: 0
-  m_Unique: 0
+  m_MaxOccurence: 1
+  m_Character: {fileID: 0}
+  m_From: {fileID: 0}
+  m_ExpiresAt: 0
+  m_ObjectsManager: {fileID: 0}

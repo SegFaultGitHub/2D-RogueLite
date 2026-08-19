@@ -12,13 +12,17 @@ namespace Code.UI.HUD {
         [SerializeField] private protected GameObject m_Burning;
         [SerializeField] private protected GameObject m_Blind;
         [SerializeField] private protected GameObject m_ShortSighted;
+        [SerializeField] private protected GameObject m_Berserk;
+        [SerializeField] private protected GameObject m_Focus;
 
         [Separator("Read only")]
-        [SerializeField] private protected bool m_IsConfused;
-        [SerializeField] private protected bool m_IsPoisoned;
-        [SerializeField] private protected bool m_IsBurning;
-        [SerializeField] private protected bool m_IsBlind;
-        [SerializeField] private protected bool m_IsShortSighted;
+        [ReadOnly][SerializeField] private protected bool m_HasConfused;
+        [ReadOnly][SerializeField] private protected bool m_HasPoisoned;
+        [ReadOnly][SerializeField] private protected bool m_HasBurning;
+        [ReadOnly][SerializeField] private protected bool m_HasBlind;
+        [ReadOnly][SerializeField] private protected bool m_HasShortSighted;
+        [ReadOnly][SerializeField] private protected bool m_HasBerserk;
+        [ReadOnly][SerializeField] private protected bool m_HasFocus;
         #endregion
 
         #region Getters / Setters
@@ -27,12 +31,16 @@ namespace Code.UI.HUD {
         private GameObject Burning { get => this.m_Burning; }
         private GameObject Blind { get => this.m_Blind; }
         private GameObject ShortSighted { get => this.m_ShortSighted; }
+        private GameObject Berserk { get => this.m_Berserk; }
+        private GameObject Focus { get => this.m_Focus; }
 
-        private bool IsConfused { get => this.m_IsConfused; set => this.m_IsConfused = value; }
-        private bool IsPoisoned { get => this.m_IsPoisoned; set => this.m_IsPoisoned = value; }
-        private bool IsBurning { get => this.m_IsBurning; set => this.m_IsBurning = value; }
-        public bool IsBlind { get => this.m_IsBlind; set => this.m_IsBlind = value; }
-        private bool IsShortSighted { get => this.m_IsShortSighted; set => this.m_IsShortSighted = value; }
+        private bool HasConfused { get => this.m_HasConfused; set => this.m_HasConfused = value; }
+        private bool HasPoisoned { get => this.m_HasPoisoned; set => this.m_HasPoisoned = value; }
+        private bool HasBurning { get => this.m_HasBurning; set => this.m_HasBurning = value; }
+        private bool HasBlind { get => this.m_HasBlind; set => this.m_HasBlind = value; }
+        private bool HasShortSighted { get => this.m_HasShortSighted; set => this.m_HasShortSighted = value; }
+        private bool HasBerserk { get => this.m_HasBerserk; set => this.m_HasBerserk = value; }
+        private bool HasFocus { get => this.m_HasFocus; set => this.m_HasFocus = value; }
         #endregion
 
         #region Static / Readonly / Const
@@ -47,34 +55,46 @@ namespace Code.UI.HUD {
             bool previousBurning = this.Burning.activeSelf;
             bool previousBlind = this.Blind.activeSelf;
             bool previousShortSighted = this.ShortSighted.activeSelf;
-            this.IsConfused = false;
-            this.IsPoisoned = false;
-            this.IsBurning = false;
-            this.IsBlind = false;
-            this.IsShortSighted = false;
+            bool previousBerserk = this.Berserk.activeSelf;
+            bool previousFocus = this.Focus.activeSelf;
+            this.HasConfused = false;
+            this.HasPoisoned = false;
+            this.HasBurning = false;
+            this.HasBlind = false;
+            this.HasShortSighted = false;
+            this.HasBerserk = false;
+            this.HasFocus = false;
 
             foreach (AMB_Effect effect in character.Effects.Value) {
-                if (effect.GetType() == typeof(MB_Confused)) this.IsConfused = true;
-                if (effect.GetType() == typeof(MB_Poison)) this.IsPoisoned = true;
-                if (effect.GetType() == typeof(MB_Burning)) this.IsBurning = true;
-                if (effect.GetType() == typeof(MB_Blind)) this.IsBlind = true;
-                if (effect.GetType() == typeof(MB_ShortSighted)) this.IsShortSighted = true;
+                if (effect.GetType() == typeof(MB_Confused)) this.HasConfused = true;
+                if (effect.GetType() == typeof(MB_Poison)) this.HasPoisoned = true;
+                if (effect.GetType() == typeof(MB_Burning)) this.HasBurning = true;
+                if (effect.GetType() == typeof(MB_Blind)) this.HasBlind = true;
+                if (effect.GetType() == typeof(MB_ShortSighted)) this.HasShortSighted = true;
+                if (effect.GetType() == typeof(MB_Berserk)) this.HasBerserk = true;
+                if (effect.GetType() == typeof(MB_Focus)) this.HasFocus = true;
             }
 
-            if (!previousConfused && this.IsConfused) this.Confused.transform.SetAsLastSibling();
-            this.Confused.SetActive(this.IsConfused);
+            if (!previousConfused && this.HasConfused) this.Confused.transform.SetAsLastSibling();
+            this.Confused.SetActive(this.HasConfused);
 
-            if (!previousPoisoned && this.IsPoisoned) this.Poisoned.transform.SetAsLastSibling();
-            this.Poisoned.SetActive(this.IsPoisoned);
+            if (!previousPoisoned && this.HasPoisoned) this.Poisoned.transform.SetAsLastSibling();
+            this.Poisoned.SetActive(this.HasPoisoned);
 
-            if (!previousBurning && this.IsBurning) this.Burning.transform.SetAsLastSibling();
-            this.Burning.SetActive(this.IsBurning);
+            if (!previousBurning && this.HasBurning) this.Burning.transform.SetAsLastSibling();
+            this.Burning.SetActive(this.HasBurning);
 
-            if (!previousBlind && this.IsBlind) this.Blind.transform.SetAsLastSibling();
-            this.Blind.SetActive(this.IsBlind);
+            if (!previousBlind && this.HasBlind) this.Blind.transform.SetAsLastSibling();
+            this.Blind.SetActive(this.HasBlind);
 
-            if (!previousShortSighted && this.IsShortSighted) this.ShortSighted.transform.SetAsLastSibling();
-            this.ShortSighted.SetActive(this.IsShortSighted);
+            if (!previousShortSighted && this.HasShortSighted) this.ShortSighted.transform.SetAsLastSibling();
+            this.ShortSighted.SetActive(this.HasShortSighted);
+
+            if (!previousBerserk && this.HasBerserk) this.Berserk.transform.SetAsLastSibling();
+            this.Berserk.SetActive(this.HasBerserk);
+
+            if (!previousFocus && this.HasFocus) this.Focus.transform.SetAsLastSibling();
+            this.Focus.SetActive(this.HasFocus);
         }
     }
 }

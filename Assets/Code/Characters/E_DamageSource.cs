@@ -2,7 +2,7 @@ using System;
 
 namespace Code.Characters {
     public enum E_DamageSource {
-        Spell,
+        Direct,
         Melee,
         Burning,
         Poison,
@@ -14,7 +14,7 @@ namespace Code.Characters {
     public static class SC_DamageSourceEnumExtension {
         public static string ToFriendlyString(this E_DamageSource damageSource) {
             return damageSource switch {
-                E_DamageSource.Spell => "Spell",
+                E_DamageSource.Direct => "Direct",
                 E_DamageSource.Melee => "Melee",
                 E_DamageSource.Burning => "Burning",
                 E_DamageSource.Poison => "Poison",

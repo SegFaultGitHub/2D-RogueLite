@@ -46,9 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Code.Enhancements.MB_Wisp
   m_EnhancementName: Wisp
   m_MaxLevel: 5
-  m_Description: Increases your attack speed by <speedRatio> and decreases all the direct damage you deal by <attackRatio>
+  m_Description: Increases your attack speed by <speedRatio> and decreases the direct damage you deal by <attackRatio>
   m_Sprite: {fileID: -7553964819866616957, guid: 94f581f4e51b8824ab8f51ae7769909a, type: 3}
-  m_UnlockCondition: {fileID: 2841676755933307327, guid: 124e54c9dc1c3b74bb63b359370b6a76, type: 3}
+  m_UnlockCondition: {fileID: 2841676755933307327, guid: 632fd0cfc78f64145955c6f54d72ea72, type: 3}
   m_Level: 0
   m_Data:
   - m_SpeedRatio: 0.3

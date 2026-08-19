@@ -34,8 +34,16 @@ namespace Code.UI.HUD {
 
         public void SetEnhancement(AMB_Enhancement enhancement) {
             string nameString = enhancement.EnhancementName.Name();
-            string levelString = $"{enhancement.EffectiveLevel} / {enhancement.MaxLevel}";
-            string description = enhancement.GetDescription().LineHeight(8);
+
+            string levelString, description;
+
+            if (enhancement.Level == 0) {
+                levelString = $"{enhancement.MaxLevel}";
+                description = enhancement.GetFullDescription().LineHeight(8);
+            } else {
+                levelString = $"{enhancement.EffectiveLevel} / {enhancement.MaxLevel}";
+                description = enhancement.GetDescription().LineHeight(8);
+            }
 
             this.SetData(nameString, levelString, description);
         }
@@ -87,7 +95,9 @@ namespace Code.UI.HUD {
                 .Red()
                 .VOffset(height: 2, delay: 0, offset: .125f, duration: .5f, loop: true, loopDelay: 5, progressive: false);
 
-        public static string Percentage(this float f, bool suffix = true) => $"{SC_Utils.FormatNumber(f * 100f, decimals: 0)}{(suffix ? "%" : "")}";
+        public static string Percentage(this float f, bool suffix = true) =>
+            $"{SC_Utils.FormatNumber(f * 100f, decimals: 0)}{(suffix ? "%" : "")}";
+
         public static string Duration(this float f) => SC_Utils.FormatNumber(f, decimals: 1);
         public static string Duration(this int i) => SC_Utils.FormatNumber(i, decimals: 1);
         public static string Damage(this float f) => SC_Utils.FormatNumber(f, decimals: 0);

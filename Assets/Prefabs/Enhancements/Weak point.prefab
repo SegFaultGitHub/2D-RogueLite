@@ -46,9 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Code.Enhancements.MB_WeakPoint
   m_EnhancementName: Weak Point
   m_MaxLevel: 5
-  m_Description: Increase your critical damage by <ratio>
+  m_Description: Increase your critical damage by <ratio> when dealing direct damage
   m_Sprite: {fileID: 3028007141574014247, guid: 94f581f4e51b8824ab8f51ae7769909a, type: 3}
-  m_UnlockCondition: {fileID: 2841676755933307327, guid: 124e54c9dc1c3b74bb63b359370b6a76, type: 3}
+  m_UnlockCondition: {fileID: 2841676755933307327, guid: 2a1d0f9bff07f72499ff2774d2dada09, type: 3}
   m_Level: 0
   m_Data:
   - m_Ratio: 0.4

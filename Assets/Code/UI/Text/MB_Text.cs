@@ -232,7 +232,7 @@ namespace Code.UI.Text {
         #endregion
 
         #region Static / Readonly / Const
-        private static Regex Tag(string tag) => new($"(?<TagOpen>{{(?<Tag>{tag})\\s?(?<Options>.*?)}})(?<Text>.*?)(?<TagClose>{{/{tag}}})");
+        private static Regex Tag(string tag) => new($"(?<TagOpen>{{(?<Tag>{tag})\\s?(?<Options>.*?)}})(?<Text>(.|\n)*?)(?<TagClose>{{/{tag}}})");
 
         private static readonly Regex INT_REGEX = new("-?[0-9]+");
         private static readonly Regex FLOAT_REGEX = new("-?[0-9]+(?:\\.[0-9]+)?");
@@ -262,7 +262,7 @@ namespace Code.UI.Text {
 
         #region Unity methods
         private void Awake() {
-            this.Text = this.GetComponent<TMP_Text>();
+            if (this.Text == null) this.Text = this.GetComponent<TMP_Text>();
         }
 
         private void OnEnable() {
@@ -304,6 +304,8 @@ namespace Code.UI.Text {
         }
 
         public void SetText(string text) {
+            if (this.Text == null) this.Text = this.GetComponent<TMP_Text>();
+
             foreach (Sequence sequence in this.Sequences) DOTween.Kill(sequence);
             this.Sequences.Clear();
 
@@ -527,6 +529,7 @@ namespace Code.UI.Text {
         public static string Green(this string s) => s.Color("#7e9432ff");
         public static string Red(this string s) => s.Color("#c23753ff");
         public static string Yellow(this string s) => s.Color("#c78539ff");
+        public static string Brown(this string s) => s.Color("#a15c34ff");
 
         public static string NoBreak(this string s) => $"{{nobreak}}{s}{{/nobreak}}";
     }

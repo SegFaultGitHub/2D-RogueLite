@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Code.Characters;
 using Code.UI.HUD;
 using Code.UI.Text;
-using Code.Utils;
 using MyBox;
 using UnityEngine;
 
@@ -39,7 +38,7 @@ namespace Code.Enhancements {
             string[] attackRatios = new string[this.MaxLevel];
             for (int i = 0; i < this.MaxLevel; i++) {
                 speedRatios[i] = this.Data[i].SpeedRatio.Percentage(false);
-                attackRatios[i] = this.Data[i].AttackRatio.Percentage(false);
+                attackRatios[i] = Mathf.Abs(this.Data[i].AttackRatio).Percentage(false);
             }
 
             string speedRatioString = speedRatios.AsList(this.EffectiveLevel, "%", s => s.Green());
@@ -90,7 +89,7 @@ namespace Code.Enhancements {
             E_DamageSource damageSource,
             HashSet<Type> appliedTypes
         ) {
-            return damageSource == E_DamageSource.Spell
+            return damageSource == E_DamageSource.Direct
                 ? this.GetData().AttackRatio
                 : 0;
         }

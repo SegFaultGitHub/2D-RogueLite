@@ -10,7 +10,7 @@ namespace Code.Enhancements.UnlockConditions.Editor_.Predicates {
         protected override void OnDefinePorts(IPortDefinitionContext context) {
             base.OnDefinePorts(context);
 
-            context.AddInputPort<int>(IN_PORT_DAMAGE)
+            context.AddInputPort<float>(IN_PORT_DAMAGE)
                 .WithDisplayName("Damage")
                 .Build();
         }
@@ -18,7 +18,7 @@ namespace Code.Enhancements.UnlockConditions.Editor_.Predicates {
         public override Runtime.C_Condition TranslateNode() {
             return new Runtime.Predicates.C_DamageReceived(
                 GetInputPortValue<E_Mode>(this.GetInputPortByName(IN_PORT_MODE)),
-                GetInputPortValue<int>(this.GetInputPortByName(IN_PORT_DAMAGE))
+                GetInputPortValue<float>(this.GetInputPortByName(IN_PORT_DAMAGE))
             );
         }
     }

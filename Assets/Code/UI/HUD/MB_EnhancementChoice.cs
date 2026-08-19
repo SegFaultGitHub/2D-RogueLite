@@ -81,7 +81,12 @@ namespace Code.UI.HUD {
             this.OnClickStartAction?.Invoke();
             List<MB_EnhancementChoice> choices = this.transform.parent.GetComponentsInChildren<MB_EnhancementChoice>(true).ToList();
             this.ObjectsManager.Player.AddEnhancement(this.Choice);
-            this.ObjectsManager.DissolveManager.Hide(this.transform.parent, true, this.OnClickEndAction);
+            this.ObjectsManager.DissolveManager.Hide(
+                this.transform.parent,
+                true,
+                MB_DissolveManager.E_Position.AfterBlur,
+                this.OnClickEndAction
+            );
             foreach (MB_EnhancementChoice choice in choices) {
                 choice.Ready = false;
                 if (choice != this) Destroy(choice.Choice.gameObject);

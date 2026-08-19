@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Code.Characters.Effects;
 using Code.Characters.Enemies;
 using Code.UI.HUD;
 using MyBox;
@@ -39,7 +40,7 @@ namespace Code.Managers {
                 Vector2 shaderPosition = this.ObjectsManager.MainCamera.GetShaderPosition(enemyPosition);
                 enemyIndicator.gameObject.SetActive(
                     (shaderPosition.x < 0 || shaderPosition.x > 1 || shaderPosition.y < 0 || shaderPosition.y > 1)
-                    && !this.ObjectsManager.Player.VisualEffects.IsBlind
+                    && !this.ObjectsManager.Player.HasEffect(typeof(MB_Blind))
                 );
                 (Vector2 position, float angle) = GetCoordinates(rect.rect.width, rect.rect.height, enemyPosition - cameraPosition);
                 enemyIndicator.transform.localPosition = position;

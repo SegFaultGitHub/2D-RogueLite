@@ -48,7 +48,7 @@ MonoBehaviour:
   m_MaxLevel: 3
   m_Description: Heals you for <ratio> of all poison damage dealt
   m_Sprite: {fileID: 21300000, guid: fc04515bf688b1d409025d4c7a9a6dcb, type: 3}
-  m_UnlockCondition: {fileID: 2841676755933307327, guid: 124e54c9dc1c3b74bb63b359370b6a76, type: 3}
+  m_UnlockCondition: {fileID: 2841676755933307327, guid: 7f55b95d5d5940d4fbfe4f62ffb4d6a0, type: 3}
   m_Level: 0
   m_Data:
   - m_Ratio: 0.2

@@ -630,7 +630,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8727c7d6dc9e4d9fa4a8de3cd9a43081, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Code.Map.MB_Map
-  m_BackgroundMusic: 1
+  m_EBackgroundMusic: 1
   m_ShowDuration: 0.5
   m_ShowSpeed: 20
   m_SpawnCell: {fileID: 1552290736621503615}

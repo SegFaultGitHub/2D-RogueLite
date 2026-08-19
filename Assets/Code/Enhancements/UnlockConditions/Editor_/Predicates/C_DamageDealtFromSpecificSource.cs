@@ -19,7 +19,7 @@ namespace Code.Enhancements.UnlockConditions.Editor_.Predicates {
         public override Runtime.C_Condition TranslateNode() {
             return new Runtime.Predicates.C_DamageDealtFromSpecificSource(
                 GetInputPortValue<E_Mode>(this.GetInputPortByName(IN_PORT_MODE)),
-                GetInputPortValue<int>(this.GetInputPortByName(IN_PORT_DAMAGE)),
+                GetInputPortValue<float>(this.GetInputPortByName(IN_PORT_DAMAGE)),
                 GetInputPortValue<E_DamageSource>(this.GetInputPortByName(IN_PORT_SOURCE))
             );
         }

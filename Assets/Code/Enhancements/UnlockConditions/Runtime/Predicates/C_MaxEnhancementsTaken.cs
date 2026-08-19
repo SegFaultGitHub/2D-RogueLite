@@ -17,5 +17,7 @@ namespace Code.Enhancements.UnlockConditions.Runtime.Predicates {
                 E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsTaken() < this.Count,
                 _ => throw new ArgumentOutOfRangeException()
             };
+
+        public override string GetVerbose(MB_ObjectsManager objectsManager, int indent) => $"{new string(' ', indent)}- {this.Name} / {this.Count}";
     }
 }

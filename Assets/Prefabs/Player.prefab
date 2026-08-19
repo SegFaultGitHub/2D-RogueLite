@@ -148,7 +148,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1219480553904512094
 SpriteRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -205,6 +205,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!1 &2653905930793885751
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,7 +274,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3196897579294295636
 SpriteRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -330,6 +331,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!1 &2981077093101009261
 GameObject:
   m_ObjectHideFlags: 0
@@ -405,37 +407,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &3079109103136828909
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 498153757440004548}
-  m_Layer: 0
-  m_Name: Phantom
-  m_TagString: Untagged
-  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &498153757440004548
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3079109103136828909}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 1
-  m_Children: []
-  m_Father: {fileID: 8904217208530409746}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4218692721776221965
 GameObject:
   m_ObjectHideFlags: 0
@@ -470,7 +441,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2855107739035321749
 SpriteRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -527,6 +498,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!1 &4219847084367244233
 GameObject:
   m_ObjectHideFlags: 0
@@ -561,7 +533,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8344037504597731189
 SpriteRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -618,6 +590,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!1 &5042864549734587322
 GameObject:
   m_ObjectHideFlags: 0
@@ -841,7 +814,6 @@ Transform:
   - {fileID: 2434292794274795186}
   - {fileID: 5453202425163321989}
   - {fileID: 6214112033789959942}
-  - {fileID: 498153757440004548}
   - {fileID: 3421709332398874236}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -901,6 +873,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Code.Characters.Stats.MB_CharacterStats
   m_CurrentHealth: 0
   m_MaxHealth: 0
+  m_BaseCriticalRate: []
+  m_CriticalDamageRatio: []
   m_Character: {fileID: 0}
 --- !u!114 &4953240617446558485
 MonoBehaviour:
@@ -926,6 +900,7 @@ MonoBehaviour:
   m_CharacterStats: {fileID: 0}
   m_Effects:
     Value: []
+  m_Dead: 0
   m_Invulnerable: 0
   m_SpeedRatio:
     Value: []
@@ -943,12 +918,15 @@ MonoBehaviour:
   m_SecondarySpellAvailableAt: 0
   m_DashCastAt: 0
   m_DashAvailableAt: 0
+  m_DamagePerSecond: 0
+  m_DamagePerSecondPerSource: []
+  m_MaxEnhancements: 0
   m_Enhancements:
     Value: []
   m_TEMP_MainSpell: {fileID: -6313219787574926453, guid: 11a7881affc62534784660ea0b0fda24, type: 3}
   m_TEMP_SecondarySpell: {fileID: 0}
-  m_TEMP_AttackSpeed: {fileID: -3725685517707880198, guid: e516f6d8a9715df4b907ef25ddda3a7a, type: 3}
-  m_TEMP_AttackPower: {fileID: 5039291069289336930, guid: e832667116f99544387b1c4fed780413, type: 3}
+  m_TEMP_Enhancements: []
+  m_TEMP_DamagePerSecondText: {fileID: 0}
   m_Sword: {fileID: 7918331292075946859}
   m_SwordBox: {fileID: 8042426801948284579}
   m_SwordDirection: 0
@@ -1576,6 +1554,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 462436743

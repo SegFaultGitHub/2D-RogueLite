@@ -43,10 +43,10 @@ MonoBehaviour:
         m_LocalSubgraphs: []
         m_LastKnownBounds:
           serializedVersion: 2
-          x: 361
-          y: 194
-          width: 398
-          height: 228
+          x: 323
+          y: 269
+          width: 436
+          height: 153
         m_GraphElementMetaData:
         - m_Guid:
             m_Value0: 13695144853077434434
@@ -101,7 +101,7 @@ MonoBehaviour:
           serializedVersion: 2
           Hash: 42203313afed0ebe25eccfdc106dc7d4
         m_Version: 2
-        m_Position: {x: 360.54138, y: 193.62407}
+        m_Position: {x: 322.7068, y: 269.29327}
         m_Title: 
         m_Tooltip: 
         m_NodePreviewModel:
@@ -209,7 +209,7 @@ MonoBehaviour:
         m_Value:
           m_EnumType:
             m_Identification: Code.Enhancements.UnlockConditions.E_Mode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          m_Value: 0
+          m_Value: 1
         m_EnumType:
           m_Identification: Code.Enhancements.UnlockConditions.E_Mode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     - rid: 3236138957796278496

@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Code.Characters.Effects {
     public class MB_Burning : AMB_DamageOverTime {
         #region Members
-        [Foldout("AMB_Burning", true)]
+        [Foldout("MB_Burning", true)]
         [SerializeField] private protected float m_DamageModifier;
         #endregion
 
@@ -30,7 +30,9 @@ namespace Code.Characters.Effects {
             E_DamageSource damageSource,
             HashSet<Type> appliedTypes
         ) {
-            return damageSource == E_DamageSource.Spell
+            if (!appliedTypes.Add(typeof(MB_Burning))) return 0;
+
+            return damageSource == E_DamageSource.Direct
                 ? this.DamageModifier
                 : 0;
         }

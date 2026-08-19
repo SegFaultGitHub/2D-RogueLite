@@ -37,9 +37,6 @@ namespace Code.Enhancements.UnlockConditions.Editor_ {
             this.GetOutputPortByName(C_UnlockConditionsGraph.EXECUTION_PORT_DEFAULT_NAME).GetConnectedPorts(outPorts);
             foreach (IPort port in outPorts) {
                 C_Condition condition = port.GetNode() as C_Condition;
-                if (condition is C_Predicate predicate && predicate.GetMode() == E_Mode.CurrentRun) {
-                    continue;
-                }
                 or.Or.Add(condition!.TranslateNodeGlobal());
             }
 

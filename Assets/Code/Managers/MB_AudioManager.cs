@@ -67,6 +67,9 @@ namespace Code.Managers {
         [SerializeField] private protected AudioResource[] m_SpawnerStart;
         [SerializeField] private protected AudioResource[] m_SpawnerSpawn;
 
+        [Header("UI")]
+        [SerializeField] private protected AudioResource[] m_Notification;
+
         [Separator("Read only")]
         [ReadOnly][SerializeField] private protected CollectionWrapperList<AudioSource> m_SoundEffects;
         [ReadOnly][SerializeField] private protected E_BackgroundMusic m_CurrentEBackgroundMusic;
@@ -116,6 +119,8 @@ namespace Code.Managers {
 
         private AudioResource[] SpawnerStart { get => this.m_SpawnerStart; }
         private AudioResource[] SpawnerSpawn { get => this.m_SpawnerSpawn; }
+
+        private AudioResource[] Notification { get => this.m_Notification; }
 
         private CollectionWrapperList<AudioSource> SoundEffects { get => this.m_SoundEffects; }
         private E_BackgroundMusic CurrentEBackgroundMusic {
@@ -276,6 +281,9 @@ namespace Code.Managers {
         public void PlaySpawnerStart() => this.PlaySpawnerStart(volume: 1, pitch: 1f);
         private void PlaySpawnerSpawn(float volume, float pitch) => this.PlaySoundEffect(this.SpawnerSpawn, volume, pitch);
         public void PlaySpawnerSpawn() => this.PlaySpawnerSpawn(volume: 1, pitch: 1f);
+        
+        private void PlayNotification(float volume, float pitch) => this.PlaySoundEffect(this.Notification, volume, pitch);
+        public void PlayNotification() => this.PlayNotification(volume: 1, pitch: 1f);
 
         private void PlaySoundEffect(ICollection<AudioResource> resources, float volume, float pitch, float maxLastPlayedInterval = .1f) {
             if (this.SoundEffectsVolume == 0 || resources.Count == 0) return;

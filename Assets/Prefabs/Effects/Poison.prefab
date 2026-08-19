@@ -45,12 +45,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Code.Characters.Effects.MB_Poison
   m_Priority: 0
-  m_Unique: 0
+  m_MaxOccurence: -1
   m_Character: {fileID: 0}
   m_From: {fileID: 0}
   m_ExpiresAt: 0
   m_ObjectsManager: {fileID: 0}
-  m_TickInterval: 0.25
   m_DamagePerTick: 0
   m_TickCount: 0
   m_DamageModifier: 0.5

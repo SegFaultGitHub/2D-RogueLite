@@ -6,10 +6,15 @@ using UnityEngine;
 
 namespace Code.Managers {
     public class MB_DissolveManager : MonoBehaviour {
+        public enum E_Position {
+            BeforeBlur, AfterBlur
+        }
+
         #region Members
         [Foldout("MB_DissolveManager", true)]
         [SerializeField] private protected MB_DissolveElement m_DissolveElementPrefab;
-        [SerializeField] private protected Canvas m_Canvas;
+        [SerializeField] private protected Canvas m_CanvasBeforeBlur;
+        [SerializeField] private protected Canvas m_CanvasAfterBlur;
         [SerializeField] private protected float m_DissolveDuration;
 
         [Separator("Read only")]
@@ -18,8 +23,9 @@ namespace Code.Managers {
 
         #region Getters / Setters
         private MB_DissolveElement DissolveElement { get => this.m_DissolveElementPrefab; }
-        private Canvas Canvas { get => this.m_Canvas; }
-        public float DissolveDuration { get => this.m_DissolveDuration; }
+        private Canvas CanvasBeforeBlur { get => this.m_CanvasBeforeBlur; }
+        private Canvas CanvasAfterBlur { get => this.m_CanvasAfterBlur; }
+        private float DissolveDuration { get => this.m_DissolveDuration; }
 
         public MB_ObjectsManager ObjectsManager { get => this.m_ObjectsManager; set => this.m_ObjectsManager = value; }
         #endregion
@@ -30,24 +36,45 @@ namespace Code.Managers {
         #region Unity methods
         #endregion
 
-        public void Show(Transform uiComponent, bool realTime, Action action) =>
-            this.Show(new List<Transform> { uiComponent }, realTime, action);
+        public void Show(Transform uiComponent, bool realTime, E_Position position, Action action) =>
+            this.Show(new List<Transform> { uiComponent }, realTime, position, action);
 
-        public void Show(List<Transform> uiComponents, bool realTime, Action action) {
+        public void Show(List<Transform> uiComponents, bool realTime, E_Position position, Action action) {
             RenderTexture screenshot = this.ObjectsManager.ScreenshotManager.ScreenshotUIComponents(uiComponents);
-            MB_DissolveElement dissolveElement = Instantiate(this.DissolveElement, this.Canvas.transform);
-            dissolveElement.Canvas = this.Canvas;
+            MB_DissolveElement dissolveElement;
+            switch (position) {
+                case E_Position.BeforeBlur:
+                    dissolveElement = Instantiate(this.DissolveElement, this.CanvasBeforeBlur.transform);
+                    dissolveElement.Canvas = this.CanvasBeforeBlur;
+                    break;
+                case E_Position.AfterBlur:
+                    dissolveElement = Instantiate(this.DissolveElement, this.CanvasAfterBlur.transform);
+                    dissolveElement.Canvas = this.CanvasAfterBlur;
+                    break;
+                default: throw new ArgumentOutOfRangeException(nameof(position), position, null);
+            }
+
             dissolveElement.SetTexture(screenshot);
             dissolveElement.Show(this.DissolveDuration, realTime, action);
         }
 
-        public void Hide(Transform uiComponent, bool realTime, Action action) =>
-            this.Hide(new List<Transform> { uiComponent }, realTime, action);
+        public void Hide(Transform uiComponent, bool realTime, E_Position position, Action action) =>
+            this.Hide(new List<Transform> { uiComponent }, realTime, position, action);
 
-        public void Hide(List<Transform> uiComponents, bool realTime, Action action) {
+        public void Hide(List<Transform> uiComponents, bool realTime, E_Position position, Action action) {
             RenderTexture screenshot = this.ObjectsManager.ScreenshotManager.ScreenshotUIComponents(uiComponents);
-            MB_DissolveElement dissolveElement = Instantiate(this.DissolveElement, this.Canvas.transform);
-            dissolveElement.Canvas = this.Canvas;
+            MB_DissolveElement dissolveElement;
+            switch (position) {
+                case E_Position.BeforeBlur:
+                    dissolveElement = Instantiate(this.DissolveElement, this.CanvasBeforeBlur.transform);
+                    dissolveElement.Canvas = this.CanvasBeforeBlur;
+                    break;
+                case E_Position.AfterBlur:
+                    dissolveElement = Instantiate(this.DissolveElement, this.CanvasAfterBlur.transform);
+                    dissolveElement.Canvas = this.CanvasAfterBlur;
+                    break;
+                default: throw new ArgumentOutOfRangeException(nameof(position), position, null);
+            }
             dissolveElement.SetTexture(screenshot);
             dissolveElement.Hide(this.DissolveDuration, realTime, action);
         }

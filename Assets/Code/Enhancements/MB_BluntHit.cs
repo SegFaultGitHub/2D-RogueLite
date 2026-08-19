@@ -112,7 +112,7 @@ namespace Code.Enhancements {
             E_DamageSource damageSource,
             HashSet<Type> appliedTypes
         ) {
-            return damageSource == E_DamageSource.Spell
+            return damageSource == E_DamageSource.Direct
                 ? this.GetData().DamageRatio
                 : 0;
         }

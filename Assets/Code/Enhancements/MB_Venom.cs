@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Code.Characters;
 using Code.Characters.Effects;
 using Code.UI.HUD;
 using Code.UI.Text;
-using Code.Utils;
 using MyBox;
 using UnityEngine;
 
@@ -93,7 +90,7 @@ namespace Code.Enhancements {
             E_DamageSource damageSource,
             float value
         ) {
-            if (damageSource != E_DamageSource.Spell) return;
+            if (damageSource != E_DamageSource.Direct) return;
 
             MB_Poison poison = Instantiate(this.PoisonPrefab);
             poison.SetDamage(this.GetData().DamagePerTick, this.GetData().TickCount);

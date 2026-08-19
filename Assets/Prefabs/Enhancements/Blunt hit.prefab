@@ -46,9 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Code.Enhancements.MB_BluntHit
   m_EnhancementName: Blunt HIt
   m_MaxLevel: 5
-  m_Description: Increases all the direct damage you deal by <damageRatio> and grants <confusedRatio> chance of confusing enemies during <duration> seconds when landing a hit
-  m_Sprite: {fileID: -7645122656721558436, guid: 52c15c8ef9d3a7041a07c3dc39a19018, type: 3}
-  m_UnlockCondition: {fileID: 2841676755933307327, guid: 124e54c9dc1c3b74bb63b359370b6a76, type: 3}
+  m_Description: Increases the direct damage you deal by <damageRatio> and grants <confusedRatio> chance of confusing enemies during <duration> seconds when landing a hit
+  m_Sprite: {fileID: 21300000, guid: 3ea0928c8a4e59d4f8bd0a9998ae2dd1, type: 3}
+  m_UnlockCondition: {fileID: 2841676755933307327, guid: fa690810fadd93940b815278c5ef805c, type: 3}
   m_Level: 0
   m_Data:
   - m_DamageRatio: 0.1

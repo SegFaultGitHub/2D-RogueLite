@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Code.Characters;
 using Code.Enhancements.UnlockConditions.Runtime;
+using Code.Managers;
 using MyBox;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ namespace Code.Enhancements {
         [SerializeField] private protected Sprite m_Sprite;
 
         [SerializeField] private protected C_UnlockConditionsRuntimeGraph m_UnlockCondition;
+        [SerializeField] private protected bool m_SecretUnlockConditions;
 
         [Separator("Read only")]
         [ReadOnly][SerializeField] private protected int m_Level;
@@ -27,6 +29,7 @@ namespace Code.Enhancements {
         public Sprite Sprite { get => this.m_Sprite; }
 
         public C_UnlockConditionsRuntimeGraph UnlockCondition { get => this.m_UnlockCondition; }
+        private bool SecretUnlockConditions { get => this.m_SecretUnlockConditions; }
 
         public int Level { get => this.m_Level; set => this.m_Level = value; }
 
@@ -101,7 +104,11 @@ namespace Code.Enhancements {
         public virtual void OnUpgrade(AMB_Character character, int previousLevel) { }
         public virtual void OnRemove(AMB_Character character) { }
 
-        // [ButtonMethod]
-        // public void EditConditions() => MyCustomWindow.Open(this);
+        [ButtonMethod]
+        public string Foo(MB_ObjectsManager objectsManager) {
+            return this.SecretUnlockConditions
+                ? "???"
+                : this.UnlockCondition.GetVerbose(objectsManager);
+        }
     }
 }

@@ -46,9 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Code.Enhancements.MB_PlagueStudy
   m_EnhancementName: Plague Study
   m_MaxLevel: 5
-  m_Description: Increases all the poison damage you deal by <ratio>
+  m_Description: Increases the poison damage you deal by <ratio>
   m_Sprite: {fileID: 21300000, guid: 9d47d2398d1920641b90621bb446e653, type: 3}
-  m_UnlockCondition: {fileID: 2841676755933307327, guid: 124e54c9dc1c3b74bb63b359370b6a76, type: 3}
+  m_UnlockCondition: {fileID: 2841676755933307327, guid: 032886d83a9988a438c89b0af0587fe4, type: 3}
   m_Level: 0
   m_Data:
   - m_Ratio: 0.3

@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using Code.Serializer;
 using MyBox;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering.RenderGraphModule;
 
 namespace Code.Managers {
     public class MB_ScreenshotManager : MonoBehaviour {
@@ -77,11 +74,6 @@ namespace Code.Managers {
             this.ScreenshotCamera.enabled = false;
             RenderTexture.active = previous;
         }
-
-        public List<Transform> TEMP_gos;
-
-        [ButtonMethod]
-        public RenderTexture ScreenshotUIComponents() => this.ScreenshotUIComponents(this.TEMP_gos);
 
         public RenderTexture ScreenshotUIComponents(ICollection<Transform> uiComponents) {
             RenderTexture renderTexture = new(Screen.width, Screen.height, 16, RenderTextureFormat.ARGB32);

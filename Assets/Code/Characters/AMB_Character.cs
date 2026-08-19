@@ -121,15 +121,16 @@ namespace Code.Characters {
 
         // `effect` must be an instance!
         public void AddEffect(AMB_Effect effect, AMB_Character from, float? duration = null) {
-            if (effect.Unique) {
-                AMB_Effect currentEffect = this.Effects.Value.Find(currentEffect => currentEffect.GetType() == effect.GetType());
-                if (currentEffect != null) {
-                    if (currentEffect.IsPermanent) return;
-                    if (currentEffect.TTL > duration) return;
+            List<AMB_Effect> currentEffects = this.Effects.Value //
+                .FindAll(currentEffect => currentEffect.GetType() == effect.GetType())
+                .OrderBy(currentEffect => currentEffect.TTL)
+                .ToList();
 
-                    this.Effects.Remove(currentEffect);
-                    Destroy(currentEffect.gameObject);
-                }
+            while (effect.MaxOccurence != -1 && currentEffects.Count >= effect.MaxOccurence) {
+                AMB_Effect currentEffect = currentEffects[0];
+                this.Effects.Remove(currentEffect);
+                currentEffects.Remove(currentEffect);
+                Destroy(currentEffect.gameObject);
             }
 
             effect.Initialize(this, from, duration);
@@ -150,6 +151,11 @@ namespace Code.Characters {
 
         public bool HasEffect(Type type) => this.Effects.Value.Exists(e => e.GetType() == type);
 
+        public void ClearEffects() {
+            while (this.Effects.Count > 0)
+                this.RemoveEffect(this.Effects[0]);
+        }
+
         public void SetInvulnerable() {
             this.Invulnerable = true;
             this.InSeconds(INVULNERABILITY_DURATION, () => this.Invulnerable = false);
@@ -167,7 +173,7 @@ namespace Code.Characters {
 
             this.PlayHitAnimation();
             switch (source) {
-                case E_DamageSource.Spell:
+                case E_DamageSource.Direct:
                 case E_DamageSource.SummonDeath:
                     this.PlayHurtSoundEffect();
                     break;

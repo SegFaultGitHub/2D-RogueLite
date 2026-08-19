@@ -19,6 +19,10 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 3236139097767280896
+      type: {class: 'Constant`1[[System.Single, mscorlib]]', ns: Unity.GraphToolkit.Editor, asm: UnityEditor.GraphToolkitModule}
+      data:
+        m_Value: 100
     - rid: 7878111094073458818
       type: {class: GraphModelImp, ns: Unity.GraphToolkit.Editor.Implementation, asm: UnityEditor.GraphToolkitModule}
       data:
@@ -47,10 +51,10 @@ MonoBehaviour:
         m_LocalSubgraphs: []
         m_LastKnownBounds:
           serializedVersion: 2
-          x: 258.5
-          y: 346.5
-          width: 994.5
-          height: 386
+          x: 261
+          y: 347
+          width: 992
+          height: 385
         m_GraphElementMetaData:
         - m_Guid:
             m_Value0: 6838112872015576543
@@ -137,7 +141,7 @@ MonoBehaviour:
           serializedVersion: 2
           Hash: dfbd835e6ddbe55e6450f99cdf27e866
         m_Version: 2
-        m_Position: {x: 258.26547, y: 474.8584}
+        m_Position: {x: 260.91043, y: 469.5684}
         m_Title: 
         m_Tooltip: 
         m_NodePreviewModel:
@@ -365,7 +369,7 @@ MonoBehaviour:
           m_ValueList:
           - rid: 7878111094073458862
           - rid: 7878111094073458863
-          - rid: 7878111094073458864
+          - rid: 3236139097767280896
           - rid: 7878111094073458865
         m_InputPortInfos:
           expandedPortsById:
@@ -426,10 +430,6 @@ MonoBehaviour:
           m_Value: 1
         m_EnumType:
           m_Identification: Code.Enhancements.UnlockConditions.E_Mode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    - rid: 7878111094073458864
-      type: {class: 'Constant`1[[System.Int32, mscorlib]]', ns: Unity.GraphToolkit.Editor, asm: UnityEditor.GraphToolkitModule}
-      data:
-        m_Value: 100
     - rid: 7878111094073458865
       type: {class: EnumConstant, ns: Unity.GraphToolkit.Editor, asm: UnityEditor.GraphToolkitModule}
       data:
