@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using Code.Characters;
 using Code.Managers;
+using Code.UI.EnhancementList;
 using Code.UI.Text;
 using Code.Utils;
 using UnityEngine;
@@ -21,15 +23,31 @@ namespace Code.Enhancements.UnlockConditions.Runtime.Predicates {
                 _ => throw new ArgumentOutOfRangeException()
             };
 
-        public override string GetVerbose(MB_ObjectsManager objectsManager, int indent) {
-            string indentString = new(' ', indent);
-            string current = SC_Utils.FormatNumber(objectsManager.StatsManager.GlobalStats.GetMaxDamagePerSecond(this.Source)).Yellow();
+        public override void GetVerbose(
+            MB_ObjectsManager objectsManager,
+            List<C_UnlockCondition> unlockConditions,
+            int indent,
+            bool completed = false
+        ) {
+            //string indentString = new(' ', indent);
+            string current = SC_Utils.FormatNumber(objectsManager.StatsManager.GlobalStats.GetMaxDamagePerSecond(this.Source));
+            current = this.Check(objectsManager)
+                ? current.Green()
+                : current.Yellow();
             string total = $"{SC_Utils.FormatNumber(this.Damage)}".Brown();
             string goal = $"{current} / {total}" //
                 .NoBreak()
                 .VOffset(height: 2, delay: 0, offset: .125f, duration: .5f, loop: true, loopDelay: 5, progressive: false);
 
-            return $"{indentString}- Reach {goal} {this.Source} damage per second";
+            //return $"{indentString}- Reach {goal} {this.Source} damage per second";
+
+            unlockConditions.Add(
+                new C_UnlockCondition {
+                    Indent = indent,
+                    Text = $"Reach {goal} {this.Source} damage per second",
+                    Unlocked = completed || this.Check(objectsManager)
+                }
+            );
         }
     }
 }

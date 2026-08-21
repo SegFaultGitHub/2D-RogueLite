@@ -11,9 +11,7 @@ namespace Code.Enhancements.UnlockConditions.Editor_.Predicates {
         protected override void OnDefinePorts(IPortDefinitionContext context) {
             base.OnDefinePorts(context);
 
-            context.AddInputPort<float>(IN_PORT_SOURCE)
-                .WithDisplayName("Source")
-                .Build();
+            context.AddInputPort<float>(IN_PORT_SOURCE).WithDisplayName("Source").Build();
         }
 
         public override Runtime.C_Condition TranslateNode() {

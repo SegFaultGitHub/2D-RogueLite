@@ -48,6 +48,10 @@ namespace Code.UI.EnhancementList {
         private void Start() {
             this.UpdateUnlocked();
         }
+
+        private void OnEnable() {
+            this.HideDescriptionAndUnlockConditions();
+        }
         #endregion
 
         public void Initialize() { }
@@ -91,17 +95,18 @@ namespace Code.UI.EnhancementList {
         }
 
         public void ShowDescription(MB_Enhancement enhancement) {
+            this.HideDescriptionAndUnlockConditions();
             this.EnhancementDescription.gameObject.SetActive(true);
             this.EnhancementDescription.SetEnhancement(enhancement.Enhancement.Enhancement);
         }
 
         public void ShowUnlockConditions(MB_Enhancement enhancement) {
+            this.HideDescriptionAndUnlockConditions();
             this.UnlockConditions.gameObject.SetActive(true);
             this.UnlockConditions.SetEnhancement(enhancement.Enhancement.Enhancement);
-
         }
 
-        public void HideDescriptionAndUnlockConditions() {
+        private void HideDescriptionAndUnlockConditions() {
             this.EnhancementDescription.gameObject.SetActive(false);
             this.UnlockConditions.gameObject.SetActive(false);
         }

@@ -12,9 +12,7 @@ namespace Code.Enhancements.UnlockConditions.Editor_.Predicates {
         protected override void OnDefinePorts(IPortDefinitionContext context) {
             base.OnDefinePorts(context);
 
-            context.AddInputPort<bool>(IN_PORT_BOOL)
-                .WithDisplayName("Bool")
-                .Build();
+            context.AddInputPort<bool>(IN_PORT_BOOL).WithDisplayName("Bool").Build();
         }
 
         public override Runtime.C_Condition TranslateNode() {

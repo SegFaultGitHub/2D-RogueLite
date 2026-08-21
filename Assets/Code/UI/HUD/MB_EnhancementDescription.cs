@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Code.Enhancements;
+using Code.Managers;
 using Code.UI.Text;
 using Code.Utils;
 using JetBrains.Annotations;
@@ -16,6 +17,9 @@ namespace Code.UI.HUD {
         [SerializeField] private protected MB_Text m_DescriptionText;
 
         [SerializeField] private protected RectTransform m_PaperRect;
+
+        [Separator("Read only")]
+        [ReadOnly][SerializeField] private protected MB_ObjectsManager m_ObjectsManager;
         #endregion
 
         #region Getters / Setters
@@ -24,16 +28,21 @@ namespace Code.UI.HUD {
         private MB_Text DescriptionText { get => this.m_DescriptionText; }
 
         private RectTransform PaperRect { get => this.m_PaperRect; }
+
+        protected MB_ObjectsManager ObjectsManager { get => this.m_ObjectsManager; set => this.m_ObjectsManager = value; }
         #endregion
 
         #region Static / Readonly / Const
         #endregion
 
         #region Unity methods
+        protected virtual void Awake() {
+            this.ObjectsManager = FindAnyObjectByType<MB_ObjectsManager>(FindObjectsInactive.Include);
+        }
         #endregion
 
         public void SetEnhancement(AMB_Enhancement enhancement) {
-            string nameString = enhancement.EnhancementName.Name();
+            string nameString = this.ObjectsManager.EnhancementsManager.GetEnhancementName(enhancement.Enhancement);
 
             string levelString, description;
 

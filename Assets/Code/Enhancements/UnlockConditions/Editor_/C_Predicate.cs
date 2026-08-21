@@ -13,12 +13,12 @@ namespace Code.Enhancements.UnlockConditions.Editor_ {
                 .WithConnectorUI(PortConnectorUI.Arrowhead)
                 .Build();
 
-            context.AddInputPort<E_Mode>(IN_PORT_MODE)
-                .WithDisplayName("Mode")
-                .Build();
+            context.AddInputPort<E_Mode>(IN_PORT_MODE).WithDisplayName("Mode").Build();
         }
 
-        protected virtual string GetHeader() { return string.Empty; }
+        protected virtual string GetHeader() {
+            return string.Empty;
+        }
 
         public E_Mode GetMode() => GetInputPortValue<E_Mode>(this.GetInputPortByName(IN_PORT_MODE));
 

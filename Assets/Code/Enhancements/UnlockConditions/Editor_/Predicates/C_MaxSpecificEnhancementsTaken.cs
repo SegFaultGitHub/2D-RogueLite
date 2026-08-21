@@ -10,9 +10,7 @@ namespace Code.Enhancements.UnlockConditions.Editor_.Predicates {
         protected override void OnDefinePorts(IPortDefinitionContext context) {
             base.OnDefinePorts(context);
 
-            context.AddInputPort<E_Enhancement>(IN_PORT_ENHANCEMENT)
-                .WithDisplayName("Enhancement")
-                .Build();
+            context.AddInputPort<E_Enhancement>(IN_PORT_ENHANCEMENT).WithDisplayName("Enhancement").Build();
         }
 
         public override Runtime.C_Condition TranslateNode() {

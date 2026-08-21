@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Code.UI.EnhancementList {
-    public class MB_Enhancement : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
+    public class MB_Enhancement : MonoBehaviour, IPointerEnterHandler {
         #region Members
         [Foldout("MB_Enhancement", true)]
         [SerializeField] private protected GameObject m_Unlocked;
@@ -47,7 +47,7 @@ namespace Code.UI.EnhancementList {
             this.Enhancement = enhancement;
 
             foreach (TMP_Text text in this.Texts) {
-                text.text = text.text.Replace("<name>", enhancement.Enhancement.EnhancementName);
+                text.text = text.text.Replace("<name>", enhancement.EnhancementName);
             }
 
             foreach (Image icon in this.Icons) {
@@ -71,10 +71,6 @@ namespace Code.UI.EnhancementList {
         public void OnPointerEnter(PointerEventData eventData) {
             if (!this.Enhancement.Unlocked) this.EnhancementList.ShowUnlockConditions(this);
             else this.EnhancementList.ShowDescription(this);
-        }
-
-        public void OnPointerExit(PointerEventData eventData) {
-            this.EnhancementList.HideDescriptionAndUnlockConditions();
         }
     }
 }

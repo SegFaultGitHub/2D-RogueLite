@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Code.Managers;
+using Code.UI.EnhancementList;
 using UnityEngine;
 
 namespace Code.Enhancements.UnlockConditions.Runtime.Predicates {
@@ -17,7 +19,5 @@ namespace Code.Enhancements.UnlockConditions.Runtime.Predicates {
                 E_Mode.Global => objectsManager.StatsManager.GlobalStats.GetEnhancementsMaxOwned() < this.Count,
                 _ => throw new ArgumentOutOfRangeException()
             };
-
-        public override string GetVerbose(MB_ObjectsManager objectsManager, int indent) => $"{new string(' ', indent)}- {this.Name} / {this.Count}";
     }
 }

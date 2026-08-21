@@ -306,7 +306,8 @@ namespace Code.UI.Text {
         public void SetText(string text) {
             if (this.Text == null) this.Text = this.GetComponent<TMP_Text>();
 
-            foreach (Sequence sequence in this.Sequences) DOTween.Kill(sequence);
+            foreach (Sequence sequence in this.Sequences.Where(sequence => sequence is { active: true }))
+                DOTween.Kill(sequence);
             this.Sequences.Clear();
 
             text = $"{{default}}{text}{{/default}}";

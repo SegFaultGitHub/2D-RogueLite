@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Code.Managers;
+using Code.UI.EnhancementList;
 using UnityEngine;
 
 namespace Code.Enhancements.UnlockConditions.Runtime {
@@ -12,15 +13,20 @@ namespace Code.Enhancements.UnlockConditions.Runtime {
         public override bool Check(MB_ObjectsManager objectsManager) => this.And.All(c => c.Check(objectsManager));
         public override bool ShouldSkip() => this.And.All(c => c.ShouldSkip());
 
-        public override string GetVerbose(MB_ObjectsManager objectsManager, int indent) {
-            List<string> lines = new();
+        public override void GetVerbose(
+            MB_ObjectsManager objectsManager,
+            List<C_UnlockCondition> unlockConditions,
+            int indent,
+            bool completed = false
+        ) {
+            //List<string> lines = new();
             foreach (C_Condition condition in this.And) {
                 if (condition.ShouldSkip()) continue;
 
-                lines.Add(condition.GetVerbose(objectsManager, indent + 2));
+                condition.GetVerbose(objectsManager, unlockConditions, indent + 2);
             }
 
-            return string.Join($"\n{new string(' ', indent + 2)}AND\n", lines);
+            //return string.Join($"\n{new string(' ', indent + 2)}AND\n", lines);
         }
     }
 }

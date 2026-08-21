@@ -18,18 +18,14 @@ namespace Code.UI.HUD {
         [Separator("Read only")]
         [ReadOnly][SerializeField] private protected AMB_Enhancement m_Choice;
         [ReadOnly][SerializeField] private protected bool m_Ready;
-
-        [ReadOnly][SerializeField] private protected MB_ObjectsManager m_ObjectsManager;
         #endregion
 
         #region Getters / Setters
         private GameObject New { get => this.m_New; }
         private GameObject Upgrade { get => this.m_Upgrade; }
 
-        public AMB_Enhancement Choice { get => this.m_Choice; set => this.m_Choice = value; }
+        public AMB_Enhancement Choice { get => this.m_Choice; private set => this.m_Choice = value; }
         public bool Ready { get => this.m_Ready; set => this.m_Ready = value; }
-
-        private MB_ObjectsManager ObjectsManager { get => this.m_ObjectsManager; set => this.m_ObjectsManager = value; }
 
         public Action OnClickStartAction { get; set; }
         public Action OnClickEndAction { get; set; }
@@ -39,15 +35,15 @@ namespace Code.UI.HUD {
         #endregion
 
         #region Unity methods
-        private void Awake() {
-            this.ObjectsManager = FindAnyObjectByType<MB_ObjectsManager>(FindObjectsInactive.Include);
+        protected override void Awake() {
+            base.Awake();
             this.Ready = false;
         }
         #endregion
 
         public void SetEnhancement(AMB_Enhancement enhancement, AMB_Enhancement currentEnhancement) {
             if (currentEnhancement == null) {
-                string nameString = enhancement.EnhancementName.Name();
+                string nameString = this.ObjectsManager.EnhancementsManager.GetEnhancementName(enhancement.Enhancement);
                 string levelString = $"{enhancement.EffectiveLevel} / {enhancement.MaxLevel}";
                 string description = enhancement.GetFullDescription().LineHeight(8);
 
@@ -56,7 +52,7 @@ namespace Code.UI.HUD {
                 this.New.SetActive(true);
                 this.Upgrade.SetActive(false);
             } else {
-                string nameString = enhancement.EnhancementName.Name();
+                string nameString = this.ObjectsManager.EnhancementsManager.GetEnhancementName(enhancement.Enhancement);
                 int currentLevel = currentEnhancement.Level;
                 int newLevel = Mathf.Clamp(enhancement.Level + currentEnhancement.Level, 1, enhancement.MaxLevel);
                 string currentLevelString = $"{currentEnhancement.EffectiveLevel} / {currentEnhancement.MaxLevel}";

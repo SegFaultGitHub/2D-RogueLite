@@ -219,7 +219,7 @@ MonoBehaviour:
     - rid: 3236139077220171865
       type: {class: 'Constant`1[[System.Int32, mscorlib]]', ns: Unity.GraphToolkit.Editor, asm: UnityEditor.GraphToolkitModule}
       data:
-        m_Value: 30
+        m_Value: 3
     - rid: 3236139077220171866
       type: {class: C_DashesPerformed, ns: Code.Enhancements.UnlockConditions.Editor_.Predicates, asm: Assembly-CSharp}
       data: 

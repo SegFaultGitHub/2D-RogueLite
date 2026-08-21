@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Code.Managers;
+using Code.UI.EnhancementList;
 using UnityEngine;
 
 namespace Code.Enhancements.UnlockConditions.Runtime {
@@ -15,6 +17,11 @@ namespace Code.Enhancements.UnlockConditions.Runtime {
 
         public abstract bool ShouldSkip();
 
-        public abstract string GetVerbose(MB_ObjectsManager objectsManager, int indent);
+        public virtual void GetVerbose(
+            MB_ObjectsManager objectsManager,
+            List<C_UnlockCondition> unlockConditions,
+            int indent,
+            bool completed = false
+        ) { }
     }
 }

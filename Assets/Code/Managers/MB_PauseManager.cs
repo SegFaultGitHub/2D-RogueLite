@@ -144,9 +144,19 @@ namespace Code.Managers {
             IEnumerator _Coroutine() {
                 switch (this.PauseState) {
                     case E_PauseState.NotPaused:
+                        string guid = Guid.NewGuid().ToString();
+                        this.QuickPauseGuid = guid;
+                        const float t = 1;
+
                         this.QuickPauseTweener = DOTween.To( //
-                                () => Time.timeScale,
-                                timeScale => Time.timeScale = timeScale,
+                                () => this.QuickPauseGuid != guid
+                                    ? t // Prevents overlapping animation conflicts
+                                    : Time.timeScale,
+                                timeScale => {
+                                    // Prevents overlapping animation conflicts
+                                    if (this.QuickPauseGuid != guid) return;
+                                    Time.timeScale = timeScale;
+                                },
                                 .25f,
                                 duration
                             )

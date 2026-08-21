@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Code.Managers;
+using Code.UI.EnhancementList;
 using UnityEngine;
 
 namespace Code.Enhancements.UnlockConditions.Runtime {
@@ -11,13 +13,13 @@ namespace Code.Enhancements.UnlockConditions.Runtime {
         public bool Check(MB_ObjectsManager objectsManager) => this.Root.Condition.Check(objectsManager);
         public bool CheckGlobal(MB_ObjectsManager objectsManager) => this.Root.GlobalCondition.Check(objectsManager);
 
-        public string GetVerbose(MB_ObjectsManager objectsManager) {
+        public void GetVerbose(MB_ObjectsManager objectsManager, List<C_UnlockCondition> unlockConditions) {
             int initialIndent = this.Root.GlobalCondition switch {
                 C_And => -2,
                 C_Or => -2,
                 _ => 0
             };
-            return this.Root.GlobalCondition.GetVerbose(objectsManager, initialIndent);
+            this.Root.GlobalCondition.GetVerbose(objectsManager, unlockConditions, initialIndent);
         }
     }
 }

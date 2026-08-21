@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Code.Characters;
 using Code.Enhancements.UnlockConditions.Runtime;
 using Code.Managers;
+using Code.UI.EnhancementList;
 using MyBox;
 using UnityEngine;
 
@@ -10,7 +11,6 @@ namespace Code.Enhancements {
     public abstract class AMB_Enhancement : MonoBehaviour, I_Effect {
         #region Members
         [Foldout("AMB_Enhancement", true)]
-        [SerializeField] private protected string m_EnhancementName;
         [SerializeField] private protected int m_MaxLevel;
         [SerializeField][TextArea(10, 20)] private protected string m_Description;
         [SerializeField] private protected Sprite m_Sprite;
@@ -23,7 +23,6 @@ namespace Code.Enhancements {
         #endregion
 
         #region Getters / Setters
-        public string EnhancementName { get => this.m_EnhancementName; }
         public int MaxLevel { get => this.m_MaxLevel; }
         protected string Description { get => this.m_Description; }
         public Sprite Sprite { get => this.m_Sprite; }
@@ -105,10 +104,16 @@ namespace Code.Enhancements {
         public virtual void OnRemove(AMB_Character character) { }
 
         [ButtonMethod]
-        public string Foo(MB_ObjectsManager objectsManager) {
-            return this.SecretUnlockConditions
-                ? "???"
-                : this.UnlockCondition.GetVerbose(objectsManager);
+        public List<C_UnlockCondition> Foo(MB_ObjectsManager objectsManager) {
+            List<C_UnlockCondition> unlockConditions = new();
+
+            if (!this.SecretUnlockConditions) {
+                this.UnlockCondition.GetVerbose(objectsManager, unlockConditions);
+            } else {
+                unlockConditions.Add(new C_UnlockCondition { Secret = true });
+            }
+
+            return unlockConditions;
         }
     }
 }

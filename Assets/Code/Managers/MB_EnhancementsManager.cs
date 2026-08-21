@@ -6,7 +6,6 @@ using Code.UI.HUD;
 using Code.Utils;
 using MyBox;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -15,52 +14,49 @@ namespace Code.Managers {
         [Serializable]
         public class MB_Enhancement {
             [SerializeField] private AMB_Enhancement m_Enhancement;
+            [SerializeField] private Dictionary<E_Locale, string> m_LocalizedNames;
             [SerializeField] private float m_Weight;
+            [SerializeField][MinMaxRange(1, 5)] private RangedInt m_ChoiceLevel;
 
             [Separator("Read only")]
             [ReadOnly][SerializeField] private bool m_Unlocked;
 
             public AMB_Enhancement Enhancement { get => this.m_Enhancement; }
+            public string EnhancementName { get => this.m_LocalizedNames[MB_InitializationManager.LOCALE]; }
             public float Weight { get => this.m_Weight; }
+            public RangedInt ChoiceLevel { get => this.m_ChoiceLevel; }
             public bool Unlocked { get => this.m_Unlocked; set => this.m_Unlocked = value; }
         }
 
         #region Members
-        [Foldout("MB_EnhancementsManager", true)][SerializeField]
-        private List<MB_Enhancement> m_Enhancements;
-        [SerializeField]
-        private MB_EnhancementChoice m_EnhancementChoicePrefab;
-        [FormerlySerializedAs("m_HUDCanvas")]
-        [SerializeField]
-        private Transform m_ChoicesParent;
-        [SerializeField]
-        private protected Button m_RerollButton;
+        [Foldout("MB_EnhancementsManager", true)]
+        [SerializeField] private List<MB_Enhancement> m_Enhancements;
+        [SerializeField] private MB_EnhancementChoice m_EnhancementChoicePrefab;
+        [SerializeField] private Transform m_ChoicesParent;
+        [SerializeField] private protected Button m_RerollButton;
 
         [Separator("Read only")]
-        [ReadOnly]
-        [SerializeField]
-        private protected MB_ObjectsManager m_ObjectsManager;
-        [ReadOnly]
-        [SerializeField]
-        private protected int m_RerollsRemaining;
-        [ReadOnly]
-        [SerializeField]
-        private protected bool m_Locked = true;
-        [ReadOnly]
-        [SerializeField]
-        private protected bool m_AlreadyChoosing;
+        [ReadOnly][SerializeField] private protected MB_ObjectsManager m_ObjectsManager;
+        [ReadOnly][SerializeField] private protected int m_RerollsRemaining;
+        [ReadOnly][SerializeField] private protected bool m_Locked = true;
+        [ReadOnly][SerializeField] private protected bool m_AlreadyChoosing;
+        [ReadOnly][SerializeField] private protected Dictionary<E_Enhancement, MB_Enhancement> m_EnhancementsDictionary;
         #endregion
 
         #region Getters / Setters
         public List<MB_Enhancement> Enhancements { get => this.m_Enhancements; }
         private MB_EnhancementChoice EnhancementChoicePrefab { get => this.m_EnhancementChoicePrefab; }
         private Transform ChoicesParent { get => this.m_ChoicesParent; }
-        private Button RerollButton { get => this.m_RerollButton; set => this.m_RerollButton = value; }
+        private Button RerollButton { get => this.m_RerollButton; }
 
         public MB_ObjectsManager ObjectsManager { get => this.m_ObjectsManager; set => this.m_ObjectsManager = value; }
         private int RerollsRemaining { get => this.m_RerollsRemaining; set => this.m_RerollsRemaining = value; }
         private bool Locked { get => this.m_Locked; set => this.m_Locked = value; }
         private bool AlreadyChoosing { get => this.m_AlreadyChoosing; set => this.m_AlreadyChoosing = value; }
+        public Dictionary<E_Enhancement, MB_Enhancement> EnhancementsDictionary {
+            get => this.m_EnhancementsDictionary;
+            set => this.m_EnhancementsDictionary = value;
+        }
         #endregion
 
         #region Static / Readonly / Const
@@ -73,7 +69,9 @@ namespace Code.Managers {
         public void Initialize() { }
 
         public void PostInitialize() {
+            this.EnhancementsDictionary = new Dictionary<E_Enhancement, MB_Enhancement>();
             foreach (MB_Enhancement unlockEnhancement in this.Enhancements) {
+                this.EnhancementsDictionary[unlockEnhancement.Enhancement.Enhancement] = unlockEnhancement;
                 unlockEnhancement.Unlocked = unlockEnhancement.Enhancement.UnlockCondition.CheckGlobal(this.ObjectsManager);
             }
         }
@@ -83,31 +81,31 @@ namespace Code.Managers {
                 unlockEnhancement.Unlocked = unlockEnhancement.Enhancement.UnlockCondition.CheckGlobal(this.ObjectsManager);
 
                 if (unlockEnhancement.Unlocked) {
-                    Debug.Log($"{unlockEnhancement.Enhancement.EnhancementName} unlocked!");
+                    Debug.Log($"{unlockEnhancement.EnhancementName} unlocked!");
                     this.ObjectsManager.NotificationsContainer.CreateNotification(unlockEnhancement.Enhancement);
                     this.ObjectsManager.EnhancementList.UnlockEnhancement(unlockEnhancement.Enhancement.Enhancement);
                 }
             }
         }
 
-        public void GetChoices() => this.GetChoices(3, 1, 3, true, false);
+        public void GetChoices() => this.GetChoices(3, true, false);
 
-        public void GetChoices(int count, int minLevel, int maxLevel, bool first = false, bool moveToNextRoom = true) {
+        public void GetChoices(int count, bool first = false, bool moveToNextRoom = true) {
             if (this.AlreadyChoosing) return;
             this.AlreadyChoosing = true;
 
             this.Until(
                 () => this.ObjectsManager.PauseManager.PauseState == MB_PauseManager.E_PauseState.NotPaused,
                 () => {
-                    List<C_WeightedObject<AMB_Enhancement>> availableEnhancements = new();
+                    List<C_WeightedObject<MB_Enhancement>> availableEnhancements = new();
                     foreach (MB_Enhancement enhancement in this.Enhancements) {
                         if (enhancement.Weight > 0
                             && this.ObjectsManager.Player.CanAddEnhancement(enhancement.Enhancement)
                             && enhancement.Enhancement.UnlockCondition.Check(this.ObjectsManager))
                             availableEnhancements.Add(
-                                new C_WeightedObject<AMB_Enhancement> {
+                                new C_WeightedObject<MB_Enhancement> {
                                     Weight = enhancement.Weight,
-                                    Obj = enhancement.Enhancement
+                                    Obj = enhancement
                                 }
                             );
                     }
@@ -136,11 +134,11 @@ namespace Code.Managers {
 
                     this.Locked = true;
 
-                    List<C_WeightedObject<AMB_Enhancement>> enhancements = SC_Utils.Sample(availableEnhancements, count);
+                    List<C_WeightedObject<MB_Enhancement>> enhancements = SC_Utils.Sample(availableEnhancements, count);
                     List<MB_EnhancementChoice> enhancementChoices = new();
-                    foreach (C_WeightedObject<AMB_Enhancement> weightedObject in enhancements) {
-                        AMB_Enhancement newEnhancement = Instantiate(weightedObject.Obj, this.transform);
-                        newEnhancement.Level = Random.Range(minLevel, maxLevel + 1);
+                    foreach (C_WeightedObject<MB_Enhancement> enhancement in enhancements) {
+                        AMB_Enhancement newEnhancement = Instantiate(enhancement.Obj.Enhancement, this.transform);
+                        newEnhancement.Level = Random.Range(enhancement.Obj.ChoiceLevel.Min, enhancement.Obj.ChoiceLevel.Max + 1);
                         AMB_Enhancement existingEnhancement = this.ObjectsManager.Player.GetUpgradableEnhancement(newEnhancement);
                         MB_EnhancementChoice choice = Instantiate(this.EnhancementChoicePrefab, this.ChoicesParent);
                         choice.SetEnhancement(newEnhancement, existingEnhancement);
@@ -182,9 +180,9 @@ namespace Code.Managers {
         }
 
         [ButtonMethod]
-        public void Reroll() => this.Reroll(3, 1, 3);
+        public void Reroll() => this.Reroll(3);
 
-        public void Reroll(int count, int minLevel, int maxLevel) {
+        public void Reroll(int count) {
             if (this.Locked || this.RerollsRemaining <= 0) return;
 
             this.RerollsRemaining--;
@@ -195,7 +193,7 @@ namespace Code.Managers {
                 this.ChoicesParent,
                 true,
                 MB_DissolveManager.E_Position.AfterBlur,
-                () => this.InSeconds(.125f, () => this.GetChoices(count, minLevel, maxLevel))
+                () => this.InSeconds(.125f, () => this.GetChoices(count))
             );
             foreach (MB_EnhancementChoice choice in choices) {
                 choice.Ready = false;
@@ -207,5 +205,7 @@ namespace Code.Managers {
         private void UpdateRerollButton() {
             this.RerollButton.interactable = this.RerollsRemaining > 0;
         }
+
+        public string GetEnhancementName(E_Enhancement enhancement) => this.EnhancementsDictionary[enhancement].EnhancementName;
     }
 }

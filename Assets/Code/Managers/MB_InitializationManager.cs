@@ -27,6 +27,7 @@ namespace Code.Managers {
 
         #region Static / Readonly / Const
         public static E_Biome BIOME = E_Biome.None;
+        public static E_Locale LOCALE = E_Locale.En;
         private static readonly int UNSCALED_TIME = Shader.PropertyToID("_UnscaledTime");
         #endregion
 

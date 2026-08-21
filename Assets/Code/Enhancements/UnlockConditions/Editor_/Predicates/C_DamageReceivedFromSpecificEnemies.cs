@@ -11,9 +11,7 @@ namespace Code.Enhancements.UnlockConditions.Editor_.Predicates {
         protected override void OnDefinePorts(IPortDefinitionContext context) {
             base.OnDefinePorts(context);
 
-            context.AddInputPort<E_Enemy>(IN_PORT_ENEMY)
-                .WithDisplayName("Enemy")
-                .Build();
+            context.AddInputPort<E_Enemy>(IN_PORT_ENEMY).WithDisplayName("Enemy").Build();
         }
 
         public override Runtime.C_Condition TranslateNode() {
